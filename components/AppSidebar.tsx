@@ -26,7 +26,7 @@ export function AppSidebar() {
 
     return (
         <Sidebar>
-            <SidebarHeader>{username}</SidebarHeader>
+            <SidebarHeader className="text-center font-extrabold">{username}</SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>
