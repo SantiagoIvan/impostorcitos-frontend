@@ -1,0 +1,128 @@
+"use client"
+
+import { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Send } from "lucide-react"
+import {capitalize} from "@/lib/utils";
+import {useUserStore} from "@/app/store/user-store";
+
+interface Message {
+    id: number
+    text: string
+    sender: string
+    time: string
+}
+
+export function ChatPanel() {
+    const {username} = useUserStore()
+
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            id: 1,
+            text: "¡Hola! ¿Cómo estás?",
+            sender: "other",
+            time: "10:30",
+        },
+        {
+            id: 2,
+            text: "¡Muy bien! ¿Y tú?",
+            sender: username,
+            time: "10:31",
+        },
+        {
+            id: 3,
+            text: "Excelente, trabajando en el nuevo proyecto",
+            sender: "other",
+            time: "10:32",
+        },
+    ])
+    const [inputValue, setInputValue] = useState("")
+
+    const handleSendMessage = () => {
+        if (inputValue.trim()) {
+            const newMessage: Message = {
+                id: messages.length + 1,
+                text: inputValue,
+                sender: username,
+                time: new Date().toLocaleTimeString("es-ES", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                }),
+            }
+            setMessages([...messages, newMessage])
+            setInputValue("")
+        }
+    }
+
+    return (
+        <Card className="flex h-full flex-col">
+            <CardHeader className="border-b border-border">
+                <div className="flex items-center gap-3">
+                    <Avatar>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" />
+                        <AvatarFallback className="bg-primary text-primary-foreground">Me</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <CardTitle className="text-lg">Chat general</CardTitle>
+                        <p className="text-sm text-muted-foreground">En línea</p>
+                    </div>
+                </div>
+            </CardHeader>
+
+            <CardContent className="flex flex-1 flex-col p-0">
+                <ScrollArea className="flex-1 p-4">
+                    <div className="flex flex-col gap-4">
+                        {messages.map((message) => (
+                            <div key={message.id} className={`flex ${message.sender == username ? "justify-end" : "justify-start"}`}>
+                                <div
+                                    className={`max-w-[75%] rounded-lg px-4 py-2 ${
+                                        message.sender == username ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
+                                    }`}
+                                >
+                                    <span
+                                        className="mt-1 block text-xs font-extrabold"
+                                    >
+                                        {message.sender}
+                                    </span>
+                                    <p className="text-sm leading-relaxed">{message.text}</p>
+                                    <span
+                                        className={`mt-1 block text-xs ${
+                                            message.sender == username ? "text-primary-foreground/70" : "text-muted-foreground"
+                                        }`}
+                                    >
+                    {message.time}
+                  </span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </ScrollArea>
+
+                <div className="border-t border-border p-4">
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault()
+                            handleSendMessage()
+                        }}
+                        className="flex gap-2"
+                    >
+                        <Input
+                            placeholder="Escribe un mensaje..."
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            className="flex-1"
+                        />
+                        <Button type="submit" size="icon">
+                            <Send className="h-4 w-4" />
+                            <span className="sr-only">Enviar mensaje</span>
+                        </Button>
+                    </form>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}

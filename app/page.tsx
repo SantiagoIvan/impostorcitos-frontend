@@ -1,7 +1,6 @@
 "use client"
 
 import {Button} from "@/components/ui/button";
-import Image from "next/image";
 import {ArrowUpIcon} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
@@ -17,7 +16,7 @@ export default function WelcomeScreen() {
         if (username == "") {
             toast.error("Username is required");
         }else {
-            router.push("/lobby");
+            router.push("/game/lobby");
         }
     }
 
