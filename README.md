@@ -48,7 +48,7 @@ Finalmente, se abre un espacio para elegir a un candidato a ser eliminado.
 - Si el impostor llega vivo hasta el final del juego, quedando solamente 2 jugadores, gana el impostor
 
 ## Flujo de pantallas
-[Link al diagrama de flujo]
+https://lucid.app/lucidspark/c873ae61-9ac4-4b0b-81a1-0e739b7cdee3/edit?viewport_loc=-796%2C-493%2C4717%2C2258%2C0_0&invitationId=inv_ebabd4cf-31dc-43cd-9faa-3d4f6bf09528
 
 ## Modelo de datos
 [Link al modelo de datos]
