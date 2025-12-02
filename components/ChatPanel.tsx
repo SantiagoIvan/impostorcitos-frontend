@@ -1,45 +1,21 @@
 "use client"
 
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Send } from "lucide-react"
-import {capitalize} from "@/lib/utils";
 import {useUserStore} from "@/app/store/user-store";
+import Message from"@/app/types/Message"
+import {getMessages as getMessagesService} from "@/lib/services/chat.service";
 
-interface Message {
-    id: number
-    text: string
-    sender: string
-    time: string
-}
 
 export function ChatPanel() {
     const {username} = useUserStore()
 
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: 1,
-            text: "¡Hola! ¿Cómo estás?",
-            sender: "other",
-            time: "10:30",
-        },
-        {
-            id: 2,
-            text: "¡Muy bien! ¿Y tú?",
-            sender: username,
-            time: "10:31",
-        },
-        {
-            id: 3,
-            text: "Excelente, trabajando en el nuevo proyecto",
-            sender: "other",
-            time: "10:32",
-        },
-    ])
+    const [messages, setMessages] = useState<Message[]>([])
     const [inputValue, setInputValue] = useState("")
 
     const handleSendMessage = () => {
@@ -57,6 +33,14 @@ export function ChatPanel() {
             setInputValue("")
         }
     }
+
+    useEffect(() => {
+        const getMessages = async () => {
+            const msgs = await getMessagesService()
+            setMessages(msgs)
+        }
+        getMessages()
+    }, [])
 
     return (
         <Card className="flex h-full flex-col">

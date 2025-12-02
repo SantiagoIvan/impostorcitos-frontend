@@ -5,7 +5,6 @@ import {
     SidebarContent,
     SidebarFooter,
     SidebarGroup, SidebarGroupContent,
-    SidebarGroupLabel,
     SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import {useUserStore} from "@/app/store/user-store";

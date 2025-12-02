@@ -1,73 +1,30 @@
 "use client"
 
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, Circle } from "lucide-react"
+import Room from "@/app/types/Room";
+import {getRooms as getRoomsService} from "@/lib/services/room.service";
+import {RoomType} from "@/app/types/roomType.enum";
 
-interface Item {
-    id: number
-    name: string
-    password?: string
-    privacy: "public" | "private"
-    createdAt: string
-}
 
 export function RoomsPanel() {
     const [searchQuery, setSearchQuery] = useState("")
-    const [items] = useState<Item[]>([
-        {
-            id: 1,
-            name: "Room Alpha",
-            privacy: "public",
-            createdAt: "Hace 2 horas",
-        },
-        {
-            id: 2,
-            name: "Room Beta",
-            privacy: "public",
-            createdAt: "Hace 5 horas",
-        },
-        {
-            id: 3,
-            name: "Room Gamma",
-            password: "123",
-            privacy: "private",
-            createdAt: "Hace 1 día",
-        },
-        {
-            id: 4,
-            name: "Room Delta",
-            privacy: "public",
-            createdAt: "Hace 3 días",
-        },
-        {
-            id: 5,
-            name: "Room Epsilon",
-            privacy: "public",
-            createdAt: "Hace 6 horas",
-        },
-        {
-            id: 6,
-            name: "Room Zeta",
-            password: "asd",
-            privacy: "private",
-            createdAt: "Hace 2 días",
-        },
-    ])
+    const [rooms, setRooms] = useState<Room[]>([])
 
-    const filteredItems = items.filter(
-        (item) =>
-            item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredRooms = rooms.filter(
+        (room) =>
+            room.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
     const getPrivacyColor = (privacy: string) => {
         switch (privacy) {
-            case "public":
+            case RoomType.PUBLIC:
                 return "bg-green-500/10 text-green-600 dark:text-green-400 hover:bg-green-500/20"
-            case "private":
+            case RoomType.PRIVATE:
                 return "bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20"
             default:
                 return "bg-muted text-muted-foreground"
@@ -76,14 +33,23 @@ export function RoomsPanel() {
 
     const getPrivacyDotColor = (privacy: string) => {
         switch (privacy) {
-            case "public":
+            case RoomType.PUBLIC:
                 return "text-green-500"
-            case "private":
+            case RoomType.PRIVATE:
                 return "text-rose-500"
             default:
                 return "text-muted-foreground"
         }
     }
+
+    useEffect(() => {
+        const getRooms = async () => {
+            const newRooms = await getRoomsService()
+            setRooms(newRooms)
+        }
+        getRooms()
+    }, [searchQuery])
+
 
     return (
         <Card className="flex h-full flex-col cursor-pointer">
@@ -103,17 +69,17 @@ export function RoomsPanel() {
             <CardContent className="flex-1 p-0">
                 <ScrollArea className="h-full">
                     <div className="divide-y divide-border">
-                        {filteredItems.map((item) => (
-                            <div key={item.id} className="flex items-start gap-3 p-4 transition-colors hover:bg-muted/50">
-                                <Circle className={`mt-1 h-2 w-2 fill-current ${getPrivacyDotColor(item.privacy)}`} />
+                        {filteredRooms.map((room) => (
+                            <div key={room.id} className="flex rooms-start gap-3 p-4 transition-colors hover:bg-muted/50">
+                                <Circle className={`mt-1 h-2 w-2 fill-current ${getPrivacyDotColor(room.privacy)}`} />
                                 <div className="flex-1 space-y-1">
-                                    <div className="flex items-center justify-between gap-2">
-                                        <h3 className="font-medium leading-none">{item.name}</h3>
-                                        <Badge variant="secondary" className={getPrivacyColor(item.privacy)}>
-                                            {item.privacy}
+                                    <div className="flex rooms-center justify-between gap-2">
+                                        <h3 className="font-medium leading-none">{room.name}</h3>
+                                        <Badge variant="secondary" className={getPrivacyColor(room.privacy)}>
+                                            {room.privacy}
                                         </Badge>
                                     </div>
-                                    <p className="text-xs text-muted-foreground">{item.createdAt}</p>
+                                    <p className="text-xs text-muted-foreground">{room.createdAt}</p>
                                 </div>
                             </div>
                         ))}
