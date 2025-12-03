@@ -54,7 +54,6 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
     const privacy = watch("privacy");
 
     const onSubmit = (data: CreateRoomDto) => {
-        console.log("Crear room:", data);
         socket?.emit(RoomEvents.CREATE, data);
         onOpenChange(false);
     };
@@ -97,7 +96,7 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
 
                     {/* PASSWORD */}
                     {privacy === RoomType.PRIVATE && (
-                        <div>
+                        <div className="item-form">
                             <Label>Password</Label>
                             <Input type="password" {...register("password")} />
                             {errors.password && (

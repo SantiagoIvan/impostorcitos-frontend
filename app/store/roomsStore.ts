@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import {Room}from "@impostorcitos/shared";
+import {Room}from "@/shared";
 
 interface RoomStore {
     rooms: Room[];

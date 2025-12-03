@@ -8,19 +8,21 @@ import {initSocket} from "@/app/services/socket.service";
 import {Room, SocketEvents, RoomEvents} from "@/shared";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import CreateRoomModal from "@/components/CreateRoomModal";
+import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 
 const Lobby = () => {
-    const {setRooms, addRoom} = useRoomsStore()
+    const {setRooms, addRoom, rooms} = useRoomsStore()
     const [openCreateDialog, setOpenCreateDialog] = useState(false); // para el modal de creacion
     const [openJoinDialog, setOpenJoinDialog] = useState(false); // para el modal de unirse
+
+    useRoomsSocket((updatedRooms) => {
+        setRooms(updatedRooms);
+    });
 
     useEffect(() => {
         const socket = initSocket()
         socket.on(SocketEvents.CONNECT, () => {
             console.log("Connected!");
-        })
-        socket.on(RoomEvents.LIST, (rooms: Room[]) => {
-            setRooms(rooms);
         })
 
         return () => {
