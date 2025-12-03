@@ -6,19 +6,24 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, Circle } from "lucide-react"
-import Room from "@/app/types/Room";
-import {getRooms as getRoomsService} from "@/lib/services/room.service";
-import {RoomType} from "@/app/types/roomType.enum";
+import {RoomType} from "@/shared/src/types/roomType.enum";
+import {useRoomsStore} from "@/app/store/roomsStore";
+import Room from "@/shared/src/types/room";
 
 
 export function RoomsPanel() {
     const [searchQuery, setSearchQuery] = useState("")
-    const [rooms, setRooms] = useState<Room[]>([])
+    const {rooms} = useRoomsStore()
 
-    const filteredRooms = rooms.filter(
-        (room) =>
-            room.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    const filterRooms = (rooms: Room[], rawQuery: string): Room[] => {
+        const query = rawQuery.toLowerCase().trim();
+        if (!query) return rooms;
+
+        return rooms.filter((room) =>
+            room.name.toLowerCase().includes(query) ||
+            room.privacy.toLowerCase().includes(query)
+        );
+    };
 
     const getPrivacyColor = (privacy: string) => {
         switch (privacy) {
@@ -43,13 +48,7 @@ export function RoomsPanel() {
     }
 
     useEffect(() => {
-        const getRooms = async () => {
-            const newRooms = await getRoomsService()
-            setRooms(newRooms)
-        }
-        getRooms()
-    }, [searchQuery])
-
+    }, [rooms]);
 
     return (
         <Card className="flex h-full flex-col cursor-pointer">
@@ -69,7 +68,7 @@ export function RoomsPanel() {
             <CardContent className="flex-1 p-0">
                 <ScrollArea className="h-full">
                     <div className="divide-y divide-border">
-                        {filteredRooms.map((room) => (
+                        {filterRooms(rooms, searchQuery).map((room) => (
                             <div key={room.id} className="flex rooms-start gap-3 p-4 transition-colors hover:bg-muted/50">
                                 <Circle className={`mt-1 h-2 w-2 fill-current ${getPrivacyDotColor(room.privacy)}`} />
                                 <div className="flex-1 space-y-1">

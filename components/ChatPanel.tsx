@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Send } from "lucide-react"
-import {useUserStore} from "@/app/store/user-store";
-import Message from"@/app/types/Message"
-import {getMessages as getMessagesService} from "@/lib/services/chat.service";
+import {useUserStore} from "@/app/store/userStore";
+import Message from "@/shared/src/types/message"
 
 
 export function ChatPanel() {
@@ -24,7 +23,7 @@ export function ChatPanel() {
                 id: messages.length + 1,
                 text: inputValue,
                 sender: username,
-                time: new Date().toLocaleTimeString("es-ES", {
+                createdAt: new Date().toLocaleTimeString("es-ES", {
                     hour: "2-digit",
                     minute: "2-digit",
                 }),
@@ -35,11 +34,6 @@ export function ChatPanel() {
     }
 
     useEffect(() => {
-        const getMessages = async () => {
-            const msgs = await getMessagesService()
-            setMessages(msgs)
-        }
-        getMessages()
     }, [])
 
     return (
@@ -78,7 +72,7 @@ export function ChatPanel() {
                                             message.sender == username ? "text-primary-foreground/70" : "text-muted-foreground"
                                         }`}
                                     >
-                    {message.time}
+                    {message.createdAt}
                   </span>
                                 </div>
                             </div>

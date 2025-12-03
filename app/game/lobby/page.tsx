@@ -3,8 +3,41 @@
 import {ChatPanel} from "@/components/ChatPanel";
 import {RoomsPanel} from "@/components/RoomsPanel";
 import { Button } from "@/components/ui/button";
+import {useEffect, useState} from "react";
+import {initSocket} from "@/app/services/socket.service";
+import Room from "@/shared/src/types/room";
+import {RoomEvents} from "@/shared/src/events/rooms.events";
+import {useRoomsStore} from "@/app/store/roomsStore";
+import {SocketEvents} from "@/shared/src/events/socket.events";
+import CreateRoomModal from "@/components/CreateRoomModal";
 
 const Lobby = () => {
+    const {setRooms, addRoom} = useRoomsStore()
+    const [openCreateDialog, setOpenCreateDialog] = useState(false); // para el modal de creacion
+    const [openJoinDialog, setOpenJoinDialog] = useState(false); // para el modal de unirse
+
+    useEffect(() => {
+        const socket = initSocket()
+        socket.on(SocketEvents.CONNECT, () => {
+            console.log("Connected!");
+        })
+        socket.on(RoomEvents.LIST, (rooms: Room[]) => {
+            setRooms(rooms);
+        })
+
+        return () => {
+            // cleanup al desmontar
+            socket.off(RoomEvents.LIST);
+            socket.disconnect();
+        };
+    }, [])
+
+    const handleCreateRoom = () => {
+        console.log("Create Room");
+    }
+    const handleJoinRoom = () => {
+        console.log("Join Room");
+    }
 
     return (
         <main className="flex flex-col bg-background gap-10 w-full m-10">
@@ -20,8 +53,9 @@ const Lobby = () => {
 
             </div>
             <div className="flex gap-4 justify-around">
-                <Button>Crear sala</Button>
-                <Button>Unirse por ID</Button>
+                <Button onClick={() => setOpenCreateDialog(true)}>Crear sala</Button>
+                <Button onClick={handleJoinRoom}>Unirse por ID</Button>
+                {openCreateDialog && <CreateRoomModal open={openCreateDialog} onOpenChange={setOpenCreateDialog} />}
             </div>
         </main>
     )

@@ -7,7 +7,7 @@ import {
     SidebarGroup, SidebarGroupContent,
     SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {useUserStore} from "@/app/store/user-store";
+import {useUserStore} from "@/app/store/userStore";
 import {LogOut} from "lucide-react";
 
 const items = [

@@ -4,7 +4,7 @@ import {Button} from "@/components/ui/button";
 import {ArrowUpIcon} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
-import {useUserStore} from "@/app/store/user-store";
+import {useUserStore} from "@/app/store/userStore";
 import {useRouter} from "next/navigation";
 import { toast } from "sonner"
 
