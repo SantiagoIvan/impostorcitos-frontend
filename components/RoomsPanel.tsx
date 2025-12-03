@@ -6,9 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, Circle } from "lucide-react"
-import {RoomType} from "@/shared/src/types/roomType.enum";
 import {useRoomsStore} from "@/app/store/roomsStore";
-import Room from "@/shared/src/types/room";
+import {Room, RoomType}from "@/shared"
 
 
 export function RoomsPanel() {

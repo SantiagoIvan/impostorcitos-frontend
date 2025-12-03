@@ -5,10 +5,8 @@ import {RoomsPanel} from "@/components/RoomsPanel";
 import { Button } from "@/components/ui/button";
 import {useEffect, useState} from "react";
 import {initSocket} from "@/app/services/socket.service";
-import Room from "@/shared/src/types/room";
-import {RoomEvents} from "@/shared/src/events/rooms.events";
+import {Room, SocketEvents, RoomEvents} from "@/shared";
 import {useRoomsStore} from "@/app/store/roomsStore";
-import {SocketEvents} from "@/shared/src/events/socket.events";
 import CreateRoomModal from "@/components/CreateRoomModal";
 
 const Lobby = () => {

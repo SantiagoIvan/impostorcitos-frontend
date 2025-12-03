@@ -22,9 +22,7 @@ import {
     SelectItem,
 } from "@/components/ui/select";
 
-import { createRoomSchema, CreateRoomDto } from "@/shared/src/schemas/room.schema";
-import {RoomType} from "@/shared/src/types/roomType.enum";
-import {RoomEvents} from "@/shared/src/events/rooms.events";
+import { createRoomSchema, CreateRoomDto, RoomType, RoomEvents } from "@/shared";
 import {useSocket} from "@/app/services/useSocket";
 
 interface Props {
