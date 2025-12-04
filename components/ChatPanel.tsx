@@ -8,20 +8,23 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Send } from "lucide-react"
 import {useUserStore} from "@/app/store/userStore";
-import {Message, MessageEvents} from "@/shared"
+import {CreateMessageDto, MessageEvents} from "@/shared"
 import {useSocket} from "@/hooks/useSocket";
+import {useMessagesStore} from "@/app/store/messageStore";
+import {useMessagesSocket} from "@/hooks/useMessagesSocket";
 
 
 export function ChatPanel() {
     const {username} = useUserStore()
     const {socket} = useSocket();
-    const [messages, setMessages] = useState<Message[]>([])
+    const {messages} = useMessagesStore()
     const [inputValue, setInputValue] = useState("")
+    useMessagesSocket()
 
     const handleSendMessage = () => {
         if (inputValue.trim()) {
-            const newMessage: Message = {
-                id: messages.length + 1,
+            const newMessage: CreateMessageDto = {
+                // proximamente esto tendria el room id seteado en el chatpanel, asi puedo reutilizarlo.
                 text: inputValue,
                 sender: username,
                 createdAt: new Date().toLocaleTimeString("es-ES", {
@@ -30,16 +33,9 @@ export function ChatPanel() {
                 }),
             }
             socket.emit(MessageEvents.CREATE, newMessage)
-            setMessages([...messages, newMessage])
             setInputValue("")
         }
     }
-
-    useEffect(() => {
-        socket.on(MessageEvents.CREATED, (newMsg: Message) => {
-            setMessages([...messages, newMsg])
-        })
-    }, [])
 
     return (
         <Card className="flex h-full flex-col">

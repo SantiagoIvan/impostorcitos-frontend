@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {useEffect, useState} from "react";
 import {SocketEvents} from "@/shared";
 import CreateRoomModal from "@/components/CreateRoomModal";
-import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {useSocket} from "@/hooks/useSocket";
 
 const Lobby = () => {
