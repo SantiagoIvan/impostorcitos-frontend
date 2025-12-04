@@ -12,6 +12,7 @@ import {CreateMessageDto, MessageEvents} from "@/shared"
 import {useSocket} from "@/hooks/useSocket";
 import {useMessagesStore} from "@/app/store/messageStore";
 import {useMessagesSocket} from "@/hooks/useMessagesSocket";
+import {DateService} from "@/app/services/date.service";
 
 
 export function ChatPanel() {
@@ -47,7 +48,7 @@ export function ChatPanel() {
                     </Avatar>
                     <div>
                         <CardTitle className="text-lg">Chat general</CardTitle>
-                        <p className="text-sm text-muted-foreground">En línea</p>
+                        {/*<p className="text-sm text-muted-foreground">En línea</p> ESTO SE VA A SACAR DEL ESTADO DEL USUARIO*/}
                     </div>
                 </div>
             </CardHeader>
@@ -73,7 +74,7 @@ export function ChatPanel() {
                                             message.sender == username ? "text-primary-foreground/70" : "text-muted-foreground"
                                         }`}
                                     >
-                    {message.createdAt}
+                    {DateService.formatTime(message.createdAt)}
                   </span>
                                 </div>
                             </div>

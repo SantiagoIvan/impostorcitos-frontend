@@ -9,6 +9,7 @@ import { Search, Circle } from "lucide-react"
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {Room, RoomType}from "@/shared"
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
+import {DateService} from "@/app/services/date.service";
 
 
 export function RoomsPanel() {
@@ -77,7 +78,7 @@ export function RoomsPanel() {
                                             {room.privacy}
                                         </Badge>
                                     </div>
-                                    <p className="text-xs text-muted-foreground">{room.createdAt}</p>
+                                    <p className="text-xs text-muted-foreground">{DateService.formatTime(room.createdAt)}</p>
                                 </div>
                             </div>
                         ))}
