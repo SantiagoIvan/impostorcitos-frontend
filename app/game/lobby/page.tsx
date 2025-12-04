@@ -5,16 +5,15 @@ import {RoomsPanel} from "@/components/RoomsPanel";
 import { Button } from "@/components/ui/button";
 import {useEffect, useState} from "react";
 import {SocketEvents} from "@/shared";
-import {useRoomsStore} from "@/app/store/roomsStore";
 import CreateRoomModal from "@/components/CreateRoomModal";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {useSocket} from "@/hooks/useSocket";
 
 const Lobby = () => {
-    const {setRooms} = useRoomsStore()
     const [openCreateDialog, setOpenCreateDialog] = useState(false); // para el modal de creacion
     const [openJoinDialog, setOpenJoinDialog] = useState(false); // para el modal de unirse
     const {socket} = useSocket();
+    useRoomsSocket();
 
     useEffect(() => {
         socket.on(SocketEvents.CONNECT, () => {
@@ -26,9 +25,7 @@ const Lobby = () => {
         };
     }, [socket])
 
-    useRoomsSocket((updatedRooms) => {
-        setRooms(updatedRooms);
-    });
+
 
     const handleJoinRoom = () => {
         console.log("Join Room");
