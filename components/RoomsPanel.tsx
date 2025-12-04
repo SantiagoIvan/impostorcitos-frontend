@@ -7,15 +7,27 @@ import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, Circle } from "lucide-react"
 import {useRoomsStore} from "@/app/store/roomsStore";
-import {Room, RoomType}from "@/shared"
+import {Player, Room, RoomType} from "@/shared"
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
-import {DateService} from "@/app/services/date.service";
+import {
+    Dialog, DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "./ui/button"
+import {useRouter} from "next/navigation";
+import {Description} from "@radix-ui/react-dialog";
 
 
 export function RoomsPanel() {
     useRoomsSocket();
     const [searchQuery, setSearchQuery] = useState("")
     const rooms = useRoomsStore(state => state.rooms)
+    const [selectedRoom, setSelectedRoom] = useState<Room|null>(null)
+    const [selectedRoomModalOpen, setSelectedRoomModalOpen] = useState<boolean>(false)
+    const router = useRouter();
 
 
     const filterRooms = (rooms: Room[], rawQuery: string): Room[] => {
@@ -50,41 +62,89 @@ export function RoomsPanel() {
         }
     }
 
-    return (
-        <Card className="flex h-full flex-col cursor-pointer">
-            <CardHeader className="border-b border-border">
-                <CardTitle className="text-lg">Salas disponibles</CardTitle>
-                <div className="relative mt-4">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                        placeholder="Buscar salas..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-9"
-                    />
-                </div>
-            </CardHeader>
+    const handleRoomClick = (room: Room) => {
+        setSelectedRoom(room)
+        setSelectedRoomModalOpen(true)
+    }
 
-            <CardContent className="flex-1 p-0">
-                <ScrollArea className="h-full">
-                    <div className="divide-y divide-border">
-                        {filterRooms(rooms, searchQuery).map((room) => (
-                            <div key={room.id} className="flex rooms-start gap-3 p-4 transition-colors hover:bg-muted/50">
-                                <Circle className={`mt-1 h-2 w-2 fill-current ${getPrivacyDotColor(room.privacy)}`} />
-                                <div className="flex-1 space-y-1">
-                                    <div className="flex rooms-center justify-between gap-2">
-                                        <h3 className="font-medium leading-none">{room.name}</h3>
-                                        <Badge variant="secondary" className={getPrivacyColor(room.privacy)}>
-                                            {room.privacy}
-                                        </Badge>
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">{DateService.formatTime(room.createdAt)}</p>
-                                </div>
-                            </div>
-                        ))}
+    const handleRoomConfirmed = () => {
+        router.push(`/game/room/${selectedRoom?.id}`);
+    }
+
+    return (
+        <>
+            {/* CONTENEDOR DE LA LISTA DE ROOMS*/}
+            <Card className="flex h-full flex-col cursor-pointer">
+                <CardHeader className="border-b border-border">
+                    <CardTitle className="text-lg">Salas disponibles</CardTitle>
+                    <div className="relative mt-4">
+                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                            placeholder="Buscar salas..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="pl-9"
+                        />
                     </div>
-                </ScrollArea>
-            </CardContent>
-        </Card>
+                </CardHeader>
+
+                <CardContent className="flex-1 p-0">
+                    <ScrollArea className="h-full">
+                        <div className="divide-y divide-border">
+                            {filterRooms(rooms, searchQuery).map((room) => (
+                                <div
+                                    className="flex rooms-start gap-3 p-4 transition-colors hover:bg-muted/50"
+                                    onClick={() => handleRoomClick(room)}
+                                    key={room.id}
+                                >
+                                    <Circle className={`mt-1 h-2 w-2 fill-current ${getPrivacyDotColor(room.privacy)}`} />
+                                    <div className="flex-1 space-y-1">
+                                        <div className="flex rooms-center justify-between gap-2">
+                                            <h3 className="font-medium leading-none">{room.name}</h3>
+                                            <Badge variant="secondary" className={getPrivacyColor(room.privacy)}>
+                                                {room.privacy}
+                                            </Badge>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground">{`${room.players.length}/${room.maxPlayers}`}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </ScrollArea>
+                </CardContent>
+            </Card>
+
+            {/* MODAL DE CONFIRMACION PARA INGRESAR A LA SALA*/}
+            <Dialog open={selectedRoomModalOpen} onOpenChange={setSelectedRoomModalOpen}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>{selectedRoom?.name}</DialogTitle>
+                    </DialogHeader>
+                    <Description>
+                        Jugadores en espera
+                    </Description>
+                    {selectedRoom?.players.length === 0 && (
+                        <p className="text-sm text-muted-foreground">No hay jugadores aún.</p>
+                    )}
+
+                    <ul className="text-sm space-y-1">
+                        {selectedRoom?.players.map((player: Player, index: number) => (
+                            <li
+                                key={index}
+                                className="px-2 py-1 rounded bg-muted"
+                            >
+                                {player.name}
+                            </li>
+                        ))}
+                    </ul>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button variant="outline">Cancel</Button>
+                        </DialogClose>
+                        <Button onClick={handleRoomConfirmed}>Ingresar</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </>
     )
 }
