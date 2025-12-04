@@ -8,11 +8,13 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, Circle } from "lucide-react"
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {Room, RoomType}from "@/shared"
+import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 
 
 export function RoomsPanel() {
+    useRoomsSocket();
     const [searchQuery, setSearchQuery] = useState("")
-    const {rooms} = useRoomsStore()
+    const rooms = useRoomsStore(state => state.rooms)
 
 
     const filterRooms = (rooms: Room[], rawQuery: string): Room[] => {

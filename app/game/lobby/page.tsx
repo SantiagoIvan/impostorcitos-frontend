@@ -13,7 +13,6 @@ const Lobby = () => {
     const [openCreateDialog, setOpenCreateDialog] = useState(false); // para el modal de creacion
     const [openJoinDialog, setOpenJoinDialog] = useState(false); // para el modal de unirse
     const {socket} = useSocket();
-    useRoomsSocket();
 
     useEffect(() => {
         socket.on(SocketEvents.CONNECT, () => {
