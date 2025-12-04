@@ -14,6 +14,7 @@ export function RoomsPanel() {
     const [searchQuery, setSearchQuery] = useState("")
     const {rooms} = useRoomsStore()
 
+
     const filterRooms = (rooms: Room[], rawQuery: string): Room[] => {
         const query = rawQuery.toLowerCase().trim();
         if (!query) return rooms;
@@ -45,9 +46,6 @@ export function RoomsPanel() {
                 return "text-muted-foreground"
         }
     }
-
-    useEffect(() => {
-    }, [rooms]);
 
     return (
         <Card className="flex h-full flex-col cursor-pointer">

@@ -4,37 +4,32 @@ import {ChatPanel} from "@/components/ChatPanel";
 import {RoomsPanel} from "@/components/RoomsPanel";
 import { Button } from "@/components/ui/button";
 import {useEffect, useState} from "react";
-import {initSocket} from "@/app/services/socket.service";
-import {Room, SocketEvents, RoomEvents} from "@/shared";
+import {SocketEvents} from "@/shared";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import CreateRoomModal from "@/components/CreateRoomModal";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
+import {useSocket} from "@/hooks/useSocket";
 
 const Lobby = () => {
-    const {setRooms, addRoom, rooms} = useRoomsStore()
+    const {setRooms} = useRoomsStore()
     const [openCreateDialog, setOpenCreateDialog] = useState(false); // para el modal de creacion
     const [openJoinDialog, setOpenJoinDialog] = useState(false); // para el modal de unirse
+    const {socket} = useSocket();
+
+    useEffect(() => {
+        socket.on(SocketEvents.CONNECT, () => {
+            console.log("Connected!");
+        })
+        return () => {
+            // cleanup al desmontar
+            socket.disconnect();
+        };
+    }, [socket])
 
     useRoomsSocket((updatedRooms) => {
         setRooms(updatedRooms);
     });
 
-    useEffect(() => {
-        const socket = initSocket()
-        socket.on(SocketEvents.CONNECT, () => {
-            console.log("Connected!");
-        })
-
-        return () => {
-            // cleanup al desmontar
-            socket.off(RoomEvents.LIST);
-            socket.disconnect();
-        };
-    }, [])
-
-    const handleCreateRoom = () => {
-        console.log("Create Room");
-    }
     const handleJoinRoom = () => {
         console.log("Join Room");
     }

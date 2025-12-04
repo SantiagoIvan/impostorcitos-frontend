@@ -23,7 +23,9 @@ import {
 } from "@/components/ui/select";
 
 import { createRoomSchema, CreateRoomDto, RoomType, RoomEvents } from "@/shared";
-import {useSocket} from "@/app/services/useSocket";
+import {useSocket} from "@/hooks/useSocket";
+import {useUserStore} from "@/app/store/userStore";
+import {RoomService} from "@/app/services/room.service";
 
 interface Props {
     open: boolean;
@@ -31,7 +33,8 @@ interface Props {
 }
 
 export default function CreateRoomModal({ open, onOpenChange }: Props) {
-    const socket = useSocket();
+    const {socket} = useSocket();
+    const { username } = useUserStore()
     const {
         register,
         handleSubmit,
@@ -41,6 +44,7 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
     } = useForm<CreateRoomDto>({
         resolver: zodResolver(createRoomSchema),
         defaultValues: {
+            admin: "",
             name: "",
             privacy: RoomType.PUBLIC,
             discussionTime: 60,
@@ -54,7 +58,8 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
     const privacy = watch("privacy");
 
     const onSubmit = (data: CreateRoomDto) => {
-        socket?.emit(RoomEvents.CREATE, data);
+        data = RoomService.setAdminRoom(username, data);
+        socket.emit(RoomEvents.CREATE, data);
         onOpenChange(false);
     };
 
