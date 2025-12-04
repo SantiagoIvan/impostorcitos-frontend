@@ -8,12 +8,13 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Send } from "lucide-react"
 import {useUserStore} from "@/app/store/userStore";
-import {Message}from "@impostorcitos/shared"
+import {Message, MessageEvents} from "@/shared"
+import {useSocket} from "@/hooks/useSocket";
 
 
 export function ChatPanel() {
     const {username} = useUserStore()
-
+    const {socket} = useSocket();
     const [messages, setMessages] = useState<Message[]>([])
     const [inputValue, setInputValue] = useState("")
 
@@ -28,12 +29,16 @@ export function ChatPanel() {
                     minute: "2-digit",
                 }),
             }
+            socket.emit(MessageEvents.CREATE, newMessage)
             setMessages([...messages, newMessage])
             setInputValue("")
         }
     }
 
     useEffect(() => {
+        socket.on(MessageEvents.CREATED, (newMsg: Message) => {
+            setMessages([...messages, newMsg])
+        })
     }, [])
 
     return (
