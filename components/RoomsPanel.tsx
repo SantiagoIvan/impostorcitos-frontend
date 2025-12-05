@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, Circle } from "lucide-react"
 import {useRoomsStore} from "@/app/store/roomsStore";
-import {Player, Room, RoomType} from "@/shared"
+import {defaultRoom, Player, Room, RoomType} from "@/shared"
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {
     Dialog, DialogClose,
@@ -19,13 +19,15 @@ import {
 import { Button } from "./ui/button"
 import {useRouter} from "next/navigation";
 import {Description} from "@radix-ui/react-dialog";
+import PlayersList from "@/components/PlayersList";
+import ConfirmationRoomModal from "@/components/ConfirmationRoomModal";
 
 
 export function RoomsPanel() {
     useRoomsSocket();
     const [searchQuery, setSearchQuery] = useState("")
     const rooms = useRoomsStore(state => state.rooms)
-    const [selectedRoom, setSelectedRoom] = useState<Room|null>(null)
+    const [selectedRoom, setSelectedRoom] = useState<Room>(() => defaultRoom)
     const [selectedRoomModalOpen, setSelectedRoomModalOpen] = useState<boolean>(false)
     const router = useRouter();
 
@@ -68,7 +70,14 @@ export function RoomsPanel() {
     }
 
     const handleRoomConfirmed = () => {
+        setSelectedRoom(defaultRoom)
+        setSelectedRoomModalOpen(false)
         router.push(`/game/room/${selectedRoom?.id}`);
+    }
+
+    const handleModalClose = () => {
+        setSelectedRoomModalOpen(false)
+        setSelectedRoom(defaultRoom)
     }
 
     return (
@@ -114,37 +123,13 @@ export function RoomsPanel() {
                 </CardContent>
             </Card>
 
-            {/* MODAL DE CONFIRMACION PARA INGRESAR A LA SALA*/}
-            <Dialog open={selectedRoomModalOpen} onOpenChange={setSelectedRoomModalOpen}>
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>{selectedRoom?.name}</DialogTitle>
-                    </DialogHeader>
-                    <Description>
-                        Jugadores en espera
-                    </Description>
-                    {selectedRoom?.players.length === 0 && (
-                        <p className="text-sm text-muted-foreground">No hay jugadores aún.</p>
-                    )}
-
-                    <ul className="text-sm space-y-1">
-                        {selectedRoom?.players.map((player: Player, index: number) => (
-                            <li
-                                key={index}
-                                className="px-2 py-1 rounded bg-muted"
-                            >
-                                {player.name}
-                            </li>
-                        ))}
-                    </ul>
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
-                        <Button onClick={handleRoomConfirmed}>Ingresar</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            { /* MODAL DE CONFIRMACION*/}
+            <ConfirmationRoomModal
+                room={selectedRoom}
+                open={selectedRoomModalOpen}
+                onOpenChange={handleModalClose}
+                handleRoomConfirmed={handleRoomConfirmed}
+            />
         </>
     )
 }
