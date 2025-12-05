@@ -7,6 +7,7 @@ import {Label} from "@/components/ui/label";
 import {useUserStore} from "@/app/store/userStore";
 import {useRouter} from "next/navigation";
 import { toast } from "sonner"
+import {KeyboardEventHandler} from "react";
 
 export default function WelcomeScreen() {
     const {username, setUsername} = useUserStore();
@@ -17,6 +18,11 @@ export default function WelcomeScreen() {
             toast.error("Username is required");
         }else {
             router.push("/game/lobby");
+        }
+    }
+    const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            continueToLobby();
         }
     }
 
@@ -30,6 +36,7 @@ export default function WelcomeScreen() {
                 id="name"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                onKeyDown={handleEnter}
             />
             <Button className="mt-10" onClick={continueToLobby}>
                 Al lobby pete
