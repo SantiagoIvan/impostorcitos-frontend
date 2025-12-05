@@ -1,7 +1,7 @@
 "use client"
 
 import {Button} from "@/components/ui/button";
-import {ArrowUpIcon} from "lucide-react";
+import {ArrowRightIcon} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {useUserStore} from "@/app/store/userStore";
@@ -33,7 +33,7 @@ export default function WelcomeScreen() {
             />
             <Button className="mt-10" onClick={continueToLobby}>
                 Al lobby pete
-                <ArrowUpIcon />
+                <ArrowRightIcon />
             </Button>
         </div>
     </div>

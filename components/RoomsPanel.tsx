@@ -6,21 +6,11 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, Circle } from "lucide-react"
-import {useRoomsStore} from "@/app/store/roomsStore";
-import {defaultRoom, Player, Room, RoomType} from "@/shared"
-import {useRoomsSocket} from "@/hooks/useRoomsSocket";
-import {
-    Dialog, DialogClose,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "./ui/button"
-import {useRouter} from "next/navigation";
-import {Description} from "@radix-ui/react-dialog";
-import PlayersList from "@/components/PlayersList";
-import ConfirmationRoomModal from "@/components/ConfirmationRoomModal";
+import {useRoomsStore} from "@/app/store/roomsStore"
+import {defaultRoom, Room, RoomType} from "@/shared"
+import {useRoomsSocket} from "@/hooks/useRoomsSocket"
+import {useRouter} from "next/navigation"
+import ConfirmationRoomModal from "@/components/ConfirmationRoomModal"
 
 
 export function RoomsPanel() {
@@ -72,7 +62,7 @@ export function RoomsPanel() {
     const handleRoomConfirmed = () => {
         setSelectedRoom(defaultRoom)
         setSelectedRoomModalOpen(false)
-        router.push(`/game/room/${selectedRoom?.id}`);
+        router.push(`/game/room/${selectedRoom?.id}`)
     }
 
     const handleModalClose = () => {

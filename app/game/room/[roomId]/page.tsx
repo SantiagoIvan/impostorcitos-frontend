@@ -14,7 +14,7 @@ const WaitingRoom = () => {
     const { roomId } = useParams();
     const { username } = useUserStore();
     const { getRoomById } = useRoomsStore();
-    const [currentRoom] = useState<Room>(() => getRoomById(typeof roomId === "string"? parseInt(roomId) : 0));
+    const [currentRoom] = useState<Room>(() => getRoomById(typeof roomId === "string"? roomId : "0"));
     const [ready, setReady] = useState<boolean>(false); // para el modal de creacion
     const router = useRouter();
     const {socket} = useSocket();

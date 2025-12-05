@@ -6,7 +6,7 @@ interface RoomStore {
     rooms: Room[];
     setRooms: (rooms: Room[]) => void;
     addRoom: (room: Room) => void;
-    getRoomById: (id: number) => Room;
+    getRoomById: (id: string) => Room;
 }
 
 export const useRoomsStore = create<RoomStore>((set, get) => ({
@@ -18,5 +18,5 @@ export const useRoomsStore = create<RoomStore>((set, get) => ({
         set((state) => ({
             rooms: [...state.rooms, room],
         })),
-    getRoomById: (roomId : number) : Room => get().rooms.find((room) => room.id === roomId) || defaultRoom,
+    getRoomById: (roomId : string) : Room => get().rooms.find((room) => room.id === roomId) || defaultRoom,
 }));
