@@ -15,10 +15,10 @@ import {useMessagesSocket} from "@/hooks/useMessagesSocket";
 import {DateService} from "@/app/services/date.service";
 
 
-export function ChatPanel({roomId}: {roomId: string}) {
+export function ChatPanel({roomId}: {roomId?: string}) {
     const {username} = useUserStore()
     const {socket} = useSocket();
-    const {messages} = useMessagesStore()
+    const {messages, clearMessages} = useMessagesStore()
     const [inputValue, setInputValue] = useState("")
     useMessagesSocket()
 
@@ -37,6 +37,10 @@ export function ChatPanel({roomId}: {roomId: string}) {
             setInputValue("")
         }
     }
+
+    useEffect(() => {
+        clearMessages()
+    }, []);
 
     return (
         <Card className="flex h-full flex-col">
