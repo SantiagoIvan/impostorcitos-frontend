@@ -49,7 +49,7 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
             privacy: RoomType.PUBLIC,
             discussionTime: 60,
             voteTime: 30,
-            gameTime: 180,
+            moveTime: 180,
             maxPlayers: 10,
             password: "",
         },
@@ -131,9 +131,9 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
                     {/* GAME TIME */}
                     <div className="item-form">
                         <Label>Tiempo de juego (seg)</Label>
-                        <Input type="number" {...register("gameTime", { valueAsNumber: true })} />
-                        {errors.gameTime && (
-                            <p className="text-red-600 text-sm">{errors.gameTime.message}</p>
+                        <Input type="number" {...register("moveTime", { valueAsNumber: true })} />
+                        {errors.moveTime && (
+                            <p className="text-red-600 text-sm">{errors.moveTime.message}</p>
                         )}
                     </div>
 

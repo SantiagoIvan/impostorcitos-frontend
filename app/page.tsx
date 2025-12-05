@@ -7,7 +7,6 @@ import {Label} from "@/components/ui/label";
 import {useUserStore} from "@/app/store/userStore";
 import {useRouter} from "next/navigation";
 import { toast } from "sonner"
-import {KeyboardEventHandler} from "react";
 
 export default function WelcomeScreen() {
     const {username, setUsername} = useUserStore();
