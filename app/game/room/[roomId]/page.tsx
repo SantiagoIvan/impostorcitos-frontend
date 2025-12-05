@@ -2,9 +2,8 @@
 
 import {ChatPanel} from "@/components/ChatPanel";
 import { Button } from "@/components/ui/button";
-import {useEffect, useState} from "react";
-import {Player, Room} from "@/shared";
-import {useSocket} from "@/hooks/useSocket";
+import {useState} from "react";
+import {Room} from "@/shared";
 import {useParams, useRouter} from "next/navigation";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {useUserStore} from "@/app/store/userStore";
@@ -17,11 +16,6 @@ const WaitingRoom = () => {
     const [currentRoom] = useState<Room>(() => getRoomById(typeof roomId === "string"? roomId : "0"));
     const [ready, setReady] = useState<boolean>(false); // para el modal de creacion
     const router = useRouter();
-    const {socket} = useSocket();
-
-    useEffect(() => {
-        console.log(currentRoom)
-    }, [])
 
 
 

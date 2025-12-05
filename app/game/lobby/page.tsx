@@ -3,26 +3,12 @@
 import {ChatPanel} from "@/components/ChatPanel";
 import {RoomsPanel} from "@/components/RoomsPanel";
 import { Button } from "@/components/ui/button";
-import {useEffect, useState} from "react";
-import {SocketEvents} from "@/shared";
+import { useState} from "react";
 import CreateRoomModal from "@/components/CreateRoomModal";
-import {useSocket} from "@/hooks/useSocket";
 
 const Lobby = () => {
     const [openCreateDialog, setOpenCreateDialog] = useState(false); // para el modal de creacion
-    const [openJoinDialog, setOpenJoinDialog] = useState(false); // para el modal de unirse
-    const {socket} = useSocket();
-
-    useEffect(() => {
-        socket.on(SocketEvents.CONNECT, () => {
-            console.log("Connected!");
-        })
-        return () => {
-            // cleanup al desmontar
-            socket.disconnect();
-        };
-    }, [socket])
-
+    const [openJoinDialog, setOpenJoinDialog] = useState(false); // para el modal de unirse con algun codigo falopa
 
 
     const handleJoinRoom = () => {

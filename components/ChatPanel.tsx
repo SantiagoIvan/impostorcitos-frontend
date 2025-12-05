@@ -15,7 +15,7 @@ import {useMessagesSocket} from "@/hooks/useMessagesSocket";
 import {DateService} from "@/app/services/date.service";
 
 
-export function ChatPanel() {
+export function ChatPanel({roomId}: {roomId: string}) {
     const {username} = useUserStore()
     const {socket} = useSocket();
     const {messages} = useMessagesStore()
