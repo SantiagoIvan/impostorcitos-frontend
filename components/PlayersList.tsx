@@ -11,11 +11,13 @@ export default function PlayersList ({room = defaultRoom, waitingRoomFlag = fals
                     className="px-2 py-1 rounded bg-muted flex flex-row justify-between items-center"
                 >
                     <p className="text-xl">{player.name}</p>
-                    {waitingRoomFlag &&
+                    {/*
+                        waitingRoomFlag &&
                         (player.isReady?
                                 <CheckIcon className="w-5 h-full rounded-full text-green-800" /> :
                                 <XIcon className="w-5 h-full rounded-full text-red-800" />
-                        )}
+                        )
+                    */}
                 </li>
             ))}
         </ul>)

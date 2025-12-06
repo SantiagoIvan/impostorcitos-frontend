@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -9,7 +9,6 @@ import { Search, Circle } from "lucide-react"
 import {useRoomsStore} from "@/app/store/roomsStore"
 import {defaultRoom, Room, RoomType} from "@/shared"
 import {useRoomsSocket} from "@/hooks/useRoomsSocket"
-import {useRouter} from "next/navigation"
 import ConfirmationRoomModal from "@/components/ConfirmationRoomModal"
 
 
@@ -19,7 +18,6 @@ export function RoomsPanel() {
     const rooms = useRoomsStore(state => state.rooms)
     const [selectedRoom, setSelectedRoom] = useState<Room>(() => defaultRoom)
     const [selectedRoomModalOpen, setSelectedRoomModalOpen] = useState<boolean>(false)
-    const router = useRouter();
 
 
     const filterRooms = (rooms: Room[], rawQuery: string): Room[] => {
@@ -58,6 +56,10 @@ export function RoomsPanel() {
         setSelectedRoom(room)
         setSelectedRoomModalOpen(true)
     }
+
+    useEffect(() => {
+        console.log("Estado de rooms", rooms)
+    })
 
     return (
         <>

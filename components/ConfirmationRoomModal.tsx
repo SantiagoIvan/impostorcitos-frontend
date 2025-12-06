@@ -1,18 +1,24 @@
-import {defaultRoom, Room} from "@/shared";
+import {defaultRoom, Room, RoomEvents} from "@/shared";
 import {Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Description} from "@radix-ui/react-dialog";
 import PlayersList from "@/components/PlayersList";
 import {Button} from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import {useSocket} from "@/hooks/useSocket";
+import {useUserStore} from "@/app/store/userStore";
 
 export default function ConfirmationRoomModal(
     {room, open, setSelectedRoom, setSelectedRoomModalOpen}:
     {room: Room, open: boolean, setSelectedRoom: (room: Room) => void,setSelectedRoomModalOpen: (open: boolean) => void}
 ) {
+    const { socket } = useSocket();
+    const { username } = useUserStore()
     const router = useRouter();
+
     const handleRoomConfirmed = () => {
         setSelectedRoom(defaultRoom)
         setSelectedRoomModalOpen(false)
+        socket.emit(RoomEvents.JOIN, {username, roomId: room.id })
         router.push(`/game/room/${room.id}`)
     }
 
