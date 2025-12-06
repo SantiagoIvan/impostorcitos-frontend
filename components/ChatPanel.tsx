@@ -20,12 +20,12 @@ export function ChatPanel({roomId}: {roomId?: string}) {
     const {socket} = useSocket();
     const {messages, clearMessages} = useMessagesStore()
     const [inputValue, setInputValue] = useState("")
-    useMessagesSocket()
+    useMessagesSocket(roomId)
 
     const handleSendMessage = () => {
         if (inputValue.trim()) {
             const newMessage: CreateMessageDto = {
-                // proximamente esto tendria el room id seteado en el chatpanel, asi puedo reutilizarlo.
+                roomId: roomId,
                 text: inputValue,
                 sender: username,
                 createdAt: new Date().toLocaleTimeString("es-ES", {

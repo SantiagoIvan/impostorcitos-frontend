@@ -59,17 +59,6 @@ export function RoomsPanel() {
         setSelectedRoomModalOpen(true)
     }
 
-    const handleRoomConfirmed = () => {
-        setSelectedRoom(defaultRoom)
-        setSelectedRoomModalOpen(false)
-        router.push(`/game/room/${selectedRoom?.id}`)
-    }
-
-    const handleModalClose = () => {
-        setSelectedRoomModalOpen(false)
-        setSelectedRoom(defaultRoom)
-    }
-
     return (
         <>
             {/* CONTENEDOR DE LA LISTA DE ROOMS*/}
@@ -117,8 +106,8 @@ export function RoomsPanel() {
             <ConfirmationRoomModal
                 room={selectedRoom}
                 open={selectedRoomModalOpen}
-                onOpenChange={handleModalClose}
-                handleRoomConfirmed={handleRoomConfirmed}
+                setSelectedRoom={setSelectedRoom}
+                setSelectedRoomModalOpen={setSelectedRoomModalOpen}
             />
         </>
     )

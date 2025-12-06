@@ -2,12 +2,13 @@
 
 import {ChatPanel} from "@/components/ChatPanel";
 import { Button } from "@/components/ui/button";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Room} from "@/shared";
 import {useParams, useRouter} from "next/navigation";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {useUserStore} from "@/app/store/userStore";
 import PlayersList from "@/components/PlayersList";
+import {useWaitingRoomSocket} from "@/hooks/useRoomSocket";
 
 const WaitingRoom = () => {
     const { roomId } = useParams();
@@ -20,15 +21,22 @@ const WaitingRoom = () => {
 
 
     const handleBack = () => {
-        router.back()
+        router.back() // emitir user_left
     }
 
     const handleReady = () => {
-        setReady((prevState) => !prevState);
+        setReady((prevState) => !prevState); // emitir evento asi se enteran todos
     }
     const handleStart = () => {
-        console.log("Game starting...")
+        console.log("Game starting...") // emitir un evento
     }
+
+    useEffect(() => {
+        console.log("waiting room ", roomId);
+        console.log("Voy a emitir el evento room:join que lo esta escuchando el backend");
+        console.log("Voy a escuchar por los room:joined asi recibo quienesse unen")
+
+    }, [])
     return (
         <main className="flex flex-col bg-background gap-10 w-full m-10">
             {/* Rooms Panel */}

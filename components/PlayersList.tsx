@@ -2,7 +2,6 @@ import {defaultRoom, Player, Room} from "@/shared";
 import {CheckIcon, XIcon} from "lucide-react";
 
 export default function PlayersList ({room = defaultRoom, waitingRoomFlag = false}   : {room: Room, waitingRoomFlag?: boolean}) {
-    // falta escuchar por los cambios de ready de los jugadores, aca iria el socket
 
     return (
         <ul className="text-sm space-y-1">
