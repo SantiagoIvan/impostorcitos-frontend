@@ -57,10 +57,6 @@ export function RoomsPanel() {
         setSelectedRoomModalOpen(true)
     }
 
-    useEffect(() => {
-        console.log("Estado de rooms", rooms)
-    })
-
     return (
         <>
             {/* CONTENEDOR DE LA LISTA DE ROOMS*/}

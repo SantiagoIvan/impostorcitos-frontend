@@ -9,7 +9,7 @@ interface RoomStore {
     setRooms: (rooms: Room[]) => void;
     addRoom: (room: Room) => void;
     getRoomById: (id?: ParamValue) => Room;
-    addNewPlayerToRoom: (incomingPlayer: JoinRoomDto) => Room;
+    updateRoom: (room: Room) => void;
 }
 
 export const useRoomsStore = create<RoomStore>((set, get) => ({
@@ -22,10 +22,18 @@ export const useRoomsStore = create<RoomStore>((set, get) => ({
             rooms: [...state.rooms, room],
         })),
     getRoomById: (roomId? : ParamValue) : Room => get().rooms.find((room) => room.id === roomId) || defaultRoom,
-    addNewPlayerToRoom: (incomingPlayer: JoinRoomDto) => {
-        const room = get().getRoomById(incomingPlayer.roomId)
-        const newPlayer = PlayerService.createPlayer(incomingPlayer.username);
-        room.players.push(newPlayer);
-        return room;
-    }
+    updateRoom: (updatedRoom: Room) =>
+        set((state) => {
+                const copyRooms = [...state.rooms];
+                for (let i = 0; i < copyRooms.length; i++) {
+                    if (copyRooms[i].id === updatedRoom.id) {
+                        copyRooms[i] = {...updatedRoom};
+                    }
+                }
+                return {
+                    rooms: copyRooms,
+                }
+            }
+        ),
+
 }));

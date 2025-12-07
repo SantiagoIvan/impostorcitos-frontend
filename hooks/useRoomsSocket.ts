@@ -4,7 +4,7 @@ import { Room, RoomEvents} from "@/shared";
 import {useRoomsStore} from "@/app/store/roomsStore";
 
 export function useRoomsSocket() {
-    const {setRooms, addRoom} = useRoomsStore()
+    const {setRooms, addRoom, updateRoom} = useRoomsStore()
     const {socket} = useSocket();
 
     const handleAddRoom = (room: Room) => {
@@ -13,8 +13,8 @@ export function useRoomsSocket() {
     const handleSetRooms = (rooms: Room[]) => {
         setRooms(rooms);
     }
-    const handleNewPlayerJoined = (rooms: Room[]) => {
-        setRooms(rooms);
+    const handleNewPlayerJoined = (room: Room) => {
+        updateRoom(room);
     }
 
     useEffect(() => {
