@@ -11,7 +11,7 @@ import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import { RoomService } from "@/app/services/room.service";
 
 const WaitingRoom = () => {
-    const { roomId } = useParams<{roomId: string}>();
+    const {roomId} = useParams<{roomId: string}>();
     const { username } = useUserStore();
     const { getRoomById } = useRoomsStore();
     const [ready, setReady] = useState<boolean>(false); // para setear ready o not ready
@@ -30,6 +30,10 @@ const WaitingRoom = () => {
         console.log("Game starting...") // emitir un evento
     }
 
+    useEffect(() => {
+        console.log("Pegarle al backend para ver si existe este roomId y sino hacer redirect")
+
+    }, [roomId]);
 
     return (
 
