@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react"
+import { useState} from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -10,6 +10,7 @@ import {useRoomsStore} from "@/app/store/roomsStore"
 import {defaultRoom, Room, RoomType} from "@/shared"
 import {useRoomsSocket} from "@/hooks/useRoomsSocket"
 import ConfirmationRoomModal from "@/components/ConfirmationRoomModal"
+import { toast } from "sonner"
 
 
 export function RoomsPanel() {
@@ -53,6 +54,10 @@ export function RoomsPanel() {
     }
 
     const handleRoomClick = (room: Room) => {
+        if(room.players.length >= room.maxPlayers) {
+            toast.error("Sala llena");
+            return
+        }
         setSelectedRoom(room)
         setSelectedRoomModalOpen(true)
     }

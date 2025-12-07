@@ -16,9 +16,9 @@ export default function ConfirmationRoomModal(
     const router = useRouter();
 
     const handleRoomConfirmed = () => {
-        setSelectedRoom(defaultRoom)
+        setSelectedRoom(defaultRoom) // cosa de volver al estado inicial
         setSelectedRoomModalOpen(false)
-        socket.emit(RoomEvents.JOIN, {username, roomId: room.id })
+        socket.emit(RoomEvents.JOIN, {username, roomId: room.id }) // aca podria hacer un post?
         router.push(`/game/room/${room.id}`)
     }
 
