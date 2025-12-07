@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
-import { Room, RoomEvents} from "@/shared";
+import {JoinRoomDto, Room, RoomEvents} from "@/shared";
 import {useRoomsStore} from "@/app/store/roomsStore";
 
 export function useRoomsSocket() {
@@ -16,17 +16,27 @@ export function useRoomsSocket() {
     const handleNewPlayerJoined = (room: Room) => {
         updateRoom(room);
     }
+    const handleUserLeft = (room: Room) => {
+        updateRoom(room);
+    }
+    const emitLeaveEvent = (outcomingPlayer: JoinRoomDto) => {
+        socket.emit(RoomEvents.LEAVE, outcomingPlayer);
+    }
 
     useEffect(() => {
         // Escuchar evento global
         socket.on(RoomEvents.LIST, handleSetRooms);
         socket.on(RoomEvents.CREATED, handleAddRoom);
         socket.on(RoomEvents.JOINED, handleNewPlayerJoined);
+        socket.on(RoomEvents.USER_LEFT, handleUserLeft);
 
         return () => {
             socket.off(RoomEvents.LIST, handleSetRooms);
             socket.off(RoomEvents.CREATED, handleAddRoom);
             socket.off(RoomEvents.JOINED, handleNewPlayerJoined);
+            socket.off(RoomEvents.USER_LEFT, handleUserLeft);
         };
     }, [socket, setRooms, addRoom]);
+
+    return { emitLeaveEvent }
 }

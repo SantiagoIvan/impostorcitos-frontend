@@ -3,23 +3,24 @@
 import {ChatPanel} from "@/components/ChatPanel";
 import { Button } from "@/components/ui/button";
 import {useEffect, useState} from "react";
-import {Room} from "@/shared";
 import {useParams, useRouter} from "next/navigation";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {useUserStore} from "@/app/store/userStore";
 import PlayersList from "@/components/PlayersList";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
+import { RoomService } from "@/app/services/room.service";
 
 const WaitingRoom = () => {
-    const { roomId } = useParams();
+    const { roomId } = useParams<{roomId: string}>();
     const { username } = useUserStore();
-    const { getRoomById, rooms } = useRoomsStore();
+    const { getRoomById } = useRoomsStore();
     const [ready, setReady] = useState<boolean>(false); // para setear ready o not ready
     const router = useRouter();
-    useRoomsSocket(); // equis de
+    const {emitLeaveEvent} = useRoomsSocket();
 
     const handleBack = () => {
-        router.back() // emitir user_left
+        emitLeaveEvent(RoomService.createJoinRoomDto(roomId, username));
+        router.push("/game/lobby")
     }
 
     const handleReady = () => {
