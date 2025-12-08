@@ -52,7 +52,7 @@ export function ChatPanel({roomId}: {roomId?: string}) {
                         <AvatarFallback className="bg-primary text-primary-foreground">Me</AvatarFallback>
                     </Avatar>
                     <div>
-                        <CardTitle className="text-lg">Chat general</CardTitle>
+                        <CardTitle className="text-lg">Chat {!roomId? "general" : "room"}</CardTitle>
                         {/*<p className="text-sm text-muted-foreground">En línea</p> ESTO SE VA A SACAR DEL ESTADO DEL USUARIO*/}
                     </div>
                 </div>
