@@ -21,5 +21,5 @@ export function useMessagesSocket(roomId?: string) {
         return () => {
             socket.off(MessageEvents.CREATED, handleMessageCreated);
         };
-    }, [socket]);
+    }, [socket, roomId]);
 }

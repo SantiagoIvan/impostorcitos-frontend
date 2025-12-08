@@ -45,7 +45,7 @@ const WaitingRoom = () => {
                     </div>
                     {/* Chat Panel */}
                     <div className="flex w-full flex-col lg:w-1/2">
-                        <ChatPanel/>
+                        <ChatPanel roomId={roomId}/>
                     </div>
 
                 </div>
