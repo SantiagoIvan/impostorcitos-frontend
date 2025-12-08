@@ -9,6 +9,7 @@ import {useUserStore} from "@/app/store/userStore";
 import PlayersList from "@/components/PlayersList";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import { RoomService } from "@/app/services/room.service";
+import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
 
 const WaitingRoom = () => {
     const {roomId} = useParams<{roomId: string}>();
@@ -17,6 +18,7 @@ const WaitingRoom = () => {
     const [ready, setReady] = useState<boolean>(false); // para setear ready o not ready
     const router = useRouter();
     const {emitLeaveEvent} = useRoomsSocket();
+    const { emitUserReady } = useWaitingRoomSocket(roomId)
 
     const handleBack = () => {
         emitLeaveEvent(RoomService.createJoinRoomDto(roomId, username));
@@ -25,6 +27,7 @@ const WaitingRoom = () => {
 
     const handleReady = () => {
         setReady((prevState) => !prevState); // emitir evento asi se enteran todos
+        emitUserReady(username)
     }
     const handleStart = () => {
         console.log("Game starting...") // emitir un evento
