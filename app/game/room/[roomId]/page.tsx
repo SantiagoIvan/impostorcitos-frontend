@@ -12,6 +12,7 @@ import { RoomService } from "@/app/services/room.service";
 import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
 import {Player} from "@/shared";
 import {toast} from "sonner";
+import {MIN_PLAYERS_QUANTITY} from "@/shared/constants";
 
 const WaitingRoom = () => {
     const {roomId} = useParams<{roomId: string}>();
@@ -35,8 +36,8 @@ const WaitingRoom = () => {
         const currentRoom = getRoomById(roomId);
         if(currentRoom.players.some((player: Player) => !player.isReady )) {
             toast.error("Todos deben estar listos");
-        }else if (currentRoom.players.length < 3) {
-            toast.error("Debe haber un minimo de 3 jugadores para comenzar");
+        }else if (currentRoom.players.length < MIN_PLAYERS_QUANTITY) {
+            toast.error(`Debe haber un minimo de ${MIN_PLAYERS_QUANTITY} jugadores para comenzar`);
         } else {
             toast.message("Redireccionando a la partida...")
             emitStartGame(roomId); // En useWaitingRoomSocket tengo el listener para accionar cuando me llega el evento
@@ -65,7 +66,7 @@ const WaitingRoom = () => {
                 <div className="flex gap-4 justify-around">
                     <Button onClick={handleBack}>Volver al Lobby</Button>
                     <Button onClick={handleReady}>{!ready ? "Listo!" : "Noo, banca"}</Button>
-                    {username == getRoomById(roomId).admin.name && <Button onClick={handleStart}>Start</Button>}
+                    {username == getRoomById(roomId).admin && <Button onClick={handleStart}>Start</Button>}
                 </div>
             </main>
 
