@@ -20,7 +20,7 @@ const WaitingRoom = () => {
     const [ready, setReady] = useState<boolean>(false); // para setear ready o not ready
     const router = useRouter();
     const {emitLeaveEvent} = useRoomsSocket();
-    const { emitUserReady } = useWaitingRoomSocket(roomId)
+    const { emitUserReady, emitStartGame } = useWaitingRoomSocket(roomId)
 
     const handleBack = () => {
         emitLeaveEvent(RoomService.createJoinRoomDto(roomId, username));
@@ -39,7 +39,7 @@ const WaitingRoom = () => {
             toast.error("Debe haber un minimo de 3 jugadores para comenzar");
         } else {
             toast.message("Redireccionando a la partida...")
-
+            emitStartGame(roomId); // En useWaitingRoomSocket tengo el listener para accionar cuando me llega el evento
         }
     }
 

@@ -3,7 +3,7 @@ import {Player} from "@/shared"
 
 export interface Room {
     id: string
-    admin: Player,
+    admin: string,
     name: string
     password?: string
     privacy: RoomType
