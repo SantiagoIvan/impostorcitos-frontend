@@ -10,6 +10,8 @@ import PlayersList from "@/components/PlayersList";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import { RoomService } from "@/app/services/room.service";
 import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
+import {Player} from "@/shared";
+import {toast} from "sonner";
 
 const WaitingRoom = () => {
     const {roomId} = useParams<{roomId: string}>();
@@ -30,7 +32,15 @@ const WaitingRoom = () => {
         emitUserReady(username)
     }
     const handleStart = () => {
-        console.log("Game starting...") // emitir un evento
+        const currentRoom = getRoomById(roomId);
+        if(currentRoom.players.some((player: Player) => !player.isReady )) {
+            toast.error("Todos deben estar listos");
+        }else if (currentRoom.players.length < 3) {
+            toast.error("Debe haber un minimo de 3 jugadores para comenzar");
+        } else {
+            toast.message("Redireccionando a la partida...")
+
+        }
     }
 
     useEffect(() => {
