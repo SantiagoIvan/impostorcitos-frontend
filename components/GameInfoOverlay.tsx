@@ -37,7 +37,7 @@ export default function GameInfoOverlay({
                     transition={{ duration: 0.4, ease: "easeOut" }}
                 >
                     <motion.div
-                        className="bg-foreground rounded-2xl p-8 shadow-xl text-center text-background space-y-4"
+                        className="bg-muted-foreground rounded-2xl p-8 shadow-xl text-center text-background space-y-4"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
