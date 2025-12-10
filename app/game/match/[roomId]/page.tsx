@@ -6,6 +6,9 @@ import {useGameSync} from "@/hooks/useGameSync";
 import {useEffect, useState} from "react";
 import {ChatPanel} from "@/components/ChatPanel";
 import {useGameStore} from "@/app/store/gameStore";
+import { Loader2 } from "lucide-react";
+import LoadingOverlay from "@/components/LoadingOverlay";
+
 
 const Game = () => {
     const { username } = useUserStore()
@@ -13,7 +16,7 @@ const Game = () => {
     const { game} = useGameStore()
 
     const handleAllReady = () => {
-        console.log("All Ready")
+
         setAllReady(true);
     }
 
@@ -24,7 +27,6 @@ const Game = () => {
     );
 
     useEffect(() => {
-        console.log("Ready to play")
         emitPlayerReady();
     }, [])
 
@@ -32,7 +34,11 @@ const Game = () => {
         <main className="flex flex-col bg-background gap-10 w-full m-10">
             {/* Rooms Panel */}
             <div className="flex gap-4 w-full">
-                <div className="flex w-full flex-col lg:flex lg:w-1/2">
+                <LoadingOverlay
+                    show={!allReady}
+                    message="Esperando a los jugadores"
+                />
+                <div className="flex w-full flex-col lg:flex lg:w-1/2 ">
                     <h1>{!allReady?`Esperando jugadores...` : `Listoo todos listos, arrancamos`}</h1>
                 </div>
                 {/* Chat Panel */}
