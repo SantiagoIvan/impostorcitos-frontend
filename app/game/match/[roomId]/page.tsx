@@ -40,7 +40,7 @@ const Game = () => {
                     show={!allReady}
                     message="Esperando a los jugadores"
                 />
-                <div className="flex w-full flex-col lg:flex lg:w-1/2 ">
+                <div className="flex w-full flex-col lg:flex lg:w-1/2">
                     <GameInfoOverlay
                         show={showGameInfo}
                         secretWord={game.secretWord}
@@ -48,7 +48,10 @@ const Game = () => {
                         impostor={game.impostor === username}
                         onClose={() => setShowGameInfo(false)}
                     />
-
+                    <div className="text-center text-foreground space-y-4 p-10 border-b-4">
+                        <h3 className="text-4xl font-extrabold">{`Topico: ${game.topic}`}</h3>
+                        <h3 className="text-2xl">{`Palabra secreta: ${game.impostor === username && game.secretWord}`}</h3>
+                    </div>
                 </div>
                 {/* Chat Panel */}
                 <div className="flex w-full flex-col lg:w-1/2">
