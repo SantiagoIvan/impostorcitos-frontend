@@ -46,13 +46,40 @@ export default function GameInfoOverlay({
                         <h2 className="text-xl font-bold">Topico: {topic}</h2>
 
                         {!impostor ? (
-                            <p className="text-lg">
-                                Palabra secreta: <strong>{secretWord}</strong>
-                            </p>
+                                <motion.span
+                                    animate={{
+                                        scale: [1, 1.08, 1],
+                                        opacity: [1, 0.7, 1],
+                                    }}
+                                    transition={{
+                                        duration: 1,
+                                        repeat: Infinity,
+                                        ease: "easeInOut"
+                                    }}
+                                    className="font-semibold text-xl"
+                                >
+                                    <p className="text-lg">
+                                        Palabra secreta: <strong>{secretWord}</strong>
+                                    </p>
+                                </motion.span>
+
                         ) : (
-                            <p className="text-lg text-red-600 font-semibold">
+                            <motion.span
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{
+                                    scale: [1, 1.25, 1, 1.15, 1, 1.1, 1],
+                                    opacity: [0, 1, 1, 1, 1, 1, 0],
+                                }}
+                                transition={{
+                                    duration: 1,      // ritmo general
+                                    times: [0, 0.12, 0.25, 0.45, 0.65, 0.85, 1],
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                }}
+                                className="text-red-500 font-extrabold text-3xl tracking-widest"
+                            >
                                 Sos el impostor
-                            </p>
+                            </motion.span>
                         )}
                     </motion.div>
                 </motion.div>
