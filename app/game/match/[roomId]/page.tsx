@@ -32,6 +32,8 @@ const Game = () => {
         emitPlayerReady();
     }, [])
 
+    const amIImpostor = () => game.impostor === username
+
     return (
         <main className="flex flex-col bg-background gap-10 w-full m-10">
             {/* Rooms Panel */}
@@ -50,7 +52,11 @@ const Game = () => {
                     />
                     <div className="text-center text-foreground space-y-4 p-10 border-b-4">
                         <h3 className="text-4xl font-extrabold">{`Topico: ${game.topic}`}</h3>
-                        <h3 className="text-2xl">{`Palabra secreta: ${game.impostor === username && game.secretWord}`}</h3>
+                        <h3 className={`text-2xl ${amIImpostor() && "text-red-900" }`}>
+                            {
+                                !amIImpostor()? `Palabra secreta: ${game.secretWord}` : "Sos el impostor"
+                            }
+                        </h3>
                     </div>
                 </div>
                 {/* Chat Panel */}
