@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {Room, RoomEvents} from "@/shared";
+import {Game, Room, RoomEvents} from "@/shared";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {RoomService} from "@/app/services/room.service"
 import {useRouter} from "next/navigation";
+import {useGameStore} from "@/app/store/gameStore";
 
 
 // En este hook puedo agregar otro tipo de eventos propios de un room, como por ejemplo algun audio como cuando
@@ -11,13 +12,15 @@ import {useRouter} from "next/navigation";
 export function useWaitingRoomSocket(roomId: string) {
     const {socket} = useSocket();
     const {updateRoom} = useRoomsStore()
+    const {setGame} = useGameStore()
     const router = useRouter()
 
     const handleUserReady = (room: Room) => {
         updateRoom(room);
     }
-    const handleGameStarting = (roomId : string) => {
-        router.push(`/game/match/${roomId}`);
+    const handleGameStarting = (newGame : Game) => {
+        setGame(newGame)
+        router.push(`/game/match/${newGame.id}`);
     }
 
     const emitUserReady = (username: string) => {

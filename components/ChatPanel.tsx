@@ -33,7 +33,6 @@ export function ChatPanel({roomId}: {roomId?: string}) {
                     minute: "2-digit",
                 }),
             }
-            console.log("emiting new msg ", newMessage)
             socket.emit(MessageEvents.CREATE, newMessage)
             setInputValue("")
         }
