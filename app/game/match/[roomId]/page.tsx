@@ -6,13 +6,14 @@ import {useGameSync} from "@/hooks/useGameSync";
 import {useEffect, useState} from "react";
 import {ChatPanel} from "@/components/ChatPanel";
 import {useGameStore} from "@/app/store/gameStore";
-import { Loader2 } from "lucide-react";
 import LoadingOverlay from "@/components/LoadingOverlay";
+import GameInfoOverlay from "@/components/GameInfoOverlay";
 
 
 const Game = () => {
     const { username } = useUserStore()
     const [allReady, setAllReady] = useState<boolean>(false);
+    const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
     const { game} = useGameStore()
 
     const handleAllReady = () => {
@@ -27,6 +28,7 @@ const Game = () => {
     );
 
     useEffect(() => {
+        console.log(game);
         emitPlayerReady();
     }, [])
 
@@ -39,7 +41,14 @@ const Game = () => {
                     message="Esperando a los jugadores"
                 />
                 <div className="flex w-full flex-col lg:flex lg:w-1/2 ">
-                    <h1>{!allReady?`Esperando jugadores...` : `Listoo todos listos, arrancamos`}</h1>
+                    <GameInfoOverlay
+                        show={showGameInfo}
+                        secretWord={game.secretWord}
+                        topic={game.topic}
+                        impostor={game.impostor === username}
+                        onClose={() => setShowGameInfo(false)}
+                    />
+
                 </div>
                 {/* Chat Panel */}
                 <div className="flex w-full flex-col lg:w-1/2">
