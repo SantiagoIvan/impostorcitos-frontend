@@ -19,8 +19,6 @@ const Game = () => {
     const [allReady, setAllReady] = useState<boolean>(false);
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
     const [phaseGame, setPhaseGame] = useState<PhaseGame>(PhaseGame.PLAY)
-    const [word, setWord] = useState<string>("");
-    const [timer, setTimer] = useState<number>(game.room.moveTime);
 
     const handleAllReady = () => {
         setAllReady(true);
@@ -32,6 +30,7 @@ const Game = () => {
 
     const getPlayerTurn = (): string => game.activePlayers[game.nextTurnIndexPlayer].name
 
+    // escuchar cambios de fase para cambiar UI
     const {
         emitPlayerReady
     } = useGameSync(
@@ -72,7 +71,6 @@ const Game = () => {
                     {/* Tabla con palabras de cada jugador en cada ronda*/}
                     {game.moves.length > 0 && (<RoundsTable moves={game.moves} />)}
 
-                    {/* TIMER DE CADA FASE*/}
 
                     { /* Titulo para visualizar si es mi turno*/}
                     {phaseGame === PhaseGame.PLAY && (
