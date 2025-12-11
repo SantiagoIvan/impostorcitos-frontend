@@ -7,17 +7,30 @@ import {ChatPanel} from "@/components/ChatPanel";
 import {useGameStore} from "@/app/store/gameStore";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import GameInfoOverlay from "@/components/GameInfoOverlay";
+import RoundsTable from "@/components/RoundsTable";
+import {PhaseGame, Player} from "@/shared";
+import MyTurnWordInput from "@/components/MyTurnWordInput";
+import {VotePlayerCard} from "@/components/VotePlayerCard";
 
 
 const Game = () => {
+    const { game} = useGameStore()
     const { username } = useUserStore()
     const [allReady, setAllReady] = useState<boolean>(false);
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
-    const { game} = useGameStore()
+    const [phaseGame, setPhaseGame] = useState<PhaseGame>(PhaseGame.PLAY)
+    const [word, setWord] = useState<string>("");
+    const [timer, setTimer] = useState<number>(game.room.moveTime);
 
     const handleAllReady = () => {
         setAllReady(true);
     }
+
+    const isMyTurn = (): boolean => game.nextTurnIndexPlayer === game.activePlayers.map((player: Player) => player.name).indexOf(username)
+
+    const getAlivePlayers = (): Player[] => game.activePlayers.filter((player: Player) => player.isAlive)
+
+    const getPlayerTurn = (): string => game.activePlayers[game.nextTurnIndexPlayer].name
 
     const {
         emitPlayerReady
@@ -26,7 +39,7 @@ const Game = () => {
     );
 
     useEffect(() => {
-        console.log(game);
+        console.log("game", game);
         emitPlayerReady();
     }, [])
 
@@ -39,7 +52,7 @@ const Game = () => {
                     show={!allReady}
                     message="Esperando a los jugadores"
                 />
-                <div className="flex w-full flex-col lg:flex lg:w-1/2">
+                <div className="flex w-full flex-col lg:flex lg:w-1/2 gap-5">
                     <GameInfoOverlay
                         show={showGameInfo}
                         secretWord={game.secretWord}
@@ -57,7 +70,25 @@ const Game = () => {
                     </div>
 
                     {/* Tabla con palabras de cada jugador en cada ronda*/}
+                    {game.moves.length > 0 && (<RoundsTable moves={game.moves} />)}
 
+                    {/* TIMER DE CADA FASE*/}
+
+                    { /* Titulo para visualizar si es mi turno*/}
+                    {phaseGame === PhaseGame.PLAY && (
+                        <MyTurnWordInput
+                            isMyTurn={isMyTurn()}
+                            onSubmit={async (word: string) => console.log("submit", word)}
+                        />
+                    )}
+
+                    {/* Combobox para seleccionar jugador para eliminar */}
+                    {phaseGame !== PhaseGame.VOTE && (
+                        <VotePlayerCard
+                            players={getAlivePlayers()}
+                            onVote={async (playerName: string) => console.log("vote", playerName)}
+                        />
+                    )}
 
                 </div>
                 {/* Chat Panel */}

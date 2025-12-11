@@ -1,4 +1,4 @@
-import {Round, Player, Room} from "@/shared";
+import {Round, Player, Room, Move, Vote} from "@/shared";
 
 export interface Game {
     id: string
@@ -7,7 +7,8 @@ export interface Game {
     secretWord: string
     activePlayers: Player[]
     impostor: string
-    rounds: Round[]
+    moves: Move[],
+    votes: Vote[],
     impostorWonTheGame: boolean,
     nextTurnIndexPlayer: number
 }
