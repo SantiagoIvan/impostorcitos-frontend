@@ -14,14 +14,8 @@ export function useGameSync(handleAllReady :() => void) {
 
 
     const emitPlayerReady = () => {
-
         socket.emit(GameEvents.PLAYER_READY, {username, gameId: game.id});
     }
-
-    /*
-    const emitUserReady = (username: string) => {
-        socket.emit(RoomEvents.READY, RoomService.createJoinRoomDto(roomId, username));
-    }*/
 
     useEffect(() => {
         socket.on(GameEvents.ALL_READY, handleAllReady)

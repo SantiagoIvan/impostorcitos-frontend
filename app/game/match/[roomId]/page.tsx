@@ -1,7 +1,6 @@
 "use client"
 
 import {useUserStore} from "@/app/store/userStore";
-import {useParams} from "next/navigation";
 import {useGameSync} from "@/hooks/useGameSync";
 import {useEffect, useState} from "react";
 import {ChatPanel} from "@/components/ChatPanel";
@@ -17,7 +16,6 @@ const Game = () => {
     const { game} = useGameStore()
 
     const handleAllReady = () => {
-
         setAllReady(true);
     }
 
@@ -36,7 +34,6 @@ const Game = () => {
 
     return (
         <main className="flex flex-col bg-background gap-10 w-full m-10">
-            {/* Rooms Panel */}
             <div className="flex gap-4 w-full">
                 <LoadingOverlay
                     show={!allReady}
@@ -58,6 +55,10 @@ const Game = () => {
                             }
                         </h3>
                     </div>
+
+                    {/* Tabla con palabras de cada jugador en cada ronda*/}
+
+
                 </div>
                 {/* Chat Panel */}
                 <div className="flex w-full flex-col lg:w-1/2">
