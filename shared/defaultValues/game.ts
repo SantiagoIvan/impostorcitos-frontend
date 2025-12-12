@@ -1,4 +1,4 @@
-import {defaultRoom} from "@/shared";
+import {defaultRoom, PhaseGame} from "@/shared";
 
 export const defaultGame = {
     id: "",
@@ -10,5 +10,6 @@ export const defaultGame = {
     moves: [],
     votes: [],
     impostorWonTheGame: false,
-    nextTurnIndexPlayer: 0
+    nextTurnIndexPlayer: 0,
+    currentPhase: PhaseGame.PLAY
 }

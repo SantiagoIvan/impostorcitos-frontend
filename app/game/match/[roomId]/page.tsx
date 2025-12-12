@@ -11,6 +11,7 @@ import RoundsTable from "@/components/RoundsTable";
 import {PhaseGame, Player} from "@/shared";
 import MyTurnWordInput from "@/components/MyTurnWordInput";
 import {VotePlayerCard} from "@/components/VotePlayerCard";
+import {DiscussionCard} from "@/components/DiscussionCard";
 
 
 const Game = () => {
@@ -18,7 +19,6 @@ const Game = () => {
     const { username } = useUserStore()
     const [allReady, setAllReady] = useState<boolean>(false);
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
-    const [phaseGame, setPhaseGame] = useState<PhaseGame>(PhaseGame.PLAY)
 
     const handleAllReady = () => {
         setAllReady(true);
@@ -73,15 +73,21 @@ const Game = () => {
 
 
                     { /* Titulo para visualizar si es mi turno*/}
-                    {phaseGame === PhaseGame.PLAY && (
+                    {game.currentPhase === PhaseGame.PLAY && (
                         <MyTurnWordInput
-                            isMyTurn={isMyTurn()}
+                            playerTurn={getPlayerTurn()}
                             onSubmit={async (word: string) => console.log("submit", word)}
                         />
                     )}
 
                     {/* Combobox para seleccionar jugador para eliminar */}
-                    {phaseGame !== PhaseGame.VOTE && (
+                    {game.currentPhase === PhaseGame.DISCUSSION && (
+                        <DiscussionCard
+                        />
+                    )}
+
+                    {/* Combobox para seleccionar jugador para eliminar */}
+                    {game.currentPhase === PhaseGame.VOTE && (
                         <VotePlayerCard
                             players={getAlivePlayers()}
                             onVote={async (playerName: string) => console.log("vote", playerName)}

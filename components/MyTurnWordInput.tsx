@@ -7,19 +7,23 @@ import { Button } from "@/components/ui/button";
 import {AnimatePresence, motion } from "framer-motion";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
+import {useUserStore} from "@/app/store/userStore";
 
 interface TurnInputProps {
-    isMyTurn: boolean;                  // determina si puedo jugar
+    playerTurn: string;                  // determina si puedo jugar
     onSubmit: (word: string) => Promise<void> | void; // permite async
 }
 
-export default function MyTurnWordInput({ isMyTurn, onSubmit }: TurnInputProps) {
+export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps) {
     const [word, setWord] = useState("");
     const [sending, setSending] = useState(false);
     const { game } = useGameStore();
+    const { username } = useUserStore();
+
+    const isMyTurn = () => playerTurn === username;
 
     const handleSubmit = async () => {
-        if (!word.trim() || !isMyTurn) return;
+        if (!word.trim() || !isMyTurn()) return;
 
         setSending(true);
 
@@ -31,8 +35,9 @@ export default function MyTurnWordInput({ isMyTurn, onSubmit }: TurnInputProps) 
         }
     };
 
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && isMyTurn && !sending) {
+        if (e.key === "Enter" && isMyTurn() && !sending) {
             handleSubmit();
         }
     };
@@ -44,7 +49,7 @@ export default function MyTurnWordInput({ isMyTurn, onSubmit }: TurnInputProps) 
                 onTimeOut={() => console.log("Time out!. Emitir evento con palabra vacia")}
             />
             <AnimatePresence mode="wait">
-                {isMyTurn && (
+                {isMyTurn() && (
                     <motion.div
                         key="turn-input-card"
                         initial={{ opacity: 0, scale: 0.85 }}
@@ -80,7 +85,7 @@ export default function MyTurnWordInput({ isMyTurn, onSubmit }: TurnInputProps) 
                 )}
 
                 {/* Vista cuando NO es tu turno */}
-                {!isMyTurn && (
+                {!isMyTurn() && (
                     <motion.div
                         key="waiting"
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -91,7 +96,7 @@ export default function MyTurnWordInput({ isMyTurn, onSubmit }: TurnInputProps) 
                     >
                         <Card>
                             <CardHeader>
-                                <CardTitle className="text-center text-xl">Esperando tu turno...</CardTitle>
+                                <CardTitle className="text-center text-xl">Turno de {playerTurn}</CardTitle>
                             </CardHeader>
                         </Card>
                     </motion.div>

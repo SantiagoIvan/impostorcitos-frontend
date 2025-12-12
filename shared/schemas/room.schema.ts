@@ -1,5 +1,5 @@
 import { z } from "zod";
-import {RoomType} from "../types/roomType.enum";
+import {RoomType} from "@/shared";
 
 export const createRoomSchema = z.object({
     admin: z.string(),
@@ -8,8 +8,8 @@ export const createRoomSchema = z.object({
     password: z.string().optional(),
     discussionTime: z.number().min(10, "Debe ser mayor a 10 segundos"),
     voteTime: z.number().min(10, "Debe ser mayor a 10 segundos"),
-    moveTime: z.number().min(30, "Debe ser mayor a 30 segundos"),
-    maxPlayers: z.number().min(2, "Debe permitir al menos 2 jugadores"),
+    moveTime: z.number().min(10, "Debe ser mayor a 10 segundos"),
+    maxPlayers: z.number().min(3, "Debe permitir al menos 3 jugadores"),
 }).refine(
     (data) =>
         data.privacy === RoomType.PUBLIC || (data.privacy === RoomType.PRIVATE && data.password?.length),
