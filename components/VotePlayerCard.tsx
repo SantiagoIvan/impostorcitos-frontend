@@ -43,7 +43,6 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
     const selectedPlayer = eligiblePlayers.find((p) => p.name === selectedPlayerId);
 
     const handleVote = () => {
-        if (!selectedPlayerId) return;
         setSent(true);
         onVote(selectedPlayerId);
     };

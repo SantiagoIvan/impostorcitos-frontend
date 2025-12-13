@@ -8,7 +8,7 @@ import {useGameStore} from "@/app/store/gameStore";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import GameInfoOverlay from "@/components/GameInfoOverlay";
 import RoundsTable from "@/components/RoundsTable";
-import {PhaseGame, Player} from "@/shared";
+import {GamePhase, Player} from "@/shared";
 import MyTurnWordInput from "@/components/MyTurnWordInput";
 import {VotePlayerCard} from "@/components/VotePlayerCard";
 import {DiscussionCard} from "@/components/DiscussionCard";
@@ -73,7 +73,7 @@ const Game = () => {
 
 
                     { /* Titulo para visualizar si es mi turno*/}
-                    {game.currentPhase === PhaseGame.PLAY && (
+                    {game.currentPhase === GamePhase.PLAY && (
                         <MyTurnWordInput
                             playerTurn={getPlayerTurn()}
                             onSubmit={emitSubmitWord}
@@ -82,14 +82,14 @@ const Game = () => {
                     )}
 
                     {/* Combobox para seleccionar jugador para eliminar */}
-                    {game.currentPhase === PhaseGame.DISCUSSION && (
+                    {game.currentPhase === GamePhase.DISCUSSION && (
                         <DiscussionCard
                             onTimeOut={emitDiscussionTimeEnded}
                         />
                     )}
 
                     {/* Combobox para seleccionar jugador para eliminar */}
-                    {game.currentPhase === PhaseGame.VOTE && (
+                    {game.currentPhase === GamePhase.VOTE && (
                         <VotePlayerCard
                             players={getAlivePlayers()}
                             onVote={emitSubmitVote}

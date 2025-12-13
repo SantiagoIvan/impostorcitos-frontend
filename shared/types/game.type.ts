@@ -1,4 +1,4 @@
-import { Player, Room, Move, Vote, PhaseGame} from "@/shared";
+import { Player, Room, Move, Vote, GamePhase} from "@/shared";
 
 export interface Game {
     id: string
@@ -12,6 +12,6 @@ export interface Game {
     impostorWonTheGame: boolean,
     nextTurnIndexPlayer: number,
     orderToPlay: string[]
-    currentPhase: PhaseGame,
+    currentPhase: GamePhase,
     currentRound: number
 }
