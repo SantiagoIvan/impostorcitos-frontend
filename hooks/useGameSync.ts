@@ -16,9 +16,22 @@ export function useGameSync(handleAllReady :() => void) {
     const emitPlayerReady = () => {
         socket.emit(GameEvents.PLAYER_READY, {username, gameId: game.id});
     }
+    const handleWordInputTurn = (username: string) => {
+        console.log("Le toca a ", username)
+    }
 
     useEffect(() => {
         socket.on(GameEvents.ALL_READY, handleAllReady)
+
+        // Para las jugadas realizadas
+        socket.on(GameEvents.WORD_INPUT_TURN, handleWordInputTurn)
+
+
+        // Para discusion
+
+        // Para votacion
+
+        // Para condicion de victoria
 
         return () => {
             socket.off(GameEvents.ALL_READY, handleAllReady)
