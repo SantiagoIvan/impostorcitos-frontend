@@ -36,9 +36,10 @@ export function useGameSync(handleAllReady :() => void) {
 
         // Para votacion
         socket.on(GameEvents.VOTE_TURN, (game: Game) => { setGame(game) })
-
-        // Para condicion de victoria
         socket.on(GameEvents.VOTE_SUBMITTED, (game: Game) => { setGame(game) })
+
+        // Para final de ronda
+        socket.on(GameEvents.EXECUTED_PLAYER, () => console.log("Jugador ejecutado"))
 
         return () => {
             socket.off(GameEvents.ALL_READY, handleAllReady)
