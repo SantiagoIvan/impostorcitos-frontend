@@ -47,7 +47,6 @@ export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: Tur
     };
 
     const handleTimeOut = () => {
-        console.log("Time out!")
         setTimeout(true) // asi bloqueo el input
         onTimeOut()
     }

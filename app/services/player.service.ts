@@ -5,6 +5,9 @@ export const PlayerService = {
         return {
             name: username,
             isReady: false,
+            hasPlayed: false,
+            isAlive: true,
+            skipPhase: false
         }
     }
 }

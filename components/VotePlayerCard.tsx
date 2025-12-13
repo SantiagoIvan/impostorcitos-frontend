@@ -23,6 +23,8 @@ import { ChevronsUpDown } from "lucide-react";
 // Ajustá la ruta de Player según tu proyecto
 import { Player } from "@/shared";
 import {useUserStore} from "@/app/store/userStore";
+import {TimerDisplay} from "@/components/TimerDisplay";
+import {useGameStore} from "@/app/store/gameStore";
 
 interface VotePlayerCardProps {
     players: Player[];
@@ -34,6 +36,7 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
     const [selectedPlayerId, setSelectedPlayerId] = useState<string>("");
     const [sent, setSent] = useState(false);
     const {username} = useUserStore()
+    const { game } = useGameStore();
 
     const eligiblePlayers = players.filter((p) => p.name !== username);
 
@@ -46,71 +49,77 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
     };
 
     return (
-        <AnimatePresence>
-            <motion.div
-                key="vote-card"
-                initial={{ opacity: 0, y: 20, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.96 }}
-                transition={{ duration: 0.25 }}
-            >
-                <Card className="w-full max-w-sm mx-auto shadow-lg">
-                    <CardHeader>
-                        <CardTitle className="text-lg text-center">Votar para expulsar</CardTitle>
-                    </CardHeader>
+        <>
+            <TimerDisplay
+                initialSeconds={game.room.voteTime}
+                onTimeOut={handleVote}
+            />
+            <AnimatePresence>
+                <motion.div
+                    key="vote-card"
+                    initial={{ opacity: 0, y: 20, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.96 }}
+                    transition={{ duration: 0.25 }}
+                >
+                    <Card className="w-full max-w-sm mx-auto shadow-lg">
+                        <CardHeader>
+                            <CardTitle className="text-lg text-center">Votar para expulsar</CardTitle>
+                        </CardHeader>
 
-                    <CardContent className="flex flex-col gap-4">
+                        <CardContent className="flex flex-col gap-4">
 
-                        {/* Command + Combobox Selector */}
-                        <Popover open={open} onOpenChange={setOpen}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    className="w-full justify-between"
-                                    disabled={sent}
-                                >
-                                    {selectedPlayer ? selectedPlayer.name : "Elegí un jugador..."}
-                                    <ChevronsUpDown className="opacity-50" size={14} />
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-full p-0">
-                                <Command>
-                                    <CommandInput placeholder="Buscar jugador..." />
-                                    <CommandList>
-                                        <CommandEmpty>No se encontró jugador</CommandEmpty>
-                                        <CommandGroup>
-                                            {eligiblePlayers.map((player) => (
-                                                <CommandItem
-                                                    key={player.name}
-                                                    value={player.name}
-                                                    onSelect={() => {
-                                                        setSelectedPlayerId(player.name);
-                                                        setOpen(false);
-                                                    }}
-                                                >
-                                                    {player.name}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                    </CardContent>
+                            {/* Command + Combobox Selector */}
+                            <Popover open={open} onOpenChange={setOpen}>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        role="combobox"
+                                        className="w-full justify-between"
+                                        disabled={sent}
+                                    >
+                                        {selectedPlayer ? selectedPlayer.name : "Elegí un jugador..."}
+                                        <ChevronsUpDown className="opacity-50" size={14} />
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-full p-0">
+                                    <Command>
+                                        <CommandInput placeholder="Buscar jugador..." />
+                                        <CommandList>
+                                            <CommandEmpty>No se encontró jugador</CommandEmpty>
+                                            <CommandGroup>
+                                                {eligiblePlayers.map((player) => (
+                                                    <CommandItem
+                                                        key={player.name}
+                                                        value={player.name}
+                                                        onSelect={() => {
+                                                            setSelectedPlayerId(player.name);
+                                                            setOpen(false);
+                                                        }}
+                                                    >
+                                                        {player.name}
+                                                    </CommandItem>
+                                                ))}
+                                            </CommandGroup>
+                                        </CommandList>
+                                    </Command>
+                                </PopoverContent>
+                            </Popover>
+                        </CardContent>
 
-                    <CardFooter>
-                        <Button
-                            className="w-full"
-                            variant="destructive"
-                            disabled={!selectedPlayerId || sent}
-                            onClick={handleVote}
-                        >
-                            {sent ? "Voto enviado" : "Votar"}
-                        </Button>
-                    </CardFooter>
-                </Card>
-            </motion.div>
-        </AnimatePresence>
+                        <CardFooter>
+                            <Button
+                                className="w-full"
+                                variant="destructive"
+                                disabled={!selectedPlayerId || sent}
+                                onClick={handleVote}
+                            >
+                                {sent ? "Voto enviado" : "Votar"}
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </motion.div>
+            </AnimatePresence>
+        </>
     );
 }

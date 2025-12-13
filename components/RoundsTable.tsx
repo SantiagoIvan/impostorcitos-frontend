@@ -18,7 +18,7 @@ export default function RoundsTable({ moves, className = "" }: Props) {
 
     // encabezados de rondas
     const rounds = Array.from({ length: roundsCount }, (_, i) => i + 1);
-    console.log(matrix, players, roundsCount)
+
     return (
         <div className={`overflow-auto rounded-md border text-background ${className}`}>
             <table className="min-w-full table-fixed">

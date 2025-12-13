@@ -23,7 +23,6 @@ export function buildRoundTable(moves: Move[]) {
   const matrix: Record<string, string[]> = {};
   for (const player of players) {
     if(matrix[player] == null) {
-      console.log("player", player)
         matrix[player] = Array.from({ length: Math.max(roundsCount, 1) }).map(() => "");
     }
   }

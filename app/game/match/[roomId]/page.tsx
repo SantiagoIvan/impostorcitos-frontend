@@ -24,22 +24,21 @@ const Game = () => {
         setAllReady(true);
     }
 
-    const isMyTurn = (): boolean => game.nextTurnIndexPlayer === game.activePlayers.map((player: Player) => player.name).indexOf(username)
-
     const getAlivePlayers = (): Player[] => game.activePlayers.filter((player: Player) => player.isAlive)
 
-    const getPlayerTurn = (): string => game.activePlayers[game.nextTurnIndexPlayer].name
+    const getPlayerTurn = (): string => game.orderToPlay[game.nextTurnIndexPlayer]
 
     // escuchar cambios de fase para cambiar UI
     const {
         emitPlayerReady,
-        emitSubmitWord
+        emitSubmitWord,
+        emitDiscussionTimeEnded,
+        emitSubmitVote
     } = useGameSync(
         handleAllReady
     );
 
     useEffect(() => {
-        console.log("game", game);
         emitPlayerReady();
     }, [])
 
@@ -85,6 +84,7 @@ const Game = () => {
                     {/* Combobox para seleccionar jugador para eliminar */}
                     {game.currentPhase === PhaseGame.DISCUSSION && (
                         <DiscussionCard
+                            onTimeOut={emitDiscussionTimeEnded}
                         />
                     )}
 
@@ -92,7 +92,7 @@ const Game = () => {
                     {game.currentPhase === PhaseGame.VOTE && (
                         <VotePlayerCard
                             players={getAlivePlayers()}
-                            onVote={async (playerName: string) => console.log("vote", playerName)}
+                            onVote={emitSubmitVote}
                         />
                     )}
 
