@@ -8,15 +8,19 @@ import {AnimatePresence, motion } from "framer-motion";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
 import {useUserStore} from "@/app/store/userStore";
+import {useGameSync} from "@/hooks/useGameSync";
 
 interface TurnInputProps {
     playerTurn: string;                  // determina si puedo jugar
     onSubmit: (word: string) => Promise<void> | void; // permite async
+    onTimeOut: () => void;
 }
 
-export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps) {
+export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: TurnInputProps) {
     const [word, setWord] = useState("");
+    const [wordSent, setWordSent] = useState(false);
     const [sending, setSending] = useState(false);
+    const [timeout, setTimeout] = useState(false);
     const { game } = useGameStore();
     const { username } = useUserStore();
 
@@ -26,7 +30,7 @@ export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps
         if (!word.trim() || !isMyTurn()) return;
 
         setSending(true);
-
+        setWordSent(true);
         try {
             await onSubmit(word.trim());
         } finally {
@@ -42,12 +46,20 @@ export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps
         }
     };
 
+    const handleTimeOut = () => {
+        console.log("Time out!")
+        setTimeout(true) // asi bloqueo el input
+        onTimeOut()
+    }
+
     return (
-        <div className="flex flex-col items-center justify-center">
-            <TimerDisplay
-                initialSeconds={game.room.moveTime}
-                onTimeOut={() => console.log("Time out!. Emitir evento con palabra vacia")}
-            />
+        <div className="flex flex-col gap-2 items-center justify-center">
+            {wordSent ?
+                (<h1 className="text-2xl">Palabra enviada</h1>) : (
+                <TimerDisplay
+                    initialSeconds={game.room.moveTime}
+                    onTimeOut={() => handleTimeOut()}
+                />)}
             <AnimatePresence mode="wait">
                 {isMyTurn() && (
                     <motion.div
@@ -71,12 +83,12 @@ export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps
                                     onChange={(e) => setWord(e.target.value)}
                                     onKeyDown={handleKeyDown}
                                     placeholder="Ingresá tu palabra..."
-                                    disabled={sending}
+                                    disabled={sending || timeout || wordSent}
                                 />
                             </CardContent>
 
                             <CardFooter>
-                                <Button className="w-full" onClick={handleSubmit} disabled={sending}>
+                                <Button className={`w-full ${timeout && "bg-muted-foreground"}`} onClick={handleSubmit} disabled={sending || timeout || wordSent}>
                                     {sending ? "Enviando..." : "Jugar"}
                                 </Button>
                             </CardFooter>

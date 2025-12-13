@@ -32,7 +32,8 @@ const Game = () => {
 
     // escuchar cambios de fase para cambiar UI
     const {
-        emitPlayerReady
+        emitPlayerReady,
+        emitSubmitWord
     } = useGameSync(
         handleAllReady
     );
@@ -76,7 +77,8 @@ const Game = () => {
                     {game.currentPhase === PhaseGame.PLAY && (
                         <MyTurnWordInput
                             playerTurn={getPlayerTurn()}
-                            onSubmit={async (word: string) => console.log("submit", word)}
+                            onSubmit={emitSubmitWord}
+                            onTimeOut={() => emitSubmitWord("")}
                         />
                     )}
 

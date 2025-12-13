@@ -51,7 +51,7 @@ export function TimerDisplay({ initialSeconds, onTimeOut }: TimerDisplayProps) {
                             : { duration: 0.2 }
                     }
                 >
-                    Tiempo restante: {seconds}s
+                    {seconds > 0? `Tiempo restante: ${seconds}s` : "Timeout!"}
                 </motion.span>
             </motion.div>
         </AnimatePresence>
