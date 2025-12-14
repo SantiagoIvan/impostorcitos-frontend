@@ -12,7 +12,6 @@ import { RoomService } from "@/app/services/room.service";
 import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
 import {Player} from "@/shared";
 import {toast} from "sonner";
-import {MIN_PLAYERS_QUANTITY} from "@/shared/constants";
 
 const WaitingRoom = () => {
     const {roomId} = useParams<{roomId: string}>();
@@ -22,6 +21,7 @@ const WaitingRoom = () => {
     const router = useRouter();
     const {emitLeaveEvent} = useRoomsSocket();
     const { emitUserReady, emitStartGame } = useWaitingRoomSocket(roomId)
+    const MIN_PLAYERS_QUANTITY = process.env.NEXT_PUBLIC_MIN_PLAYERS_QTY as unknown as number;
 
     const handleBack = () => {
         emitLeaveEvent(RoomService.createJoinRoomDto(roomId, username));
