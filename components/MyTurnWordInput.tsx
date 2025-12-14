@@ -8,7 +8,6 @@ import {AnimatePresence, motion } from "framer-motion";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
 import {useUserStore} from "@/app/store/userStore";
-import {useGameSync} from "@/hooks/useGameSync";
 
 interface TurnInputProps {
     playerTurn: string;                  // determina si puedo jugar

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -47,6 +47,8 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
         onVote(selectedPlayerId);
     };
 
+    const amIAlive = () => players.some((p) => p.name === username && p.isAlive);
+
     return (
         <>
             <TimerDisplay
@@ -61,62 +63,69 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
                     exit={{ opacity: 0, y: -20, scale: 0.96 }}
                     transition={{ duration: 0.25 }}
                 >
-                    <Card className="w-full max-w-sm mx-auto shadow-lg">
-                        <CardHeader>
-                            <CardTitle className="text-lg text-center">Votar para expulsar</CardTitle>
-                        </CardHeader>
+                    { amIAlive() ? (
+                        <Card className="w-full max-w-sm mx-auto shadow-lg">
+                            <CardHeader>
+                                <CardTitle className="text-lg text-center">Votar para expulsar</CardTitle>
+                            </CardHeader>
 
-                        <CardContent className="flex flex-col gap-4">
+                            <CardContent className="flex flex-col gap-4">
 
-                            {/* Command + Combobox Selector */}
-                            <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        role="combobox"
-                                        className="w-full justify-between"
-                                        disabled={sent}
-                                    >
-                                        {selectedPlayer ? selectedPlayer.name : "Elegí un jugador..."}
-                                        <ChevronsUpDown className="opacity-50" size={14} />
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-full p-0">
-                                    <Command>
-                                        <CommandInput placeholder="Buscar jugador..." />
-                                        <CommandList>
-                                            <CommandEmpty>No se encontró jugador</CommandEmpty>
-                                            <CommandGroup>
-                                                {eligiblePlayers.map((player) => (
-                                                    <CommandItem
-                                                        key={player.name}
-                                                        value={player.name}
-                                                        onSelect={() => {
-                                                            setSelectedPlayerId(player.name);
-                                                            setOpen(false);
-                                                        }}
-                                                    >
-                                                        {player.name}
-                                                    </CommandItem>
-                                                ))}
-                                            </CommandGroup>
-                                        </CommandList>
-                                    </Command>
-                                </PopoverContent>
-                            </Popover>
-                        </CardContent>
+                                {/* Command + Combobox Selector */}
+                                <Popover open={open} onOpenChange={setOpen}>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            className="w-full justify-between"
+                                            disabled={sent}
+                                        >
+                                            {selectedPlayer ? selectedPlayer.name : "Elegí un jugador..."}
+                                            <ChevronsUpDown className="opacity-50" size={14} />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-full p-0">
+                                        <Command>
+                                            <CommandInput placeholder="Buscar jugador..." />
+                                            <CommandList>
+                                                <CommandEmpty>No se encontró jugador</CommandEmpty>
+                                                <CommandGroup>
+                                                    {eligiblePlayers.map((player) => (
+                                                        <CommandItem
+                                                            key={player.name}
+                                                            value={player.name}
+                                                            onSelect={() => {
+                                                                setSelectedPlayerId(player.name);
+                                                                setOpen(false);
+                                                            }}
+                                                        >
+                                                            {player.name}
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </CommandList>
+                                        </Command>
+                                    </PopoverContent>
+                                </Popover>
+                            </CardContent>
 
-                        <CardFooter>
-                            <Button
-                                className="w-full"
-                                variant="destructive"
-                                disabled={!selectedPlayerId || sent}
-                                onClick={handleVote}
-                            >
-                                {sent ? "Voto enviado" : "Votar"}
-                            </Button>
-                        </CardFooter>
-                    </Card>
+                            <CardFooter>
+                                <Button
+                                    className="w-full"
+                                    variant="destructive"
+                                    disabled={!selectedPlayerId || sent}
+                                    onClick={handleVote}
+                                >
+                                    {sent ? "Voto enviado" : "Votar"}
+                                </Button>
+                            </CardFooter>
+                        </Card> ) : (
+                        <Card className="w-full max-w-sm mx-auto shadow-lg">
+                            <CardHeader>
+                                <CardTitle className="text-lg text-center">No podes votar.</CardTitle>
+                            </CardHeader>
+                        </Card>
+                    )}
                 </motion.div>
             </AnimatePresence>
         </>

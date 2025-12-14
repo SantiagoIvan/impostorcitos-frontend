@@ -8,35 +8,43 @@ import {useGameStore} from "@/app/store/gameStore";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import GameInfoOverlay from "@/components/GameInfoOverlay";
 import RoundsTable from "@/components/RoundsTable";
-import {GamePhase, Player} from "@/shared";
+import {GamePhase, Player, RoundResult} from "@/shared";
 import MyTurnWordInput from "@/components/MyTurnWordInput";
 import {VotePlayerCard} from "@/components/VotePlayerCard";
 import {DiscussionCard} from "@/components/DiscussionCard";
+import {useRouter} from "next/navigation";
+import {RoundResultDialog} from "@/components/RoundResultDialog";
 
 
 const Game = () => {
     const { game} = useGameStore()
     const { username } = useUserStore()
-    const [allReady, setAllReady] = useState<boolean>(false);
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
+    const router = useRouter();
 
-    const handleAllReady = () => {
-        setAllReady(true);
-    }
 
     const getAlivePlayers = (): Player[] => game.activePlayers.filter((player: Player) => player.isAlive)
 
     const getPlayerTurn = (): string => game.orderToPlay[game.nextTurnIndexPlayer]
+
+    const handleOnRounResultDialogClose = () => {
+        setShowResults(false);
+        if(roundResult?.winner) router.push(`/game/lobby`)
+        else emitNextRound();
+    }
 
     // escuchar cambios de fase para cambiar UI
     const {
         emitPlayerReady,
         emitSubmitWord,
         emitDiscussionTimeEnded,
-        emitSubmitVote
-    } = useGameSync(
-        handleAllReady
-    );
+        emitSubmitVote,
+        emitNextRound,
+        allReady,
+        setShowResults,
+        showResults,
+        roundResult
+    } = useGameSync();
 
     useEffect(() => {
         emitPlayerReady();
@@ -94,6 +102,16 @@ const Game = () => {
                             players={getAlivePlayers()}
                             onVote={emitSubmitVote}
                         />
+                    )}
+
+                    {/* Combobox para seleccionar jugador para eliminar */}
+                    {game.currentPhase === GamePhase.ROUND_RESULT && (
+                        <RoundResultDialog
+                            open={showResults}
+                            onClose={handleOnRounResultDialogClose}
+                            result={roundResult}
+                        />
+
                     )}
 
                 </div>

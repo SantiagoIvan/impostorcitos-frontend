@@ -7,7 +7,6 @@ export function DiscussionCard({onTimeOut}: { onTimeOut: () => void}) {
 
     // ontimeout emitir evento
     const handleOnTimeOut = () => {
-        console.log("discussion time out")
         onTimeOut()
     }
 

@@ -3,6 +3,8 @@ export * from "./player.type";
 export * from "./room.type";
 export * from "./roomType.enum";
 export * from "./game.type"
+export * from "./roundResult.type"
+export * from "./team.enum"
 export * from "./round.type"
 export * from "./move.type"
 export * from "./vote.type"

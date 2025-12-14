@@ -1,17 +1,19 @@
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {Game, GameEvents} from "@/shared";
+import {Game, GameEvents, RoundResult} from "@/shared";
 import {useUserStore} from "@/app/store/userStore";
 import {useGameStore} from "@/app/store/gameStore";
 
 
 // En este hook puedo agregar otro tipo de eventos propios de un room, como por ejemplo algun audio como cuando
 // mandas 11 por el chat de Age of Empires, o votar para echar a alguno que esta afk o nose.
-export function useGameSync(handleAllReady :() => void) {
+export function useGameSync() {
     const {socket} = useSocket();
     const { username } = useUserStore()
     const { game, setGame } = useGameStore()
-
+    const [roundResult, setRoundResult] = useState<RoundResult>();
+    const [showResults, setShowResults] = useState<boolean>(true);
+    const [allReady, setAllReady] = useState<boolean>(false);
 
     const emitPlayerReady = () => {
         socket.emit(GameEvents.PLAYER_READY, {username, gameId: game.id});
@@ -24,6 +26,19 @@ export function useGameSync(handleAllReady :() => void) {
     }
     const emitSubmitVote = (target: string) => {
         socket.emit(GameEvents.SUBMIT_VOTE, {username, gameId: game.id, targetPlayer: target})
+    }
+    const emitNextRound = () => {
+        socket.emit(GameEvents.NEXT_ROUND, {username, gameId: game.id})
+    }
+
+    const handleRoundResult = ({game, roundResult} : {game: Game, roundResult: RoundResult}) => {
+        setGame(game)
+        setRoundResult(roundResult)
+        setShowResults(true)
+    }
+
+    const handleAllReady = () => {
+        setAllReady(true)
     }
 
 
@@ -39,7 +54,12 @@ export function useGameSync(handleAllReady :() => void) {
         socket.on(GameEvents.VOTE_SUBMITTED, (game: Game) => { setGame(game) })
 
         // Para final de ronda
-        socket.on(GameEvents.EXECUTED_PLAYER, () => console.log("Jugador ejecutado"))
+        socket.on(GameEvents.ROUND_RESULT, handleRoundResult)
+
+        // Para final abrupto de juego
+        socket.on(GameEvents.END_GAME, () => {
+            console.log("Se aborto la sesion de juego")
+        })
 
         return () => {
             socket.off(GameEvents.ALL_READY, handleAllReady)
@@ -50,6 +70,11 @@ export function useGameSync(handleAllReady :() => void) {
         emitPlayerReady,
         emitSubmitWord,
         emitDiscussionTimeEnded,
-        emitSubmitVote
+        emitSubmitVote,
+        emitNextRound,
+        roundResult,
+        showResults,
+        setShowResults,
+        allReady
     }
 }
