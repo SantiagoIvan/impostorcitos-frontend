@@ -83,41 +83,43 @@ const Game = () => {
                     {/* Tabla con palabras de cada jugador en cada ronda*/}
                     {game.moves.length > 0 && (<RoundsTable moves={game.moves} />)}
 
-                    {/* Si estas muerto, se muestra la cartida de muerto nomas y los resultados al final de cada ronda*/}
-                    {!amIAlive() && <YouAreDeadCard />}
+                    {/* Si estas muerto, se muestra la carata de muerto nomas y los resultados al final de cada ronda*/}
+                    {!amIAlive() ? <YouAreDeadCard /> : (
+                    <>
+                        {game.currentPhase === GamePhase.PLAY && (
+                            <MyTurnWordInput
+                                playerTurn={getPlayerTurn()}
+                                onSubmit={emitSubmitWord}
+                                onTimeOut={() => emitSubmitWord("")}
+                            />
+                        )}
 
-                    {game.currentPhase === GamePhase.PLAY && (
-                        <MyTurnWordInput
-                            playerTurn={getPlayerTurn()}
-                            onSubmit={emitSubmitWord}
-                            onTimeOut={() => emitSubmitWord("")}
-                        />
+                        {/* Combobox para seleccionar jugador para eliminar */}
+                        {game.currentPhase === GamePhase.DISCUSSION && (
+                            <DiscussionCard
+                                onTimeOut={emitDiscussionTimeEnded}
+                            />
+                        )}
+
+                        {/* Combobox para seleccionar jugador para eliminar */}
+                        {game.currentPhase === GamePhase.VOTE && (
+                            <VotePlayerCard
+                                players={getAlivePlayers()}
+                                onVote={emitSubmitVote}
+                            />
+                        )}
+                    </>
                     )}
 
-                    {/* Combobox para seleccionar jugador para eliminar */}
-                    {game.currentPhase === GamePhase.DISCUSSION && (
-                        <DiscussionCard
-                            onTimeOut={emitDiscussionTimeEnded}
-                        />
-                    )}
+                        {/* Combobox para seleccionar jugador para eliminar */}
+                        {game.currentPhase === GamePhase.ROUND_RESULT && (
+                            <RoundResultDialog
+                                open={showResults}
+                                onClose={handleOnRounResultDialogClose}
+                                result={roundResult}
+                            />
 
-                    {/* Combobox para seleccionar jugador para eliminar */}
-                    {game.currentPhase === GamePhase.VOTE && (
-                        <VotePlayerCard
-                            players={getAlivePlayers()}
-                            onVote={emitSubmitVote}
-                        />
-                    )}
-
-                    {/* Combobox para seleccionar jugador para eliminar */}
-                    {game.currentPhase === GamePhase.ROUND_RESULT && (
-                        <RoundResultDialog
-                            open={showResults}
-                            onClose={handleOnRounResultDialogClose}
-                            result={roundResult}
-                        />
-
-                    )}
+                        )}
 
                 </div>
                 {/* Chat Panel */}
