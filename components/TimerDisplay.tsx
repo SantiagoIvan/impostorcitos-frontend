@@ -8,6 +8,7 @@ interface TimerDisplayProps {
 
 export function TimerDisplay({ initialSeconds, onTimeOut }: TimerDisplayProps) {
     const [seconds, setSeconds] = useState(initialSeconds);
+    // podria ir en un store para hacerlo global y ahi podria resetearlo en cada word submitted, y en la votacion mantenerlo fijo para todos
 
     useEffect(() => {
         if (seconds <= 0) {

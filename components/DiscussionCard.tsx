@@ -1,6 +1,7 @@
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardHeader, CardTitle} from "@/components/ui/card";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
+import AnimatedFadeScaleComponent from "@/components/AnimatedFadeScaleComponent";
 
 export function DiscussionCard({onTimeOut}: { onTimeOut: () => void}) {
     const { game } = useGameStore();
@@ -11,7 +12,8 @@ export function DiscussionCard({onTimeOut}: { onTimeOut: () => void}) {
     }
 
     return (
-        <>
+        <AnimatedFadeScaleComponent>
+            <h1 className="text-2xl font-semibold text-center mb-3">Discusion</h1>
             <TimerDisplay
                 initialSeconds={game.room.discussionTime}
                 onTimeOut={handleOnTimeOut}
@@ -19,14 +21,10 @@ export function DiscussionCard({onTimeOut}: { onTimeOut: () => void}) {
             <Card className="w-full max-w-xl mx-auto shadow-md">
                 <CardHeader>
                     <CardTitle className="text-center text-2xl font-semibold">
-                        Momento para discutir a quien echamos
+                        Discutan para decidir a quien echar
                     </CardTitle>
                 </CardHeader>
-
-                <CardContent className="text-center text-muted-foreground">
-                    Conversen entre ustedes y decidan a quién quieren expulsar.
-                </CardContent>
             </Card>
-        </>
+        </AnimatedFadeScaleComponent>
     )
 }

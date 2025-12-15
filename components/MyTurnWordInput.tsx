@@ -8,6 +8,8 @@ import {AnimatePresence, motion } from "framer-motion";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
 import {useUserStore} from "@/app/store/userStore";
+import YouAreDeadCard from "@/components/youAreDeadCard";
+import AnimatedFadeScaleComponent from "@/components/AnimatedFadeScaleComponent";
 
 interface TurnInputProps {
     playerTurn: string;                  // determina si puedo jugar
@@ -50,68 +52,51 @@ export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: Tur
         onTimeOut()
     }
 
+
     return (
-        <div className="flex flex-col gap-2 items-center justify-center">
-            {wordSent ?
-                (<h1 className="text-2xl">Palabra enviada</h1>) : (
+        <div className="flex flex-col gap-3 items-center justify-center">
+            <h1 className="text-2xl font-semibold text-center">Juga una palabra</h1>
+            {
+                wordSent ?
+                (<h1 className="text-xl font-semibold text-center">Palabra enviada</h1>) : (
                 <TimerDisplay
                     initialSeconds={game.room.moveTime}
                     onTimeOut={() => handleTimeOut()}
-                />)}
-            <AnimatePresence mode="wait">
-                {isMyTurn() && (
-                    <motion.div
-                        key="turn-input-card"
-                        initial={{ opacity: 0, scale: 0.85 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.85 }}
-                        transition={{ duration: 0.35, ease: "easeOut" }}
-                        className="w-full max-w-sm mx-auto"
-                    >
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="text-center text-xl">
-                                    Es tu turno
-                                </CardTitle>
-                            </CardHeader>
-
-                            <CardContent className="flex flex-col gap-4">
-                                <Input
-                                    value={word}
-                                    onChange={(e) => setWord(e.target.value)}
-                                    onKeyDown={handleKeyDown}
-                                    placeholder="Ingresá tu palabra..."
-                                    disabled={sending || timeout || wordSent}
-                                />
-                            </CardContent>
-
-                            <CardFooter>
-                                <Button className={`w-full ${timeout && "bg-muted-foreground"}`} onClick={handleSubmit} disabled={sending || timeout || wordSent}>
-                                    {sending ? "Enviando..." : "Jugar"}
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    </motion.div>
-                )}
-
-                {/* Vista cuando NO es tu turno */}
-                {!isMyTurn() && (
-                    <motion.div
-                        key="waiting"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.3 }}
-                        className="w-full max-w-sm mx-auto"
-                    >
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="text-center text-xl">Turno de {playerTurn}</CardTitle>
-                            </CardHeader>
-                        </Card>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                />
+                    )}
+            {isMyTurn() ? (
+                <AnimatedFadeScaleComponent>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-center text-xl">
+                                Es tu turno
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="flex flex-col gap-4">
+                            <Input
+                                value={word}
+                                onChange={(e) => setWord(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                placeholder="Ingresá tu palabra..."
+                                disabled={sending || timeout || wordSent}
+                            />
+                        </CardContent>
+                        <CardFooter>
+                            <Button className={`w-full ${timeout && "bg-muted-foreground"}`} onClick={handleSubmit} disabled={sending || timeout || wordSent}>
+                                {sending ? "Enviando..." : "Jugar"}
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </AnimatedFadeScaleComponent>
+            ) : (
+                <AnimatedFadeScaleComponent>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-center text-xl">Turno de {playerTurn}</CardTitle>
+                        </CardHeader>
+                    </Card>
+                </AnimatedFadeScaleComponent>
+            )}
         </div>
     );
 }

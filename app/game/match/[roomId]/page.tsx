@@ -8,12 +8,14 @@ import {useGameStore} from "@/app/store/gameStore";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import GameInfoOverlay from "@/components/GameInfoOverlay";
 import RoundsTable from "@/components/RoundsTable";
-import {GamePhase, Player, RoundResult} from "@/shared";
+import {GamePhase, Player} from "@/shared";
 import MyTurnWordInput from "@/components/MyTurnWordInput";
 import {VotePlayerCard} from "@/components/VotePlayerCard";
 import {DiscussionCard} from "@/components/DiscussionCard";
 import {useRouter} from "next/navigation";
 import {RoundResultDialog} from "@/components/RoundResultDialog";
+import YouAreDeadCard from "@/components/youAreDeadCard";
+import {AnimatePresence, motion } from "framer-motion";
 
 
 const Game = () => {
@@ -32,6 +34,8 @@ const Game = () => {
         if(roundResult?.winner) router.push(`/game/lobby`)
         else emitNextRound();
     }
+
+    const amIAlive = () : boolean => getAlivePlayers().some((player: Player) => player.name === username)
 
     // escuchar cambios de fase para cambiar UI
     const {
@@ -79,8 +83,9 @@ const Game = () => {
                     {/* Tabla con palabras de cada jugador en cada ronda*/}
                     {game.moves.length > 0 && (<RoundsTable moves={game.moves} />)}
 
+                    {/* Si estas muerto, se muestra la cartida de muerto nomas y los resultados al final de cada ronda*/}
+                    {!amIAlive() && <YouAreDeadCard />}
 
-                    { /* Titulo para visualizar si es mi turno*/}
                     {game.currentPhase === GamePhase.PLAY && (
                         <MyTurnWordInput
                             playerTurn={getPlayerTurn()}
