@@ -10,7 +10,7 @@ import {useGameStore} from "@/app/store/gameStore";
 export function useGameSync() {
     const {socket} = useSocket();
     const { username } = useUserStore()
-    const { game, setGame, setTurn } = useGameStore()
+    const { game, setGame } = useGameStore()
     const [roundResult, setRoundResult] = useState<RoundResult>();
     const [showResults, setShowResults] = useState<boolean>(true);
     const [allReady, setAllReady] = useState<boolean>(false);
