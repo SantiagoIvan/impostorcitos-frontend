@@ -54,7 +54,7 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
 
             <TimerDisplay
                 startedAt={currentTurn.startedAt}
-                duration={currentTurn.duration * 1000}
+                duration={currentTurn.duration}
                 onTimeOut={() => handleVote()}
             />
             <Card className="w-full max-w-sm mx-auto shadow-lg">

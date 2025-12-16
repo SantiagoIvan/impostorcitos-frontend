@@ -32,46 +32,48 @@ export function useGameSync() {
     }
 
     const handleRoundResult = ({game, roundResult} : {game: Game, roundResult: RoundResult}) => {
-        setGame(game)
-        setTurn(game.currentTurn)
+        updateGame(game)
         setRoundResult(roundResult)
         setShowResults(true)
     }
 
-    const handleAllReady = () => {
+    const handleStartRound = (game: Game) => {
         setAllReady(true)
+        updateGame(game)
     }
 
-    const handleWordSubmitted = (game: Game) => {
+    const updateGame = (game: Game) => {
         setGame(game)
         setTurn(game.currentTurn)
-        console.log("Se recibio evento de palabra enviada, ahora le toca a: ", game.currentTurn)
+    }
+
+    const handleGameAborted = (game: Game) => {
+        console.log(`Game avorted: ${game}`)
     }
 
     useEffect(() => {
-        socket.on(GameEvents.ALL_READY, handleAllReady)
+        socket.on(GameEvents.START_ROUND, handleStartRound)
 
         // Para las jugadas realizadas
-        socket.on(GameEvents.WORD_INPUT_TURN, (game: Game) => { setGame(game) })
-        socket.on(GameEvents.WORD_SUBMITTED, handleWordSubmitted)
+        socket.on(GameEvents.WORD_SUBMITTED, updateGame)
 
         // Para votacion
-        socket.on(GameEvents.VOTE_TURN, (game: Game) => {
-            setGame(game)
-            setTurn(game.currentTurn)
-        })
-        socket.on(GameEvents.VOTE_SUBMITTED, (game: Game) => { setGame(game) })
+        socket.on(GameEvents.VOTE_TURN, updateGame)
+        socket.on(GameEvents.VOTE_SUBMITTED, updateGame)
 
         // Para final de ronda
         socket.on(GameEvents.ROUND_RESULT, handleRoundResult)
 
         // Para final abrupto de juego
-        socket.on(GameEvents.END_GAME, () => {
-            console.log("Se aborto la sesion de juego")
-        })
+        socket.on(GameEvents.END_GAME, handleGameAborted)
 
         return () => {
-            socket.off(GameEvents.ALL_READY, handleAllReady)
+            socket.off(GameEvents.START_ROUND, handleStartRound)
+            socket.off(GameEvents.WORD_SUBMITTED, updateGame)
+            socket.off(GameEvents.VOTE_TURN, updateGame)
+            socket.off(GameEvents.VOTE_SUBMITTED, updateGame)
+            socket.off(GameEvents.ROUND_RESULT, handleRoundResult)
+            socket.off(GameEvents.END_GAME, handleGameAborted)
         };
     }, [socket]);
 

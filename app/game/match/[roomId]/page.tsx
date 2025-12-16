@@ -18,7 +18,7 @@ import YouAreDeadCard from "@/components/youAreDeadCard";
 
 
 const Game = () => {
-    const { game } = useGameStore()
+    const { game, currentTurn } = useGameStore()
     const { username } = useUserStore()
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
     const router = useRouter();
@@ -90,7 +90,6 @@ const Game = () => {
                             <MyTurnWordInput
                                 playerTurn={getPlayerTurn()}
                                 onSubmit={emitSubmitWord}
-                                onTimeOut={() => emitSubmitWord("")}
                             />
                         )}
 

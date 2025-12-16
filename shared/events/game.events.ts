@@ -1,7 +1,6 @@
 export enum GameEvents {
     PLAYER_READY ="game:player_ready",
-    ALL_READY = "game:all_ready",
-    WORD_INPUT_TURN = "game:word_input_turn", // LO EMITE EL SV PARA AVISAR LA FASE Y A QUIEN LE TOCA
+    START_ROUND = "game:start_round",
     SUBMIT_WORD = "game:submit_word", // LO EMITE EL JUGADOR
     WORD_SUBMITTED = "game:word_submitted", // LO EMITE EL SV PARA NOTIFICAR LA PALABRA INGRESADA
     DISCUSSION_TURN_END = "game:discussion_turn_end", // LO EMITE CADA JUGADOR Y EL SV CUANDO RECIBE TODOS EMITE EL VOTE TURN
