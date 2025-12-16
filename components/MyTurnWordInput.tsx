@@ -21,7 +21,6 @@ export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: Tur
     const [word, setWord] = useState("");
     const [wordSent, setWordSent] = useState(false);
     const [sending, setSending] = useState(false);
-    const [timeout, setTimeout] = useState(false);
     const { username } = useUserStore();
 
     const isMyTurn = () => playerTurn.player === username;
@@ -47,7 +46,6 @@ export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: Tur
     };
 
     const handleTimeOut = async () => {
-        setTimeout(true) // asi bloqueo el input
         await handleSubmit()
     }
 
@@ -77,11 +75,11 @@ export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: Tur
                                 onChange={(e) => setWord(e.target.value)}
                                 onKeyDown={handleKeyDown}
                                 placeholder="Ingresá tu palabra..."
-                                disabled={sending || timeout || wordSent}
+                                disabled={sending || wordSent}
                             />
                         </CardContent>
                         <CardFooter>
-                            <Button className={`w-full ${timeout && "bg-muted-foreground"}`} onClick={handleSubmit} disabled={sending || timeout || wordSent}>
+                            <Button className={`w-full ${ "bg-muted-foreground"}`} onClick={handleSubmit} disabled={sending || wordSent}>
                                 {sending ? "Enviando..." : "Jugar"}
                             </Button>
                         </CardFooter>
