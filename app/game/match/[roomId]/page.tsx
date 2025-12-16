@@ -18,7 +18,7 @@ import YouAreDeadCard from "@/components/youAreDeadCard";
 
 
 const Game = () => {
-    const { game, currentTurn } = useGameStore()
+    const { game } = useGameStore()
     const { username } = useUserStore()
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
     const router = useRouter();

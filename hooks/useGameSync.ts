@@ -38,13 +38,12 @@ export function useGameSync() {
     }
 
     const handleStartRound = (game: Game) => {
-        setAllReady(true)
         updateGame(game)
+        setAllReady(true)
     }
 
     const updateGame = (game: Game) => {
         setGame(game)
-        setTurn(game.currentTurn)
     }
 
     const handleGameAborted = (game: Game) => {
