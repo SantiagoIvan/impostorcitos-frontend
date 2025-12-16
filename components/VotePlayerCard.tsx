@@ -35,7 +35,7 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
     const [selectedPlayerId, setSelectedPlayerId] = useState<string>("");
     const [sent, setSent] = useState(false);
     const {username} = useUserStore()
-    const { game } = useGameStore();
+    const { currentTurn } = useGameStore();
 
     const eligiblePlayers = players.filter((p) => p.name !== username);
 
@@ -46,14 +46,16 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
         onVote(selectedPlayerId);
     };
 
+
     return (
         <AnimatedFadeScaleComponent>
 
             <h1 className="text-2xl font-semibold text-center mb-3">Votacion</h1>
 
             <TimerDisplay
-                initialSeconds={game.room.voteTime}
-                onTimeOut={handleVote}
+                startedAt={currentTurn.startedAt}
+                duration={currentTurn.duration * 1000}
+                onTimeOut={() => handleVote()}
             />
             <Card className="w-full max-w-sm mx-auto shadow-lg">
                 <CardHeader>

@@ -4,7 +4,7 @@ import {useGameStore} from "@/app/store/gameStore";
 import AnimatedFadeScaleComponent from "@/components/AnimatedFadeScaleComponent";
 
 export function DiscussionCard({onTimeOut}: { onTimeOut: () => void}) {
-    const { game } = useGameStore();
+    const { game, currentTurn } = useGameStore();
 
     // ontimeout emitir evento
     const handleOnTimeOut = () => {
@@ -15,7 +15,8 @@ export function DiscussionCard({onTimeOut}: { onTimeOut: () => void}) {
         <AnimatedFadeScaleComponent>
             <h1 className="text-2xl font-semibold text-center mb-3">Discusion</h1>
             <TimerDisplay
-                initialSeconds={game.room.discussionTime}
+                startedAt={currentTurn.startedAt}
+                duration={game.room.discussionTime * 1000}
                 onTimeOut={handleOnTimeOut}
             />
             <Card className="w-full max-w-xl mx-auto shadow-md">

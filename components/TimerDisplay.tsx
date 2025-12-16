@@ -1,26 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {useTimer} from "@/hooks/useTimer";
 
 interface TimerDisplayProps {
-    initialSeconds: number;
+    startedAt: number;
     onTimeOut: () => void;
+    duration: number;
 }
 
-export function TimerDisplay({ initialSeconds, onTimeOut }: TimerDisplayProps) {
-    const [seconds, setSeconds] = useState(initialSeconds);
-    // podria ir en un store para hacerlo global y ahi podria resetearlo en cada word submitted, y en la votacion mantenerlo fijo para todos
+export function TimerDisplay({ startedAt, onTimeOut, duration }: TimerDisplayProps) {
+    const endTime = startedAt + duration;
+    const { seconds, isFinished } = useTimer(endTime);
+
 
     useEffect(() => {
-        if (seconds <= 0) {
+        if (isFinished) {
             onTimeOut()
-            return;
         }
-        const interval = setInterval(() => setSeconds((s) => s - 1), 1000);
-        return () => clearInterval(interval);
-    }, [seconds]);
 
-    if (seconds <= 0) return null;
-
+    }, [seconds, isFinished]);
     const isCritical = seconds <= 10;
 
     return (

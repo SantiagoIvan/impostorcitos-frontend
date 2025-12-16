@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {Game, GameEvents, RoundResult} from "@/shared";
+import {Game, GameEvents, GamePhase, RoundResult} from "@/shared";
 import {useUserStore} from "@/app/store/userStore";
 import {useGameStore} from "@/app/store/gameStore";
 
@@ -10,7 +10,7 @@ import {useGameStore} from "@/app/store/gameStore";
 export function useGameSync() {
     const {socket} = useSocket();
     const { username } = useUserStore()
-    const { game, setGame } = useGameStore()
+    const { game, setGame, setTurn } = useGameStore()
     const [roundResult, setRoundResult] = useState<RoundResult>();
     const [showResults, setShowResults] = useState<boolean>(true);
     const [allReady, setAllReady] = useState<boolean>(false);
@@ -33,6 +33,7 @@ export function useGameSync() {
 
     const handleRoundResult = ({game, roundResult} : {game: Game, roundResult: RoundResult}) => {
         setGame(game)
+        setTurn(game.currentTurn)
         setRoundResult(roundResult)
         setShowResults(true)
     }
@@ -41,16 +42,24 @@ export function useGameSync() {
         setAllReady(true)
     }
 
+    const handleWordSubmitted = (game: Game) => {
+        setGame(game)
+        setTurn(game.currentTurn)
+        console.log("Se recibio evento de palabra enviada, ahora le toca a: ", game.currentTurn)
+    }
 
     useEffect(() => {
         socket.on(GameEvents.ALL_READY, handleAllReady)
 
         // Para las jugadas realizadas
         socket.on(GameEvents.WORD_INPUT_TURN, (game: Game) => { setGame(game) })
-        socket.on(GameEvents.WORD_SUBMITTED, (game: Game) => { setGame(game) })
+        socket.on(GameEvents.WORD_SUBMITTED, handleWordSubmitted)
 
         // Para votacion
-        socket.on(GameEvents.VOTE_TURN, (game: Game) => { setGame(game) })
+        socket.on(GameEvents.VOTE_TURN, (game: Game) => {
+            setGame(game)
+            setTurn(game.currentTurn)
+        })
         socket.on(GameEvents.VOTE_SUBMITTED, (game: Game) => { setGame(game) })
 
         // Para final de ronda

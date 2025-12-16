@@ -8,18 +8,17 @@ import {useGameStore} from "@/app/store/gameStore";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import GameInfoOverlay from "@/components/GameInfoOverlay";
 import RoundsTable from "@/components/RoundsTable";
-import {GamePhase, Player} from "@/shared";
+import {GamePhase, Player, Turn} from "@/shared";
 import MyTurnWordInput from "@/components/MyTurnWordInput";
 import {VotePlayerCard} from "@/components/VotePlayerCard";
 import {DiscussionCard} from "@/components/DiscussionCard";
 import {useRouter} from "next/navigation";
 import {RoundResultDialog} from "@/components/RoundResultDialog";
 import YouAreDeadCard from "@/components/youAreDeadCard";
-import {AnimatePresence, motion } from "framer-motion";
 
 
 const Game = () => {
-    const { game} = useGameStore()
+    const { game } = useGameStore()
     const { username } = useUserStore()
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
     const router = useRouter();
@@ -27,7 +26,7 @@ const Game = () => {
 
     const getAlivePlayers = (): Player[] => game.activePlayers.filter((player: Player) => player.isAlive)
 
-    const getPlayerTurn = (): string => game.orderToPlay[game.nextTurnIndexPlayer]
+    const getPlayerTurn = (): Turn => game.currentTurn
 
     const handleOnRounResultDialogClose = () => {
         setShowResults(false);
@@ -55,6 +54,7 @@ const Game = () => {
     }, [])
 
     const amIImpostor = () => game.impostor === username
+
 
     return (
         <main className="flex flex-col bg-background gap-10 w-full m-10">
@@ -124,7 +124,7 @@ const Game = () => {
                 </div>
                 {/* Chat Panel */}
                 <div className="flex w-full flex-col lg:w-1/2">
-                    <ChatPanel roomId={game.room.id}/>
+                    <ChatPanel roomId={game.room.id} gameId={game.id}/>
                 </div>
 
             </div>

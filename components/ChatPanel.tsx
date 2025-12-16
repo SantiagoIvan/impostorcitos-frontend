@@ -15,7 +15,7 @@ import {useMessagesSocket} from "@/hooks/useMessagesSocket";
 import {DateService} from "@/app/services/date.service";
 
 
-export function ChatPanel({roomId}: {roomId?: string}) {
+export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) {
     const {username} = useUserStore()
     const {socket} = useSocket();
     const {messages, clearMessages} = useMessagesStore()
@@ -26,6 +26,7 @@ export function ChatPanel({roomId}: {roomId?: string}) {
         if (inputValue.trim()) {
             const newMessage: CreateMessageDto = {
                 roomId: roomId,
+                gameId: gameId,
                 text: inputValue,
                 sender: username,
                 createdAt: new Date().toLocaleTimeString("es-ES", {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,11 +8,11 @@ import {AnimatePresence, motion } from "framer-motion";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
 import {useUserStore} from "@/app/store/userStore";
-import YouAreDeadCard from "@/components/youAreDeadCard";
 import AnimatedFadeScaleComponent from "@/components/AnimatedFadeScaleComponent";
+import {Turn} from "@/shared";
 
 interface TurnInputProps {
-    playerTurn: string;                  // determina si puedo jugar
+    playerTurn: Turn;
     onSubmit: (word: string) => Promise<void> | void; // permite async
     onTimeOut: () => void;
 }
@@ -22,13 +22,12 @@ export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: Tur
     const [wordSent, setWordSent] = useState(false);
     const [sending, setSending] = useState(false);
     const [timeout, setTimeout] = useState(false);
-    const { game } = useGameStore();
     const { username } = useUserStore();
 
-    const isMyTurn = () => playerTurn === username;
+    const isMyTurn = () => playerTurn.player === username;
 
     const handleSubmit = async () => {
-        if (!word.trim() || !isMyTurn()) return;
+        if (!isMyTurn()) return;
 
         setSending(true);
         setWordSent(true);
@@ -41,15 +40,15 @@ export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: Tur
     };
 
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && isMyTurn() && !sending) {
-            handleSubmit();
+            await handleSubmit();
         }
     };
 
-    const handleTimeOut = () => {
+    const handleTimeOut = async () => {
         setTimeout(true) // asi bloqueo el input
-        onTimeOut()
+        await handleSubmit()
     }
 
 
@@ -57,13 +56,13 @@ export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: Tur
         <div className="flex flex-col gap-3 items-center justify-center">
             <h1 className="text-2xl font-semibold text-center">Juga una palabra</h1>
             {
-                wordSent ?
-                (<h1 className="text-xl font-semibold text-center">Palabra enviada</h1>) : (
-                <TimerDisplay
-                    initialSeconds={game.room.moveTime}
-                    onTimeOut={() => handleTimeOut()}
-                />
-                    )}
+                wordSent &&
+                (<h1 className="text-xl font-semibold text-center">Palabra enviada</h1>)}
+            <TimerDisplay
+                startedAt={playerTurn.startedAt}
+                duration={playerTurn.duration * 1000}
+                onTimeOut={handleTimeOut}
+            />
             {isMyTurn() ? (
                 <AnimatedFadeScaleComponent>
                     <Card>
@@ -92,7 +91,7 @@ export default function MyTurnWordInput({ playerTurn, onSubmit, onTimeOut }: Tur
                 <AnimatedFadeScaleComponent>
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-center text-xl">Turno de {playerTurn}</CardTitle>
+                            <CardTitle className="text-center text-xl">Turno de {playerTurn.player}</CardTitle>
                         </CardHeader>
                     </Card>
                 </AnimatedFadeScaleComponent>
