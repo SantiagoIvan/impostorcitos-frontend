@@ -7,7 +7,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import {RoundResult} from "@/shared";
+import {RoundResult} from "@/lib";
 
 interface Props {
     open: boolean;

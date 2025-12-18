@@ -2,8 +2,7 @@
 "use client";
 
 import React from "react";
-import {Move, Round} from "@/shared";
-import { buildRoundTable } from "@/lib/utils";
+import {Move, buildRoundTable} from "@/lib";
 
 interface Props {
     moves: Move[];

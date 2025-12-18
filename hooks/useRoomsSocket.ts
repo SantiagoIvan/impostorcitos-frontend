@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {JoinRoomDto, Room, RoomEvents} from "@/shared";
+import {JoinRoomDto, Room, RoomEvents} from "@/lib";
 import {useRoomsStore} from "@/app/store/roomsStore";
 
 export function useRoomsSocket() {

@@ -1,4 +1,4 @@
-import {defaultRoom, Room, RoomEvents} from "@/shared";
+import {defaultRoom, Room, RoomEvents} from "@/lib";
 import {Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Description} from "@radix-ui/react-dialog";
 import PlayersList from "@/components/PlayersList";

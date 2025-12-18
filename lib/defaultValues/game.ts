@@ -1,4 +1,4 @@
-import {defaultRoom, GamePhase} from "@/shared";
+import {defaultRoom, GamePhase} from "@/lib";
 
 export const defaultGame = {
     id: "",

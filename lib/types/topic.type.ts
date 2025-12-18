@@ -7,5 +7,5 @@ export enum Topic {
     ANIME_CHARACTERS = "Personajes de anime",
     CLOTHES = "Ropa",
     SPORTS = "Deportes",
-    DEFAULT = "Anime"
+    DEFAULT = "Autos"
 }

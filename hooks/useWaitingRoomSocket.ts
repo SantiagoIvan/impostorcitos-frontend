@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {Game, Room, RoomEvents} from "@/shared";
+import {Game, Room, RoomEvents} from "@/lib";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {RoomService} from "@/app/services/room.service"
 import {useRouter} from "next/navigation";

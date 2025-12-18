@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Send } from "lucide-react"
 import {useUserStore} from "@/app/store/userStore";
-import {CreateMessageDto, MessageEvents} from "@/shared"
+import {CreateMessageDto, MessageEvents} from "@/lib"
 import {useSocket} from "@/hooks/useSocket";
 import {useMessagesStore} from "@/app/store/messageStore";
 import {useMessagesSocket} from "@/hooks/useMessagesSocket";

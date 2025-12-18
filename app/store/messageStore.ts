@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Message } from "@/shared";
+import { Message } from "@/lib";
 
 interface MessageStore {
     messages: Message[];

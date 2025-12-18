@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import {Move, Player} from "@/shared";
+import {Move} from "@/lib";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

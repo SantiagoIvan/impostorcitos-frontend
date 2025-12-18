@@ -1,4 +1,4 @@
-import {CreateRoomDto, JoinRoomDto} from "@/shared";
+import {CreateRoomDto, JoinRoomDto} from "@/lib";
 
 export const RoomService = {
     setAdminRoom: (name: string, roomDto: CreateRoomDto)  => {

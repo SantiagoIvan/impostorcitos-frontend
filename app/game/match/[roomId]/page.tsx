@@ -8,7 +8,7 @@ import {useGameStore} from "@/app/store/gameStore";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import GameInfoOverlay from "@/components/GameInfoOverlay";
 import RoundsTable from "@/components/RoundsTable";
-import {GamePhase, Player, Turn} from "@/shared";
+import {GamePhase, Player, Turn} from "@/lib";
 import MyTurnWordInput from "@/components/MyTurnWordInput";
 import {VotePlayerCard} from "@/components/VotePlayerCard";
 import {DiscussionCard} from "@/components/DiscussionCard";

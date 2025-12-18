@@ -1,5 +1,5 @@
 import { z } from "zod";
-import {RoomType} from "@/shared";
+import {RoomType} from "@/lib";
 
 export const createRoomSchema = z.object({
     admin: z.string(),

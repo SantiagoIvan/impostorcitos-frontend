@@ -22,7 +22,7 @@ import {
     SelectItem,
 } from "@/components/ui/select";
 
-import { createRoomSchema, CreateRoomDto, RoomType, RoomEvents } from "@/shared";
+import { createRoomSchema, CreateRoomDto, RoomType, RoomEvents } from "@/lib";
 import {useSocket} from "@/hooks/useSocket";
 import {useUserStore} from "@/app/store/userStore";
 import {RoomService} from "@/app/services/room.service";
@@ -84,6 +84,7 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
                     <div className="item-form">
                         <Label>Privacidad</Label>
                         <Select
+                            defaultValue={RoomType.PUBLIC}
                             value={privacy}
                             onValueChange={(value: RoomType) =>
                                 setValue("privacy", value)

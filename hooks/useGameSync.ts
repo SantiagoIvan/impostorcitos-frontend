@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {Game, GameEvents, GamePhase, RoundResult} from "@/shared";
+import {Game, GameEvents, RoundResult} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {useGameStore} from "@/app/store/gameStore";
 

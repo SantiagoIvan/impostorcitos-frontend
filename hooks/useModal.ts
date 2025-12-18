@@ -1,4 +1,3 @@
-// hooks/useConfirm.ts
 import { useState } from "react";
 
 export function useConfirmationModal() {

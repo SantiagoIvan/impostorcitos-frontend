@@ -19,7 +19,7 @@ import {
 
 import { ChevronsUpDown } from "lucide-react";
 
-import { Player } from "@/shared";
+import { Player } from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";

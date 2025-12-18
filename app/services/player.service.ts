@@ -1,4 +1,4 @@
-import {Player} from "@/shared";
+import {Player} from "@/lib";
 
 export const PlayerService = {
     createPlayer: (username: string) : Player => {

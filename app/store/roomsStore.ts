@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import {JoinRoomDto, Room} from "@/shared";
-import {defaultRoom} from "@/shared/defaultValues/room";
-import {PlayerService} from "@/app/services/player.service";
+import { Room, defaultRoom} from "@/lib";
 import {ParamValue} from "next/dist/server/request/params";
 
 interface RoomStore {

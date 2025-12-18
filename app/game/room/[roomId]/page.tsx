@@ -10,7 +10,7 @@ import PlayersList from "@/components/PlayersList";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import { RoomService } from "@/app/services/room.service";
 import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
-import {Player} from "@/shared";
+import {Player} from "@/lib";
 import {toast} from "sonner";
 
 const WaitingRoom = () => {

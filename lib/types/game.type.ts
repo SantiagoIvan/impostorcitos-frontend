@@ -1,4 +1,4 @@
-import { Player, Room, Move, Vote, GamePhase, Turn} from "@/shared";
+import { Player, Room, Move, Vote, GamePhase, Turn} from "@/lib";
 
 export interface Game {
     id: string

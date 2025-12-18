@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import {defaultTurn, Game, Turn} from "@/shared";
-import {defaultGame} from "@/shared";
+import {Game, defaultGame} from "@/lib";
 
 interface GameStore {
     game: Game;

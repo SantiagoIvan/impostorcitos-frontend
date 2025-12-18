@@ -1,4 +1,4 @@
-import {defaultRoom, Player, Room} from "@/shared";
+import {defaultRoom, Player, Room} from "@/lib";
 import {CheckIcon, XIcon} from "lucide-react";
 
 export default function PlayersList ({room = defaultRoom, waitingRoomFlag = false}   : {room: Room, waitingRoomFlag?: boolean}) {

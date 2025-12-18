@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useSocket } from "@/hooks/useSocket";
 import { useMessagesStore } from "@/app/store/messageStore";
-import { MessageEvents, Message } from "@/shared"
+import { MessageEvents, Message } from "@/lib"
 
 // proximamente le agrego un room Id para poder hacerlo multiroom
 export function useMessagesSocket(roomId?: string) {

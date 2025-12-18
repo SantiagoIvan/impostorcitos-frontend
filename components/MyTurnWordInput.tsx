@@ -1,13 +1,13 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import { useState} from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useUserStore} from "@/app/store/userStore";
 import AnimatedFadeScaleComponent from "@/components/AnimatedFadeScaleComponent";
-import {Turn} from "@/shared";
+import {Turn} from "@/lib";
 
 interface TurnInputProps {
     playerTurn: Turn;
