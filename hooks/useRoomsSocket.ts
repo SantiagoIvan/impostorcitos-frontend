@@ -1,22 +1,23 @@
 import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {JoinRoomDto, Room, RoomEvents} from "@/lib";
+import {JoinRoomDto, RoomDto, RoomEvents} from "@/lib";
 import {useRoomsStore} from "@/app/store/roomsStore";
 
 export function useRoomsSocket() {
     const {setRooms, addRoom, updateRoom} = useRoomsStore()
     const {socket} = useSocket();
 
-    const handleAddRoom = (room: Room) => {
+    const handleAddRoom = (room: RoomDto) => {
+        console.log(`Room created: ${room}`)
         addRoom(room);
     }
-    const handleSetRooms = (rooms: Room[]) => {
+    const handleSetRooms = (rooms: RoomDto[]) => {
         setRooms(rooms);
     }
-    const handleNewPlayerJoined = (room: Room) => {
+    const handleNewPlayerJoined = (room: RoomDto) => {
         updateRoom(room);
     }
-    const handleUserLeft = (room: Room) => {
+    const handleUserLeft = (room: RoomDto) => {
         updateRoom(room);
     }
     const emitLeaveEvent = (outcomingPlayer: JoinRoomDto) => {

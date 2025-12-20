@@ -10,7 +10,7 @@ import PlayersList from "@/components/PlayersList";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import { RoomService } from "@/app/services/room.service";
 import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
-import {Player} from "@/lib";
+import {PlayerDto} from "@/lib";
 import {toast} from "sonner";
 
 const WaitingRoom = () => {
@@ -34,7 +34,7 @@ const WaitingRoom = () => {
     }
     const handleStart = () => {
         const currentRoom = getRoomById(roomId);
-        if(currentRoom.players.some((player: Player) => !player.isReady )) {
+        if(currentRoom.players.some((player: PlayerDto) => !player.isReady )) {
             toast.error("Todos deben estar listos");
         }else if (currentRoom.players.length < MIN_PLAYERS_QUANTITY) {
             toast.error(`Debe haber un minimo de ${MIN_PLAYERS_QUANTITY} jugadores para comenzar`);

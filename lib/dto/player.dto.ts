@@ -1,4 +1,4 @@
-export interface Player {
+export interface PlayerDto {
     name: string
     isReady: boolean
     isAlive: boolean

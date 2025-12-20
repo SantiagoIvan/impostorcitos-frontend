@@ -1,13 +1,13 @@
 import { create } from "zustand";
-import { Room, defaultRoom} from "@/lib";
+import { RoomDto, defaultRoom} from "@/lib";
 import {ParamValue} from "next/dist/server/request/params";
 
 interface RoomStore {
-    rooms: Room[];
-    setRooms: (rooms: Room[]) => void;
-    addRoom: (room: Room) => void;
-    getRoomById: (id?: ParamValue) => Room;
-    updateRoom: (room: Room) => void;
+    rooms: RoomDto[];
+    setRooms: (rooms: RoomDto[]) => void;
+    addRoom: (room: RoomDto) => void;
+    getRoomById: (id?: ParamValue) => RoomDto;
+    updateRoom: (room: RoomDto) => void;
 }
 
 export const useRoomsStore = create<RoomStore>((set, get) => ({
@@ -19,8 +19,8 @@ export const useRoomsStore = create<RoomStore>((set, get) => ({
         set((state) => ({
             rooms: [...state.rooms, room],
         })),
-    getRoomById: (roomId? : ParamValue) : Room => get().rooms.find((room) => room.id === roomId) || defaultRoom,
-    updateRoom: (updatedRoom: Room) =>
+    getRoomById: (roomId? : ParamValue) : RoomDto => get().rooms.find((room) => room.id === roomId) || defaultRoom,
+    updateRoom: (updatedRoom: RoomDto) =>
         set((state) => {
                 const copyRooms = [...state.rooms];
                 for (let i = 0; i < copyRooms.length; i++) {

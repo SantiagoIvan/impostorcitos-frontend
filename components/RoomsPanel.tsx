@@ -1,13 +1,13 @@
 "use client"
 
-import { useState} from "react"
+import {useEffect, useState} from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, Circle } from "lucide-react"
 import {useRoomsStore} from "@/app/store/roomsStore"
-import {defaultRoom, Room, RoomType} from "@/lib"
+import {defaultRoom, RoomDto, RoomType} from "@/lib"
 import {useRoomsSocket} from "@/hooks/useRoomsSocket"
 import ConfirmationRoomModal from "@/components/ConfirmationRoomModal"
 import { toast } from "sonner"
@@ -17,11 +17,11 @@ export function RoomsPanel() {
     useRoomsSocket();
     const [searchQuery, setSearchQuery] = useState("")
     const rooms = useRoomsStore(state => state.rooms)
-    const [selectedRoom, setSelectedRoom] = useState<Room>(() => defaultRoom)
+    const [selectedRoom, setSelectedRoom] = useState<RoomDto>(() => defaultRoom)
     const [selectedRoomModalOpen, setSelectedRoomModalOpen] = useState<boolean>(false)
 
 
-    const filterRooms = (rooms: Room[], rawQuery: string): Room[] => {
+    const filterRooms = (rooms: RoomDto[], rawQuery: string): RoomDto[] => {
         const query = rawQuery.toLowerCase().trim();
         if (!query) return rooms;
 
@@ -53,7 +53,7 @@ export function RoomsPanel() {
         }
     }
 
-    const handleRoomClick = (room: Room) => {
+    const handleRoomClick = (room: RoomDto) => {
         if(room.players.length >= room.maxPlayers) {
             toast.error("Sala llena");
             return

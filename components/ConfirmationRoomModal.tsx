@@ -1,4 +1,4 @@
-import {defaultRoom, Room, RoomEvents} from "@/lib";
+import {defaultRoom, RoomDto, RoomEvents} from "@/lib";
 import {Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Description} from "@radix-ui/react-dialog";
 import PlayersList from "@/components/PlayersList";
@@ -6,10 +6,11 @@ import {Button} from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import {useSocket} from "@/hooks/useSocket";
 import {useUserStore} from "@/app/store/userStore";
+import {useEffect} from "react";
 
 export default function ConfirmationRoomModal(
     {room, open, setSelectedRoom, setSelectedRoomModalOpen}:
-    {room: Room, open: boolean, setSelectedRoom: (room: Room) => void,setSelectedRoomModalOpen: (open: boolean) => void}
+    {room: RoomDto, open: boolean, setSelectedRoom: (room: RoomDto) => void,setSelectedRoomModalOpen: (open: boolean) => void}
 ) {
     const { socket } = useSocket();
     const { username } = useUserStore()
@@ -26,6 +27,7 @@ export default function ConfirmationRoomModal(
         setSelectedRoomModalOpen(false)
         setSelectedRoom(defaultRoom)
     }
+
     return (
         <Dialog open={open} onOpenChange={handleModalClose}>
             <DialogContent className="sm:max-w-[425px]">

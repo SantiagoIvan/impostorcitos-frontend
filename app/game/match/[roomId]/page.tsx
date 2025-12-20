@@ -8,7 +8,7 @@ import {useGameStore} from "@/app/store/gameStore";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import GameInfoOverlay from "@/components/GameInfoOverlay";
 import RoundsTable from "@/components/RoundsTable";
-import {GamePhase, Player, Turn} from "@/lib";
+import {GamePhase, PlayerDto, Turn} from "@/lib";
 import MyTurnWordInput from "@/components/MyTurnWordInput";
 import {VotePlayerCard} from "@/components/VotePlayerCard";
 import {DiscussionCard} from "@/components/DiscussionCard";
@@ -24,7 +24,7 @@ const Game = () => {
     const router = useRouter();
 
 
-    const getAlivePlayers = (): Player[] => game.activePlayers.filter((player: Player) => player.isAlive)
+    const getAlivePlayers = (): PlayerDto[] => game.activePlayers.filter((player: PlayerDto) => player.isAlive)
 
     const getPlayerTurn = (): Turn => game.currentTurn
 
@@ -34,7 +34,7 @@ const Game = () => {
         else emitNextRound();
     }
 
-    const amIAlive = () : boolean => getAlivePlayers().some((player: Player) => player.name === username)
+    const amIAlive = () : boolean => getAlivePlayers().some((player: PlayerDto) => player.name === username)
 
     // escuchar cambios de fase para cambiar UI
     const {

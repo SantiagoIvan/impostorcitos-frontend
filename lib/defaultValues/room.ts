@@ -1,4 +1,4 @@
-import { RoomType } from "@/lib";
+import { RoomType} from "@/lib";
 
 export const defaultRoom = {
     id: "0",

@@ -1,11 +1,11 @@
-import { Player, Room, Move, Vote, GamePhase, Turn} from "@/lib";
+import { PlayerDto, RoomDto, Move, Vote, GamePhase, Turn} from "@/lib";
 
 export interface Game {
     id: string
-    room: Room
+    room: RoomDto
     topic: string
     secretWord: string
-    activePlayers: Player[]
+    activePlayers: PlayerDto[]
     impostor: string
     moves: Move[],
     votes: Vote[],

@@ -19,14 +19,14 @@ import {
 
 import { ChevronsUpDown } from "lucide-react";
 
-import { Player } from "@/lib";
+import { PlayerDto } from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
 import AnimatedFadeScaleComponent from "@/components/AnimatedFadeScaleComponent";
 
 interface VotePlayerCardProps {
-    players: Player[];
+    players: PlayerDto[];
     onVote: (targetId: string) => void;
 }
 

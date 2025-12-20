@@ -1,9 +1,9 @@
-import { RoomType } from "@/shared"
-import {Player} from "@/shared"
+import { RoomType } from "@/lib"
+import {PlayerDto} from "@/lib"
 
-export interface Room {
+export interface RoomDto {
     id: string
-    admin: string,
+    admin: string
     name: string
     password?: string
     privacy: RoomType
@@ -12,5 +12,5 @@ export interface Room {
     voteTime: number // tiempo para votar en segundos
     moveTime: number // tiempo para hacer tu jugada: elegir palabra
     maxPlayers: number
-    players: Player[]
+    players: PlayerDto[]
 }
