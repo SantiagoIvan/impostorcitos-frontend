@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {Game, RoomDto, RoomEvents} from "@/lib";
+import {GameDto, RoomDto, RoomEvents} from "@/lib";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {RoomService} from "@/app/services/room.service"
 import {useRouter} from "next/navigation";
@@ -18,7 +18,7 @@ export function useWaitingRoomSocket(roomId: string) {
     const handleUserReady = (room: RoomDto) => {
         updateRoom(room);
     }
-    const handleGameStarting = (newGame : Game) => {
+    const handleGameStarting = (newGame : GameDto) => {
         setGame(newGame)
         router.push(`/game/match/${newGame.id}`);
     }

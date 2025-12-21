@@ -1,12 +1,12 @@
 import { create } from "zustand";
-import {Game, defaultGame} from "@/lib";
+import {GameDto, defaultGame} from "@/lib";
 
 interface GameStore {
-    game: Game;
-    setGame: (game: Game) => void;
+    game: GameDto;
+    setGame: (game: GameDto) => void;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
     game: defaultGame,
-    setGame: (game: Game) => set({ game })
+    setGame: (game: GameDto) => set({ game })
 }));

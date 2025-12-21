@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {Game, GameEvents, RoundResult} from "@/lib";
+import {GameDto, GameEvents, RoundResult} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {useGameStore} from "@/app/store/gameStore";
 
@@ -31,23 +31,28 @@ export function useGameSync() {
         socket.emit(GameEvents.NEXT_ROUND, {username, gameId: game.id})
     }
 
-    const handleRoundResult = ({game, roundResult} : {game: Game, roundResult: RoundResult}) => {
+    const handleRoundResult = ({game, roundResult} : {game: GameDto, roundResult: RoundResult}) => {
         updateGame(game)
         setRoundResult(roundResult)
         setShowResults(true)
     }
 
-    const handleStartRound = (game: Game) => {
+    const handleStartRound = (game: GameDto) => {
+        console.log("Current turn", game.currentTurn)
+        console.log("Current turn", game.currentRound)
+        console.log("Current turn", game.currentPhase)
+        console.log("Game", game)
+        console.log("All ready", allReady)
         updateGame(game)
         setAllReady(true)
     }
 
-    const updateGame = (game: Game) => {
+    const updateGame = (game: GameDto) => {
         setGame(game)
     }
 
-    const handleGameAborted = (game: Game) => {
-        console.log(`Game avorted: ${game}`)
+    const handleGameAborted = (game: GameDto) => {
+        console.log(`Game aborted: ${game}`)
     }
 
     useEffect(() => {

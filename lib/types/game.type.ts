@@ -1,12 +1,10 @@
-import { PlayerDto, RoomDto, Move, Vote, GamePhase, Turn} from "@/lib";
+import { RoomDto, Move, Vote, GamePhase, Turn} from "@/lib";
 
-export interface Game {
+export interface GameDto {
     id: string
     room: RoomDto
     topic: string
-    secretWord: string
-    activePlayers: PlayerDto[]
-    impostor: string
+    secretWord?: string
     moves: Move[],
     votes: Vote[],
     impostorWonTheGame: boolean,

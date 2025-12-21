@@ -2,9 +2,8 @@ import { useEffect } from "react";
 import {AnimatePresence, motion} from "framer-motion";
 
 interface GameOverlayInfoProps {
-    secretWord: string;
+    secretWord?: string;
     topic: string;
-    impostor: boolean;
     onClose: () => void;
     show: boolean;
 }
@@ -12,7 +11,6 @@ interface GameOverlayInfoProps {
 export default function GameInfoOverlay({
                                             secretWord,
                                             topic,
-                                            impostor,
                                             onClose,
                                             show
                                         }: GameOverlayInfoProps) {
@@ -45,7 +43,7 @@ export default function GameInfoOverlay({
                     >
                         <h2 className="text-xl font-bold">Topico: {topic}</h2>
 
-                        {!impostor ? (
+                        {secretWord !== undefined ? (
                                 <motion.span
                                     animate={{
                                         scale: [1, 1.08, 1],

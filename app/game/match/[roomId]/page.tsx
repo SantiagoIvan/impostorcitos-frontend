@@ -24,7 +24,7 @@ const Game = () => {
     const router = useRouter();
 
 
-    const getAlivePlayers = (): PlayerDto[] => game.activePlayers.filter((player: PlayerDto) => player.isAlive)
+    const getAlivePlayers = (): PlayerDto[] => game.room.players.filter((player: PlayerDto) => player.isAlive)
 
     const getPlayerTurn = (): Turn => game.currentTurn
 
@@ -35,6 +35,7 @@ const Game = () => {
     }
 
     const amIAlive = () : boolean => getAlivePlayers().some((player: PlayerDto) => player.name === username)
+    const amIImpostor = () => game.secretWord !== undefined
 
     // escuchar cambios de fase para cambiar UI
     const {
@@ -53,7 +54,6 @@ const Game = () => {
         emitPlayerReady();
     }, [])
 
-    const amIImpostor = () => game.impostor === username
 
 
     return (
@@ -68,7 +68,6 @@ const Game = () => {
                         show={showGameInfo}
                         secretWord={game.secretWord}
                         topic={game.topic}
-                        impostor={game.impostor === username}
                         onClose={() => setShowGameInfo(false)}
                     />
                     <div className="text-center text-foreground space-y-4 p-10 border-b-4">

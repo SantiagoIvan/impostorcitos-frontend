@@ -6,7 +6,6 @@ import {Button} from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import {useSocket} from "@/hooks/useSocket";
 import {useUserStore} from "@/app/store/userStore";
-import {useEffect} from "react";
 
 export default function ConfirmationRoomModal(
     {room, open, setSelectedRoom, setSelectedRoomModalOpen}:
