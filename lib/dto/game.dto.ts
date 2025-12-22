@@ -6,7 +6,7 @@ export interface GameDto {
     topic: string
     moves: Move[]
     votes: Vote[]
-    impostor: string
+    impostor: boolean
     impostorWonTheGame: boolean
     currentTurn: Turn
     nextTurnIndexPlayer: number

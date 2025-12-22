@@ -38,10 +38,6 @@ export function useGameSync() {
     }
 
     const handleStartRound = (game: GameDto) => {
-        console.log("Current turn", game.currentTurn)
-        console.log("Current turn", game.currentRound)
-        console.log("Current turn", game.currentPhase)
-        console.log("Game", game)
         console.log("All ready", allReady)
         updateGame(game)
         setAllReady(true)

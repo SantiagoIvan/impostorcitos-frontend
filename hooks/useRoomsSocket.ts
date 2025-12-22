@@ -8,7 +8,6 @@ export function useRoomsSocket() {
     const {socket} = useSocket();
 
     const handleAddRoom = (room: RoomDto) => {
-        console.log(`Room created: ${room}`)
         addRoom(room);
     }
     const handleSetRooms = (rooms: RoomDto[]) => {

@@ -35,7 +35,7 @@ const Game = () => {
     }
 
     const amIAlive = () : boolean => getAlivePlayers().some((player: PlayerDto) => player.name === username)
-    const amIImpostor = () => game.secretWord !== undefined
+    const amIImpostor = () => game.impostor
 
     // escuchar cambios de fase para cambiar UI
     const {
@@ -51,6 +51,7 @@ const Game = () => {
     } = useGameSync();
 
     useEffect(() => {
+        console.log("impostor? ", amIImpostor())
         emitPlayerReady();
     }, [])
 
@@ -67,6 +68,7 @@ const Game = () => {
                     <GameInfoOverlay
                         show={showGameInfo}
                         secretWord={game.secretWord}
+                        impostor={amIImpostor}
                         topic={game.topic}
                         onClose={() => setShowGameInfo(false)}
                     />

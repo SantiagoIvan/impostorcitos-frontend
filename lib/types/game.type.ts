@@ -7,6 +7,7 @@ export interface GameDto {
     secretWord?: string
     moves: Move[],
     votes: Vote[],
+    impostor: boolean,
     impostorWonTheGame: boolean,
     nextTurnIndexPlayer: number,
     currentTurn: Turn
