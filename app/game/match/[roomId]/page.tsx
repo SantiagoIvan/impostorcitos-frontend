@@ -51,7 +51,6 @@ const Game = () => {
     } = useGameSync();
 
     useEffect(() => {
-        console.log("impostor? ", amIImpostor())
         emitPlayerReady();
     }, [])
 

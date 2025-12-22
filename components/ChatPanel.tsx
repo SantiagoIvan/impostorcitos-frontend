@@ -29,10 +29,7 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
                 gameId: gameId,
                 text: inputValue,
                 sender: username,
-                createdAt: new Date().toLocaleTimeString("es-ES", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                }),
+                createdAt: new Date().toISOString(),
             }
             socket.emit(MessageEvents.CREATE, newMessage)
             setInputValue("")
