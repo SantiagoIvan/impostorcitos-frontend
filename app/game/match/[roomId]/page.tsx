@@ -54,8 +54,6 @@ const Game = () => {
         emitPlayerReady();
     }, [])
 
-
-
     return (
         <main className="flex flex-col bg-background gap-10 w-full m-10">
             <div className="flex gap-4 w-full">
