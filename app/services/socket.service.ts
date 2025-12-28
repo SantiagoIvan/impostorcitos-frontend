@@ -3,7 +3,7 @@ const WS_URL = process.env.NEXT_PUBLIC_BACKEND_WS;
 
 let socket: Socket | null = null;
 
-// Aca ta el singleton
+// Aca ta el `singleton`
 export const getSocket = () => {
     if (!socket) {
         socket = io(WS_URL!, {
@@ -12,4 +12,8 @@ export const getSocket = () => {
         });
     }
     return socket;
+};
+
+export const disconnectSocket = () => {
+    socket?.disconnect();
 };

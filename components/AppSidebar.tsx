@@ -10,18 +10,35 @@ import {
 import {useUserStore} from "@/app/store/userStore";
 import {LogOut} from "lucide-react";
 
+/*
+    Si tuviera mas items le mando
 const items = [
     {
         key: 1,
         title: "Logout",
-        url: "/", // cambiar a logout cuando implemente login
+        url: "/",
         icon: LogOut
     }
 
 ]
+{items.map((item) => (
+    <SidebarMenuItem key={item.key}>
+        <SidebarMenuButton asChild>
+            <a href={item.url}>
+                <item.icon />
+                <span>{item.title}</span>
+            </a>
+        </SidebarMenuButton>
+    </SidebarMenuItem>
+))}
+*/
 
 export function AppSidebar() {
-    const {username} = useUserStore()
+    const {username, logout} = useUserStore()
+
+    const handleLogOut = () => {
+        logout()
+    }
 
     return (
         <Sidebar>
@@ -30,16 +47,12 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.key}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
+                            <SidebarMenuItem >
+                                <SidebarMenuButton onClick={handleLogOut}>
+                                    <LogOut className="h-5 w-5" />
+                                    <span>Logout</span>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>

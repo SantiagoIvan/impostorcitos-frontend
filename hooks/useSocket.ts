@@ -27,5 +27,7 @@ export const useSocket = () => {
         };
     }, [socket]);
 
-    return { socket, connected };
+    const disconnect = () => socket.disconnect();
+
+    return { socket, connected, disconnect };
 };

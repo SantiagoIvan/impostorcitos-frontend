@@ -9,13 +9,14 @@ import {useRouter} from "next/navigation";
 import { toast } from "sonner"
 
 export default function WelcomeScreen() {
-    const {username, setUsername} = useUserStore();
+    const {username, setUsername, login} = useUserStore();
     const router = useRouter();
 
     const continueToLobby = () => {
         if (username == "") {
             toast.error("Username is required");
         }else {
+            login(username);
             router.push("/game/lobby");
         }
     }
