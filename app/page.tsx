@@ -7,9 +7,10 @@ import {Label} from "@/components/ui/label";
 import {useUserStore} from "@/app/store/userStore";
 import {useRouter} from "next/navigation";
 import { toast } from "sonner"
+import {useEffect} from "react";
 
 export default function WelcomeScreen() {
-    const {username, setUsername, login} = useUserStore();
+    const {username, setUsername, login, clear} = useUserStore();
     const router = useRouter();
 
     const continueToLobby = () => {
@@ -25,6 +26,9 @@ export default function WelcomeScreen() {
             continueToLobby();
         }
     }
+    useEffect(() => {
+        clear()
+    }, []);
 
   return (
     <div className="flex flex-col justify-center m-auto items-center h-screen">

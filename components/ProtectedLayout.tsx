@@ -5,7 +5,7 @@ import { useUserStore } from "@/app/store/userStore";
 import { useRouter } from "next/navigation";
 
 
-export function ProtectedRoute({ children }: {
+export function ProtectedLayout({ children }: {
     children: React.ReactNode;
 }) {
     const { isAuthenticated, hasHydrated } = useUserStore();

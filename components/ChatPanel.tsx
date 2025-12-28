@@ -16,11 +16,11 @@ import {DateService} from "@/app/services/date.service";
 
 
 export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) {
+    useMessagesSocket(roomId)
     const {username} = useUserStore()
     const {socket} = useSocket();
     const {messages, clearMessages} = useMessagesStore()
     const [inputValue, setInputValue] = useState("")
-    useMessagesSocket(roomId)
 
     const handleSendMessage = () => {
         if (inputValue.trim()) {

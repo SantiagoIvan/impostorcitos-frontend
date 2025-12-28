@@ -23,7 +23,6 @@ export const useSocket = () => {
         return () => {
             socket.off("connect", onConnect);
             socket.off("disconnect", onDisconnect);
-            // No desconectes si la app sigue activa
         };
     }, [socket]);
 
