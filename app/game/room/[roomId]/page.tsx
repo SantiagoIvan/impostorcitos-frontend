@@ -45,7 +45,6 @@ const WaitingRoom = () => {
     }
 
     useEffect(() => {
-        console.log("Pegarle al backend para ver si existe este roomId y sino hacer redirect")
 
     }, [roomId]);
 

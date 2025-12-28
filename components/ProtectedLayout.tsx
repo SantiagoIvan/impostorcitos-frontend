@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import { useUserStore } from "@/app/store/userStore";
 import { useRouter } from "next/navigation";
 
@@ -8,26 +8,22 @@ import { useRouter } from "next/navigation";
 export function ProtectedLayout({ children }: {
     children: React.ReactNode;
 }) {
-    const { isAuthenticated, hasHydrated } = useUserStore();
+    const { username } = useUserStore();
     const router = useRouter();
 
+    const [mounted, setMounted] = useState(false);
+
+    // 🔑 clave: esperar montaje en cliente
     useEffect(() => {
-        if (!hasHydrated) return;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMounted(true);
+    }, []);
 
-        if (!isAuthenticated) {
-            router.replace("/");
-        }
-    }, [hasHydrated, isAuthenticated, router]);
+    useEffect(() => {
+        if(!mounted) return
+        if(!username) router.replace("/")
+    }, [mounted, router, username]);
 
-    // Mientras no esté hidratado, no renderizamos nada
-    if (!hasHydrated) {
-        return null;
-    }
-
-    // Si ya hidrató pero no está autenticado, evitamos render
-    if (!isAuthenticated) {
-        return null;
-    }
-
+    if(!username) return null;
     return <>{children}</>;
 }
