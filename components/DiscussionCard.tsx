@@ -1,13 +1,17 @@
-import {Card, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
 import AnimatedFadeScaleComponent from "@/components/AnimatedFadeScaleComponent";
+import {Button} from "@/components/ui/button";
+import {useState} from "react";
 
-export function DiscussionCard({onTimeOut}: { onTimeOut: () => void}) {
+export function DiscussionCard({onSubmit}: { onSubmit: () => void}) {
     const {game } = useGameStore();
+    const [skip, setSkip] = useState(false);
 
-    const handleOnTimeOut = () => {
-        onTimeOut()
+    const handleSubmit = () => {
+        setSkip(true);
+        onSubmit()
     }
 
     return (
@@ -16,7 +20,7 @@ export function DiscussionCard({onTimeOut}: { onTimeOut: () => void}) {
             <TimerDisplay
                 startedAt={game.currentTurn.startedAt}
                 duration={game.currentTurn.duration}
-                onTimeOut={handleOnTimeOut}
+                onTimeOut={handleSubmit}
             />
             <Card className="w-full max-w-xl mx-auto shadow-md">
                 <CardHeader>
@@ -24,6 +28,15 @@ export function DiscussionCard({onTimeOut}: { onTimeOut: () => void}) {
                         Discutan para decidir a quien echar
                     </CardTitle>
                 </CardHeader>
+                <CardContent>
+                    <Button
+                        className="w-full"
+                        onClick={handleSubmit}
+                        disabled={game.currentTurn.duration === 0 || skip}
+                    >
+                        Votemos
+                    </Button>
+                </CardContent>
             </Card>
         </AnimatedFadeScaleComponent>
     )

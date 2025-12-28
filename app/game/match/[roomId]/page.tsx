@@ -94,7 +94,7 @@ const Game = () => {
                         {/* Combobox para seleccionar jugador para eliminar */}
                         {game.currentPhase === GamePhase.DISCUSSION && (
                             <DiscussionCard
-                                onTimeOut={emitDiscussionTimeEnded}
+                                onSubmit={emitDiscussionTimeEnded}
                             />
                         )}
 
