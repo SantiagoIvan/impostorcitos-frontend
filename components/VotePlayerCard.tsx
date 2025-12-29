@@ -24,6 +24,7 @@ import {useUserStore} from "@/app/store/userStore";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
 import AnimatedFadeScaleComponent from "@/components/AnimatedFadeScaleComponent";
+import VotesTable from "@/components/VotesTable";
 
 interface VotePlayerCardProps {
     players: PlayerDto[];
@@ -51,7 +52,7 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
         <AnimatedFadeScaleComponent>
 
             <h1 className="text-2xl font-semibold text-center mb-3">Votacion</h1>
-
+            <VotesTable votes={game.votes}/>
             <TimerDisplay
                 startedAt={game.currentTurn.startedAt}
                 duration={game.currentTurn.duration}

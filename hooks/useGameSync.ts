@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {GameDto, GameEvents, RoundResult} from "@/lib";
+import {GameDto, GameEvents, RoundResult, VoteDto} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {useGameStore} from "@/app/store/gameStore";
 
@@ -10,7 +10,7 @@ import {useGameStore} from "@/app/store/gameStore";
 export function useGameSync() {
     const {socket} = useSocket();
     const { username } = useUserStore()
-    const { game, setGame } = useGameStore()
+    const { game, setGame, updateVotes } = useGameStore()
     const [roundResult, setRoundResult] = useState<RoundResult>();
     const [showResults, setShowResults] = useState<boolean>(true);
     const [allReady, setAllReady] = useState<boolean>(false);
@@ -46,6 +46,10 @@ export function useGameSync() {
         setGame(game)
     }
 
+    const handleVoteSubmitted = (votes: VoteDto[]) => {
+        updateVotes(votes)
+    }
+
     const handleGameAborted = (game: GameDto) => {
         console.log(`Game aborted: ${game}`)
     }
@@ -58,7 +62,7 @@ export function useGameSync() {
 
         // Para votacion
         socket.on(GameEvents.VOTE_TURN, updateGame)
-        socket.on(GameEvents.VOTE_SUBMITTED, updateGame)
+        socket.on(GameEvents.VOTE_SUBMITTED, handleVoteSubmitted)
 
         // Para final de ronda
         socket.on(GameEvents.ROUND_RESULT, handleRoundResult)

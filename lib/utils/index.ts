@@ -1,13 +1,13 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import {Move} from "@/lib";
+import {Move, VoteDto} from "@/lib";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 /**
- * Convierte una lista de RoundWordEntry en:
+ * Convierte una lista de Move en:
  * - players: array de { playerId, playerName }
  * - roundsCount: número máximo de rondas encontrado
  * - matrix: Record<playerId, string[]> donde cada array tiene length = roundsCount
@@ -33,4 +33,24 @@ export function buildRoundTable(moves: Move[]) {
   }
 
   return { players, roundsCount, matrix };
+}
+
+export function buildVotesTable(votes: VoteDto[]) {
+  // obtener conjunto de jugadores y su nombre (mantener orden de aparición)
+  const votedPlayers : string[] = votes.map((vote: VoteDto) => vote.votedPlayer)
+
+  // inicializar matriz vacía por jugador
+  const matrix: Record<string, number> = {};
+  for (const votedPlayer of votedPlayers) {
+    if(matrix[votedPlayer] == null) {
+      matrix[votedPlayer] = 0
+    }
+  }
+
+  // poblar matriz
+  for (const vote of votes) {
+    matrix[vote.votedPlayer] += 1;
+  }
+
+  return { votedPlayers, matrix };
 }

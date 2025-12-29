@@ -1,5 +1,4 @@
-export interface Vote {
+export interface VoteDto {
     roundId: number
-    player: string
     votedPlayer: string
 }

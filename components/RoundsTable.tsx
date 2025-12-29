@@ -1,7 +1,6 @@
-// components/RoundsTable.tsx
 "use client";
 
-import React, {useEffect} from "react";
+import React from "react";
 import {Move, buildRoundTable} from "@/lib";
 
 interface Props {
