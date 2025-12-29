@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react"
+import {useEffect, useRef, useState} from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -21,6 +21,7 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
     const {socket} = useSocket();
     const {messages, clearMessages} = useMessagesStore()
     const [inputValue, setInputValue] = useState("")
+    const bottomRef = useRef<HTMLDivElement | null>(null);
 
     const handleSendMessage = () => {
         if (inputValue.trim()) {
@@ -39,10 +40,14 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
     useEffect(() => {
         clearMessages()
     }, []);
-
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({
+            behavior: "smooth",
+        });
+    }, [messages]);
     return (
         <Card className="flex h-full flex-col">
-            <CardHeader className="border-b border-border">
+            <CardHeader className="border-b">
                 <div className="flex items-center gap-3">
                     <Avatar>
                         <AvatarImage src="/placeholder.svg?height=40&width=40" />
@@ -55,9 +60,9 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
                 </div>
             </CardHeader>
 
-            <CardContent className="flex flex-1 flex-col p-0">
-                <ScrollArea className="flex-1 p-4">
-                    <div className="flex flex-col gap-4">
+            <CardContent className="flex flex-1 flex-col p-0 shrink-0 overflow-y-auto">
+                <ScrollArea className="flex-1 p-4  min-h-0 ">
+                    <div className="flex flex-col gap-4 ">
                         {messages.map((message) => (
                             <div key={message.id} className={`flex ${message.sender == username ? "justify-end" : "justify-start"}`}>
                                 <div
@@ -76,15 +81,16 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
                                             message.sender == username ? "text-primary-foreground/70" : "text-muted-foreground"
                                         }`}
                                     >
-                    {DateService.formatTime(message.createdAt)}
-                  </span>
+                                        {DateService.formatTime(message.createdAt)}
+                                    </span>
                                 </div>
                             </div>
                         ))}
+                        <div ref={bottomRef}></div>
                     </div>
                 </ScrollArea>
 
-                <div className="border-t border-border p-4">
+                <div className="border-t p-4 shrink-0">
                     <form
                         onSubmit={(e) => {
                             e.preventDefault()
