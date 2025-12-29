@@ -19,7 +19,7 @@ import {
 
 import { ChevronsUpDown } from "lucide-react";
 
-import { PlayerDto } from "@/lib";
+import {PlayerDto, VoteDto} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
@@ -47,12 +47,13 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
         onVote(selectedPlayerId);
     };
 
+    const getVotesFromCurrentRound = () => game.votes.filter((vote: VoteDto) => vote.roundId === game.currentRound)
 
     return (
         <AnimatedFadeScaleComponent>
 
             <h1 className="text-2xl font-semibold text-center mb-3">Votacion</h1>
-            <VotesTable votes={game.votes}/>
+            <VotesTable votes={getVotesFromCurrentRound()}/>
             <TimerDisplay
                 startedAt={game.currentTurn.startedAt}
                 duration={game.currentTurn.duration}

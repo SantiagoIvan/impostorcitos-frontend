@@ -15,6 +15,7 @@ import {DiscussionCard} from "@/components/DiscussionCard";
 import {useRouter} from "next/navigation";
 import {RoundResultDialog} from "@/components/RoundResultDialog";
 import YouAreDeadCard from "@/components/youAreDeadCard";
+import {Button} from "@/components/ui/button";
 
 
 const Game = () => {
@@ -125,6 +126,7 @@ const Game = () => {
                 </div>
 
             </div>
+            <Button onClick={() => setShowGameInfo(true)}>Info</Button>
         </main>
     )
 }
