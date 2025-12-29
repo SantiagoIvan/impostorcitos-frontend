@@ -10,7 +10,7 @@ import PlayersList from "@/components/PlayersList";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import { RoomService } from "@/app/services/room.service";
 import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
-import {PlayerDto} from "@/lib";
+import {defaultRoom, PlayerDto} from "@/lib";
 import {toast} from "sonner";
 
 const WaitingRoom = () => {
@@ -45,8 +45,8 @@ const WaitingRoom = () => {
     }
 
     useEffect(() => {
-
-    }, [roomId]);
+        if(getRoomById(roomId).id === defaultRoom.id) router.push("/game/lobby")
+    }, []);
 
     return (
             <main className="flex flex-col bg-background gap-10 w-full m-10">
