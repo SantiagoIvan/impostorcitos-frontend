@@ -8,7 +8,7 @@ import {useGameStore} from "@/app/store/gameStore";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import GameInfoOverlay from "@/components/GameInfoOverlay";
 import RoundsTable from "@/components/RoundsTable";
-import {GamePhase, PlayerDto, Turn} from "@/lib";
+import {defaultGame, GamePhase, PlayerDto, Turn} from "@/lib";
 import MyTurnWordInput from "@/components/MyTurnWordInput";
 import {VotePlayerCard} from "@/components/VotePlayerCard";
 import {DiscussionCard} from "@/components/DiscussionCard";
@@ -60,6 +60,7 @@ const Game = () => {
     } = useGameSync();
 
     useEffect(() => {
+        if(game.id === defaultGame.id) redirectToLobby()
         emitPlayerReady();
     }, [])
 
