@@ -16,13 +16,14 @@ import {useRouter} from "next/navigation";
 import {RoundResultDialog} from "@/components/RoundResultDialog";
 import YouAreDeadCard from "@/components/youAreDeadCard";
 import {Button} from "@/components/ui/button";
+import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 
 
 const Game = () => {
-    const { game } = useGameStore()
+    const { game, clearGameStore } = useGameStore()
+    const { redirectToLobby} = useRedirectToLobby()
     const { username } = useUserStore()
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
-    const router = useRouter();
 
 
     const getAlivePlayers = (): PlayerDto[] => game.room.players.filter((player: PlayerDto) => player.isAlive)
@@ -31,13 +32,19 @@ const Game = () => {
 
     const handleOnRounResultDialogClose = () => {
         setShowResults(false);
-        if(roundResult?.winner) router.push(`/game/lobby`)
+        if(roundResult?.winner) redirectToLobby()
         else emitNextRound();
     }
 
     const amIAlive = () : boolean => getAlivePlayers().some((player: PlayerDto) => player.name === username)
     const amIImpostor = () => game.impostor
 
+    const handleLeaveGame = () => {
+        clearGameStore()
+        emitPlayerLeftGame()
+        redirectToLobby()
+
+    }
     // escuchar cambios de fase para cambiar UI
     const {
         emitPlayerReady,
@@ -48,7 +55,8 @@ const Game = () => {
         allReady,
         setShowResults,
         showResults,
-        roundResult
+        roundResult,
+        emitPlayerLeftGame
     } = useGameSync();
 
     useEffect(() => {
@@ -126,7 +134,7 @@ const Game = () => {
                 </div>
 
             </div>
-            <Button onClick={() => setShowGameInfo(true)}>Info</Button>
+            <Button className="max-w-20 text-center" onClick={handleLeaveGame}>Salir del juego</Button>
         </main>
     )
 }

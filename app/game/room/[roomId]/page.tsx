@@ -3,7 +3,7 @@
 import {ChatPanel} from "@/components/ChatPanel";
 import { Button } from "@/components/ui/button";
 import {useEffect, useState} from "react";
-import {useParams, useRouter} from "next/navigation";
+import {useParams} from "next/navigation";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {useUserStore} from "@/app/store/userStore";
 import PlayersList from "@/components/PlayersList";
@@ -12,20 +12,21 @@ import { RoomService } from "@/app/services/room.service";
 import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
 import {defaultRoom, PlayerDto} from "@/lib";
 import {toast} from "sonner";
+import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 
 const WaitingRoom = () => {
     const {roomId} = useParams<{roomId: string}>();
     const { username } = useUserStore();
     const { getRoomById } = useRoomsStore();
     const [ready, setReady] = useState<boolean>(false); // para setear ready o not ready
-    const router = useRouter();
+    const { redirectToLobby } = useRedirectToLobby()
     const {emitLeaveEvent} = useRoomsSocket();
     const { emitUserReady, emitStartGame } = useWaitingRoomSocket(roomId)
     const MIN_PLAYERS_QUANTITY = process.env.NEXT_PUBLIC_MIN_PLAYERS_QTY as unknown as number;
 
     const handleBack = () => {
         emitLeaveEvent(RoomService.createJoinRoomDto(roomId, username));
-        router.push("/game/lobby")
+        redirectToLobby()
     }
 
     const handleReady = () => {
@@ -45,7 +46,7 @@ const WaitingRoom = () => {
     }
 
     useEffect(() => {
-        if(getRoomById(roomId).id === defaultRoom.id) router.push("/game/lobby")
+        if(getRoomById(roomId).id === defaultRoom.id) redirectToLobby()
     }, []);
 
     return (

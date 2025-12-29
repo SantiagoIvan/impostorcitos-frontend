@@ -30,6 +30,9 @@ export function useGameSync() {
     const emitNextRound = () => {
         socket.emit(GameEvents.NEXT_ROUND, {username, gameId: game.id})
     }
+    const emitPlayerLeftGame = () => {
+        socket.emit(GameEvents.PLAYER_LEFT_GAME, {username, gameId: game.id})
+    }
 
     const handleRoundResult = ({game, roundResult} : {game: GameDto, roundResult: RoundResult}) => {
         updateGame(game)
@@ -89,6 +92,7 @@ export function useGameSync() {
         roundResult,
         showResults,
         setShowResults,
-        allReady
+        allReady,
+        emitPlayerLeftGame
     }
 }
