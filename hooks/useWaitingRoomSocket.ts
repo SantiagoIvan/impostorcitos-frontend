@@ -5,6 +5,7 @@ import {useRoomsStore} from "@/app/store/roomsStore";
 import {RoomService} from "@/app/services/room.service"
 import {useRouter} from "next/navigation";
 import {useGameStore} from "@/app/store/gameStore";
+import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 
 
 // En este hook puedo agregar otro tipo de eventos propios de un room, como por ejemplo algun audio como cuando
@@ -14,6 +15,7 @@ export function useWaitingRoomSocket(roomId: string) {
     const {updateRoom} = useRoomsStore()
     const {setGame} = useGameStore()
     const router = useRouter()
+    const {redirectToLobby} = useRedirectToLobby()
 
     const handleUserReady = (room: RoomDto) => {
         updateRoom(room);
@@ -21,6 +23,9 @@ export function useWaitingRoomSocket(roomId: string) {
     const handleGameStarting = (newGame : GameDto) => {
         setGame(newGame)
         router.push(`/game/match/${newGame.id}`);
+    }
+    const handleAbortRoom = () => {
+        redirectToLobby()
     }
 
     const emitUserReady = (username: string) => {
@@ -33,6 +38,7 @@ export function useWaitingRoomSocket(roomId: string) {
     useEffect(() => {
         socket.on(RoomEvents.USER_READY, handleUserReady)
         socket.on(RoomEvents.REDIRECT_TO_GAME, handleGameStarting)
+        socket.on(RoomEvents.ABORT_ROOM, handleAbortRoom)
 
         return () => {
             socket.off(RoomEvents.USER_READY, handleUserReady);

@@ -19,6 +19,7 @@ export function useRoomsSocket() {
     const handleUserLeft = (room: RoomDto) => {
         updateRoom(room);
     }
+
     const emitLeaveEvent = (outcomingPlayer: JoinRoomDto) => {
         socket.emit(RoomEvents.LEAVE, outcomingPlayer);
     }
@@ -29,6 +30,7 @@ export function useRoomsSocket() {
         socket.on(RoomEvents.CREATED, handleAddRoom);
         socket.on(RoomEvents.JOINED, handleNewPlayerJoined);
         socket.on(RoomEvents.USER_LEFT, handleUserLeft);
+
 
         return () => {
             socket.off(RoomEvents.LIST, handleSetRooms);
