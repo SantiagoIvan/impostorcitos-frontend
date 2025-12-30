@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Send } from "lucide-react"
 import {useUserStore} from "@/app/store/userStore";
-import {CreateMessageDto, MessageEvents} from "@/lib"
+import {CreateMessageDto, Message, MessageEvents} from "@/lib"
 import {useSocket} from "@/hooks/useSocket";
 import {useMessagesStore} from "@/app/store/messageStore";
 import {useMessagesSocket} from "@/hooks/useMessagesSocket";
@@ -19,7 +19,7 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
     useMessagesSocket(roomId)
     const {username} = useUserStore()
     const {socket} = useSocket();
-    const {messages, clearMessages} = useMessagesStore()
+    const {messages, clearMessages, setMessages} = useMessagesStore()
     const [inputValue, setInputValue] = useState("")
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const NEXT_PUBLIC_MAX_MESSAGE_LENGTH = parseInt(process.env.NEXT_PUBLIC_MAX_MESSAGE_LENGTH || "80");
@@ -43,13 +43,24 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
     }
 
     useEffect(() => {
-        clearMessages()
-    }, []);
-    useEffect(() => {
         bottomRef.current?.scrollIntoView({
             behavior: "smooth",
         });
     }, [messages]);
+
+    useEffect(() => {
+        clearMessages()
+        const MESSAGE_TTL = parseInt(process.env.NEXT_PUBLIC_MESSAGE_TTL || "10000");
+        const INTERVAL = parseInt(process.env.NEXT_PUBLIC_CLEANUP_JOB_INTERVAL || "10000");
+
+        const id = setInterval(() => {
+            console.log("Limpiando mensajes antiguos...")
+            setMessages(messages.filter(m => Date.now() - new Date(m.createdAt).getTime() <= MESSAGE_TTL))
+        }, INTERVAL);
+
+        return () => clearInterval(id);
+    }, []);
+
     return (
         <Card className="flex h-full flex-col">
             <CardHeader className="border-b">
