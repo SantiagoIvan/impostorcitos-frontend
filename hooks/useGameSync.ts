@@ -3,6 +3,7 @@ import {useSocket} from "@/hooks/useSocket";
 import {GameDto, GameEvents, RoundResult, VoteDto} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {useGameStore} from "@/app/store/gameStore";
+import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 
 
 // En este hook puedo agregar otro tipo de eventos propios de un room, como por ejemplo algun audio como cuando
@@ -11,6 +12,7 @@ export function useGameSync() {
     const {socket} = useSocket();
     const { username } = useUserStore()
     const { game, setGame, updateVotes } = useGameStore()
+    const { redirectToLobby } = useRedirectToLobby()
     const [roundResult, setRoundResult] = useState<RoundResult>();
     const [showResults, setShowResults] = useState<boolean>(true);
     const [allReady, setAllReady] = useState<boolean>(false);
@@ -30,8 +32,8 @@ export function useGameSync() {
     const emitNextRound = () => {
         socket.emit(GameEvents.NEXT_ROUND, {username, gameId: game.id})
     }
-    const emitPlayerLeftGame = () => {
-        socket.emit(GameEvents.PLAYER_LEFT_GAME, {username, gameId: game.id})
+    const emitLeaveGame = () => {
+        socket.emit(GameEvents.LEAVE_GAME, {username, gameId: game.id})
     }
 
     const handleRoundResult = ({game, roundResult} : {game: GameDto, roundResult: RoundResult}) => {
@@ -55,6 +57,15 @@ export function useGameSync() {
 
     const handleGameAborted = (game: GameDto) => {
         console.log(`Game aborted: ${game}`)
+        redirectToLobby()
+    }
+
+    const handlePlayerLeft = ({playerName, game} : {playerName: string, game: GameDto}) => {
+        console.log(`Player ${playerName} left the game`)
+        console.log(game.currentPhase)
+        console.log(game.currentRound)
+        console.log(game.currentTurn)
+        updateGame(game)
     }
 
     useEffect(() => {
@@ -70,8 +81,9 @@ export function useGameSync() {
         // Para final de ronda
         socket.on(GameEvents.ROUND_RESULT, handleRoundResult)
 
-        // Para final abrupto de juego
+        // Para final abrupto de juego y desconexion
         socket.on(GameEvents.END_GAME, handleGameAborted)
+        socket.on(GameEvents.PLAYER_LEFT_GAME, handlePlayerLeft)
 
         return () => {
             socket.off(GameEvents.START_ROUND, handleStartRound)
@@ -93,6 +105,6 @@ export function useGameSync() {
         showResults,
         setShowResults,
         allReady,
-        emitPlayerLeftGame
+        emitPlayerLeftGame: emitLeaveGame
     }
 }

@@ -22,6 +22,7 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
     const {messages, clearMessages} = useMessagesStore()
     const [inputValue, setInputValue] = useState("")
     const bottomRef = useRef<HTMLDivElement | null>(null);
+    const NEXT_PUBLIC_MAX_MESSAGE_LENGTH = parseInt(process.env.NEXT_PUBLIC_MAX_MESSAGE_LENGTH || "80");
 
     const handleSendMessage = () => {
         if (inputValue.trim()) {
@@ -35,6 +36,10 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
             socket.emit(MessageEvents.CREATE, newMessage)
             setInputValue("")
         }
+    }
+
+    const handleInputValueChange = (val: string) => {
+        setInputValue(val.substring(0, NEXT_PUBLIC_MAX_MESSAGE_LENGTH))
     }
 
     useEffect(() => {
@@ -66,7 +71,7 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
                         {messages.map((message) => (
                             <div key={message.id} className={`flex ${message.sender == username ? "justify-end" : "justify-start"}`}>
                                 <div
-                                    className={`max-w-[75%] rounded-lg px-4 py-2 ${
+                                    className={`max-w-[75%] rounded-lg whitespace-pre-wrap wrap-break-word px-4 py-2 ${
                                         message.sender == username ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
                                     }`}
                                 >
@@ -101,7 +106,7 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
                         <Input
                             placeholder="Escribe un mensaje..."
                             value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
+                            onChange={(e) => handleInputValueChange(e.target.value)}
                             className="flex-1"
                         />
                         <Button type="submit" size="icon">
