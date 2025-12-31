@@ -54,7 +54,6 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
         const INTERVAL = parseInt(process.env.NEXT_PUBLIC_CLEANUP_JOB_INTERVAL || "10000");
 
         const id = setInterval(() => {
-            console.log("Limpiando mensajes antiguos...")
             setMessages(messages.filter(m => Date.now() - new Date(m.createdAt).getTime() <= MESSAGE_TTL))
         }, INTERVAL);
 

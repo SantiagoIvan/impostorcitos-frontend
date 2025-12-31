@@ -43,6 +43,7 @@ export function useGameSync() {
     }
 
     const handleStartRound = (game: GameDto) => {
+        console.log(`Round started:`, game)
         updateGame(game)
         setAllReady(true)
     }

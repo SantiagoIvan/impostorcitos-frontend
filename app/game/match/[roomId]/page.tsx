@@ -135,7 +135,7 @@ const Game = () => {
                 </div>
 
             </div>
-            <Button className="max-w-20 text-center" onClick={handleLeaveGame}>Salir del juego</Button>
+            <Button className="max-w-40 m-auto text-center" onClick={handleLeaveGame}>Salir</Button>
         </main>
     )
 }
