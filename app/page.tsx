@@ -10,20 +10,29 @@ import { toast } from "sonner"
 import {useEffect} from "react";
 
 export default function WelcomeScreen() {
-    const {username, setUsername, login, clear} = useUserStore();
+    const {username, setUsername, clear} = useUserStore();
     const router = useRouter();
 
-    const continueToLobby = () => {
-        if (username == "") {
-            toast.error("Username is required");
-        }else {
-            login(username);
+    const handleLogin = async () => {
+        try{
+            if (username.trim() == "") {
+                toast.error("Username is required");
+                return
+            }
+            // pegarle al back
+            setUsername(username);
             router.push("/game/lobby");
+
+        }catch(e){
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            toast.error(e.message);
+            setUsername("");
         }
     }
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
-            continueToLobby();
+            handleLogin();
         }
     }
     useEffect(() => {
@@ -39,10 +48,12 @@ export default function WelcomeScreen() {
                 className="mt-4"
                 id="name"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                    setUsername(e.target.value.substring(0, 15).toLowerCase())
+                }}
                 onKeyDown={handleEnter}
             />
-            <Button className="mt-10" onClick={continueToLobby}>
+            <Button className="mt-10" onClick={handleLogin}>
                 Al lobby pete
                 <ArrowRightIcon />
             </Button>

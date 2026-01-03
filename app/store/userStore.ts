@@ -6,7 +6,6 @@ type UserStore = {
     username: string;
     setUsername: (name: string) => void;
     clear: () => void;
-    login: (username: string) => void;
     logout: () => void;
 };
 
@@ -16,10 +15,6 @@ export const useUserStore = create<UserStore>()(
             username: "",
             setUsername: (name) => set({ username: name }),
             clear: () => set({ username: "" }),
-            login: (username) =>
-                set({
-                    username,
-                }),
             logout: () => {
                 disconnectSocket()
                 set({
