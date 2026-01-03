@@ -9,7 +9,7 @@ export const getSocket = () => {
         const userJsonString = localStorage.getItem("user-storage");
         //{"state":{"id":"X","username":"YYYYYY"},"version":0}
         const user = userJsonString ? JSON.parse(userJsonString) : { state: {id: "", username: ""}};
-        console.log(user)
+
         socket = io(WS_URL!, {
             transports: ["websocket"],
             autoConnect: false,
