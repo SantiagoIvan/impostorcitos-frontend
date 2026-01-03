@@ -6,9 +6,17 @@ let socket: Socket | null = null;
 // Aca ta el `singleton`
 export const getSocket = () => {
     if (!socket) {
+        const userJsonString = localStorage.getItem("user-storage");
+        //{"state":{"id":"X","username":"YYYYYY"},"version":0}
+        const user = userJsonString ? JSON.parse(userJsonString) : { state: {id: "", username: ""}};
+        console.log(user)
         socket = io(WS_URL!, {
             transports: ["websocket"],
-            autoConnect: false
+            autoConnect: false,
+            auth: {
+                username: user.state.username,
+                id: user.state.id
+            }
         });
     }
     return socket;
@@ -16,4 +24,5 @@ export const getSocket = () => {
 
 export const disconnectSocket = () => {
     socket?.disconnect();
+    socket = null;
 };

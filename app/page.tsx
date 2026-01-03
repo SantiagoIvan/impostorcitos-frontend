@@ -10,7 +10,7 @@ import { toast } from "sonner"
 import {useEffect} from "react";
 
 export default function WelcomeScreen() {
-    const {username, setUsername, clear} = useUserStore();
+    const {username, setUsername, clear, setUser} = useUserStore();
     const router = useRouter();
 
     const handleLogin = async () => {
@@ -20,7 +20,17 @@ export default function WelcomeScreen() {
                 return
             }
             // pegarle al back
-            setUsername(username);
+            const response = await fetch("http://localhost:4000/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username
+                })
+            });
+
+            const res = await response.json();
+
+            setUser(res.user);
             router.push("/game/lobby");
 
         }catch(e){
