@@ -90,7 +90,12 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
                         {/* NOMBRE */}
                         <div className="item-form">
                             <Label>Nombre</Label>
-                            <Input {...register("name")} />
+                            <Input
+                                {...register("name")}
+                                onChange={(e) => {
+                                    setValue("name", e.target.value.substring(0, 30).toLowerCase())
+                                }}
+                            />
                             {errors.name && (
                                 <p className="text-red-600 text-sm">{errors.name.message}</p>
                             )}

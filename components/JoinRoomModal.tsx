@@ -1,37 +1,39 @@
-import {defaultRoom, RoomDto} from "@/lib";
 import {Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
-import {Description} from "@radix-ui/react-dialog";
-import PlayersList from "@/components/PlayersList";
 import {Button} from "@/components/ui/button";
 import {useUserStore} from "@/app/store/userStore";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {useState} from "react";
 import LoadingOverlay from "@/components/LoadingOverlay";
+import {Input} from "@/components/ui/input";
 
-export default function ConfirmationRoomModal(
-    {room, open, setSelectedRoom, setSelectedRoomModalOpen}:
-    {room: RoomDto, open: boolean, setSelectedRoom: (room: RoomDto) => void,setSelectedRoomModalOpen: (open: boolean) => void}
+export default function JoinRoomModal(
+    {open, setOpen}:
+    {open: boolean,setOpen: (open: boolean) => void}
 ) {
     const {joinRoom} = useRoomsSocket()
     const { username } = useUserStore()
     const [loading, setLoading] = useState(false);
+    const [roomId, setRoomId] = useState("");
 
-    const handleRoomConfirmed = async () => {
+    const handleJoinRoomSubmit = async () => {
         try {
             setLoading(true)
-            setSelectedRoom(defaultRoom) // cosa de volver al estado inicial
-            joinRoom({username, roomId: room.id })
+            joinRoom({username, roomId })
         }catch (e){
             console.error(e)
         }finally {
-            setSelectedRoomModalOpen(false)
+            setOpen(false)
             setLoading(false)
         }
     }
 
+    const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            handleJoinRoomSubmit();
+        }
+    }
     const handleModalClose = () => {
-        setSelectedRoomModalOpen(false)
-        setSelectedRoom(defaultRoom)
+        setOpen(false)
     }
 
     return (
@@ -40,21 +42,19 @@ export default function ConfirmationRoomModal(
             <Dialog open={open} onOpenChange={handleModalClose}>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                        <DialogTitle>{room.name}</DialogTitle>
+                        <DialogTitle>Ingrese ID de partida</DialogTitle>
                     </DialogHeader>
-                    <Description>
-                        Jugadores en espera
-                    </Description>
-                    {room.players.length === 0 && (
-                        <p className="text-sm text-muted-foreground">No hay jugadores aún.</p>
-                    )}
-
-                    <PlayersList room={room}/>
+                    <Input
+                        placeholder="Ej: ABC123"
+                        value={roomId}
+                        onChange={(e) => setRoomId(e.target.value.substring(0, 15).toLowerCase())}
+                        onKeyDown={handleEnter}
+                    />
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
-                        <Button onClick={handleRoomConfirmed}>Ingresar</Button>
+                        <Button onClick={handleJoinRoomSubmit}>Ingresar</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
