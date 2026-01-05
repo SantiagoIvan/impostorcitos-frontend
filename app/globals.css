@@ -119,8 +119,11 @@
     @apply bg-background text-foreground;
   }
 }
-
+button{
+  cursor: pointer;
+}
 .floating-button {
+  cursor: pointer;
   padding: 0;
   position: fixed; /* Fixes the button relative to the viewport */
   bottom: 20px;    /* 20px from the bottom edge */

@@ -8,6 +8,7 @@ import {useUserStore} from "@/app/store/userStore";
 import {useRouter} from "next/navigation";
 import { toast } from "sonner"
 import {useEffect} from "react";
+import {AuthService} from "@/app/services/auth.service";
 
 export default function WelcomeScreen() {
     const {username, setUsername, clear, setUser} = useUserStore();
@@ -20,23 +21,15 @@ export default function WelcomeScreen() {
                 return
             }
             // pegarle al back
-            const response = await fetch("http://localhost:4000/api/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    username
-                })
-            });
+            const res = await AuthService.login(username);
 
-            const res = await response.json();
-
-            setUser(res.user);
+            setUser(res.data.user)
             router.push("/game/lobby");
 
-        }catch(e){
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            toast.error(e.message);
+        }catch(err){
+            console.log(err)
+            // @ts-expect-error-para que no joda por el tipo del error
+            toast.error(err.response.data.message);
             setUsername("");
         }
     }

@@ -2,11 +2,17 @@ import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
 import {JoinRoomDto, RoomDto, RoomEvents} from "@/lib";
 import {useRoomsStore} from "@/app/store/roomsStore";
+import {useRouter} from "next/navigation";
 
 export function useRoomsSocket() {
     const {setRooms, addRoom, updateRoom} = useRoomsStore()
     const {socket} = useSocket();
+    const router = useRouter()
 
+    const joinRoom = (joinRoomDto: JoinRoomDto) => {
+        emitJoinRoom(joinRoomDto)
+        router.push(`/game/room/${joinRoomDto.roomId}`)
+    }
     const handleAddRoom = (room: RoomDto) => {
         addRoom(room);
     }
@@ -22,6 +28,10 @@ export function useRoomsSocket() {
 
     const emitLeaveEvent = (outcomingPlayer: JoinRoomDto) => {
         socket.emit(RoomEvents.LEAVE, outcomingPlayer);
+    }
+
+    const emitJoinRoom = (joinRoomDto: JoinRoomDto) => {
+        socket.emit(RoomEvents.JOIN, joinRoomDto);
     }
 
     useEffect(() => {
@@ -40,5 +50,5 @@ export function useRoomsSocket() {
         };
     }, [socket, setRooms, addRoom]);
 
-    return { emitLeaveEvent }
+    return { emitLeaveEvent, emitJoinRoom, joinRoom }
 }

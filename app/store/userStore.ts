@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { disconnectSocket} from "@/app/services/socket.service";
+import {AuthService} from "@/app/services/auth.service";
+import {useRouter} from "next/navigation";
 
 type UserStore = {
     id: string;
@@ -19,7 +21,7 @@ export const useUserStore = create<UserStore>()(
             setUsername: (name) => set({ username: name }),
             clear: () => set({ username: "" }),
             setUser: ({id, username}:{id: string, username: string}) => set({id, username}),
-            logout: () => {
+            logout: async () => {
                 disconnectSocket()
                 set({
                     id: "",

@@ -3,7 +3,6 @@ const WS_URL = process.env.NEXT_PUBLIC_BACKEND_WS;
 
 let socket: Socket | null = null;
 
-// Aca ta el `singleton`
 export const getSocket = () => {
     if (!socket) {
         const userJsonString = localStorage.getItem("user-storage");
@@ -23,6 +22,9 @@ export const getSocket = () => {
 };
 
 export const disconnectSocket = () => {
-    socket?.disconnect();
-    socket = null;
+    if(socket){
+        console.log("disconnecting socket")
+        socket.close();
+        socket = null;
+    }
 };

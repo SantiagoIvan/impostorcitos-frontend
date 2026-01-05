@@ -3,13 +3,15 @@
 import {ChatPanel} from "@/components/ChatPanel";
 import {RoomsPanel} from "@/components/RoomsPanel";
 import { Button } from "@/components/ui/button";
-import { useState} from "react";
+import {useEffect, useState} from "react";
 import CreateRoomModal from "@/components/CreateRoomModal";
+import {RoomService} from "@/app/services/room.service";
+import {useRoomsStore} from "@/app/store/roomsStore";
 
 const Lobby = () => {
     const [openCreateDialog, setOpenCreateDialog] = useState(false); // para el modal de creacion
     const [openJoinDialog, setOpenJoinDialog] = useState(false); // para el modal de unirse con algun codigo falopa
-
+    const {setRooms} = useRoomsStore()
 
     const handleJoinRoom = () => {
         console.log("Join Room");

@@ -13,6 +13,7 @@ import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
 import {defaultRoom, PlayerDto} from "@/lib";
 import {toast} from "sonner";
 import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
+import {ArrowLeftCircle} from "lucide-react";
 
 const WaitingRoom = () => {
     const {roomId} = useParams<{roomId: string}>();
@@ -33,11 +34,17 @@ const WaitingRoom = () => {
         setReady((prevState) => !prevState); // emitir evento asi se enteran todos
         emitUserReady(username)
     }
+
+    const allReady = () => getRoomById(roomId).players.every((player: PlayerDto) => player.isReady)
+    const minPlayersRequired = () => getRoomById(roomId).players.length >= MIN_PLAYERS_QUANTITY
+    const canStartGame = () => allReady() && minPlayersRequired()
+    const amIAdmin = () => username === getRoomById(roomId).admin
     const handleStart = () => {
-        const currentRoom = getRoomById(roomId);
-        if(currentRoom.players.some((player: PlayerDto) => !player.isReady )) {
+        if(!allReady()) {
             toast.error("Todos deben estar listos");
-        }else if (currentRoom.players.length < MIN_PLAYERS_QUANTITY) {
+            return
+        }
+        if(!minPlayersRequired()) {
             toast.error(`Debe haber un minimo de ${MIN_PLAYERS_QUANTITY} jugadores para comenzar`);
         } else {
             toast.message("Redireccionando a la partida...")
@@ -53,19 +60,23 @@ const WaitingRoom = () => {
             <main className="flex flex-col bg-background gap-10 w-full m-10">
                 {/* Rooms Panel */}
                 <div className="flex gap-4 w-full h-[75dvh]">
-                    <div className="flex w-full flex-col lg:flex lg:w-1/2">
-                        <PlayersList room={getRoomById(roomId)} waitingRoomFlag={true}/>
+                    <div className="flex flex-col gap-10 w-full">
+                        <div className="flex gap-2 text-left">
+                            <ArrowLeftCircle className="h-10 w-10 cursor-pointer" onClick={handleBack}/>
+                            <h1 className="text-4xl font-extrabold">Sala {roomId} - {getRoomById(roomId).name}</h1>
+                        </div>
+                        <div className="flex w-full flex-col lg:flex">
+                            <PlayersList room={getRoomById(roomId)} waitingRoomFlag={true}/>
+                        </div>
                     </div>
                     {/* Chat Panel */}
                     <div className="flex w-full flex-col lg:w-1/2">
                         <ChatPanel roomId={roomId}/>
                     </div>
-
                 </div>
                 <div className="flex gap-4 justify-around">
-                    <Button onClick={handleBack}>Volver al Lobby</Button>
-                    <Button onClick={handleReady}>{!ready ? "Listo!" : "Noo, banca"}</Button>
-                    {username == getRoomById(roomId).admin && <Button onClick={handleStart}>Start</Button>}
+                    <Button className={`${!ready? "bg-emerald-600" : "bg-red-700"}`} onClick={handleReady}>{!ready ? "Listo!" : "Noo, banca"}</Button>
+                    {amIAdmin() && <Button className={`${canStartGame()? "bg-emerald-600" : "bg-red-700"}`} onClick={handleStart}>Start</Button>}
                 </div>
             </main>
 

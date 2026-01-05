@@ -15,10 +15,15 @@ export const useRoomsStore = create<RoomStore>((set, get) => ({
 
     setRooms: (rooms) => set({ rooms }),
 
-    addRoom: (room) =>
+    addRoom: (room) => {
+        const rooms = useRoomsStore.getState().rooms
+        if(rooms.some(r => r.id === room.id)) return console.warn(
+            `El room con id ${room.id} ya existe en el store`
+        )
         set((state) => ({
             rooms: [...state.rooms, room],
-        })),
+        }))
+    },
     getRoomById: (roomId? : ParamValue) : RoomDto => get().rooms.find((room) => room.id === roomId) || defaultRoom,
     updateRoom: (updatedRoom: RoomDto) =>
         set((state) => {

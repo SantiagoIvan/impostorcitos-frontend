@@ -12,12 +12,14 @@ import {defaultGame, GamePhase, PlayerDto, Turn} from "@/lib";
 import MyTurnWordInput from "@/components/MyTurnWordInput";
 import {VotePlayerCard} from "@/components/VotePlayerCard";
 import {DiscussionCard} from "@/components/DiscussionCard";
-import {useRouter} from "next/navigation";
 import {RoundResultDialog} from "@/components/RoundResultDialog";
 import YouAreDeadCard from "@/components/youAreDeadCard";
 import {Button} from "@/components/ui/button";
 import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
-
+import { Badge } from "@/components/ui/badge"
+import { Skull } from "lucide-react"
+import {Card, CardContent} from "@/components/ui/card";
+import { HardHat } from "lucide-react"
 
 const Game = () => {
     const { game, clearGameStore } = useGameStore()
@@ -32,6 +34,7 @@ const Game = () => {
 
     const handleOnRounResultDialogClose = () => {
         setShowResults(false);
+        setAllReady(false);
         if(roundResult?.winner) redirectToLobby()
         else emitNextRound();
     }
@@ -43,7 +46,6 @@ const Game = () => {
         clearGameStore()
         emitPlayerLeftGame()
         redirectToLobby()
-
     }
     // escuchar cambios de fase para cambiar UI
     const {
@@ -53,6 +55,7 @@ const Game = () => {
         emitSubmitVote,
         emitNextRound,
         allReady,
+        setAllReady,
         setShowResults,
         showResults,
         roundResult,
@@ -79,17 +82,35 @@ const Game = () => {
                         topic={game.topic}
                         onClose={() => setShowGameInfo(false)}
                     />
-                    <div className="text-center text-foreground space-y-4 p-10 border-b-4">
+                    <div className="text-center text-foreground space-y-4 p- border-b-4 pb-4">
                         <h3 className="text-4xl font-extrabold">{`Topico: ${game.topic}`}</h3>
-                        <h3 className={`text-2xl ${amIImpostor() && "text-red-900" }`}>
-                            {
-                                !amIImpostor()? `Palabra secreta: ${game.secretWord}` : "Sos el impostor"
+                        <h3 className={`text-2xl`}>
+                            {amIImpostor() ? (
+                                <Card className="mt-4 border-destructive/50 bg-destructive/10">
+                                    <CardContent className="flex m-auto items-center gap-3 py-4">
+                                        <Skull className="h-6 w-6 text-destructive" />
+                                        <span className="text-base font-semibold text-destructive">
+                                            IMPOSTOR
+                                          </span>
+                                    </CardContent>
+                                </Card>
+                            ) : (
+                                <Card className="mt-4 border-green-500/40 bg-green-500/10">
+                                    <CardContent className="flex items-center m-auto gap-4 py-5">
+                                        <HardHat className="h-12 w-12 text-green-600" />
+                                        <span className="text-lg font-semibold text-green-700">
+                                            {game.secretWord}
+                                        </span>
+                                    </CardContent>
+                                </Card>
+                            )
                             }
                         </h3>
                     </div>
 
                     {/* Tabla con palabras de cada jugador en cada ronda*/}
                     {game.moves.length > 0 && (<RoundsTable moves={game.moves} />)}
+
 
                     {/* Si estas muerto, se muestra la carata de muerto nomas y los resultados al final de cada ronda*/}
                     {!amIAlive() ? <YouAreDeadCard /> : (

@@ -63,9 +63,6 @@ export function useGameSync() {
 
     const handlePlayerLeft = ({playerName, game} : {playerName: string, game: GameDto}) => {
         console.log(`Player ${playerName} left the game`)
-        console.log(game.currentPhase)
-        console.log(game.currentRound)
-        console.log(game.currentTurn)
         updateGame(game)
     }
 
@@ -106,6 +103,7 @@ export function useGameSync() {
         showResults,
         setShowResults,
         allReady,
+        setAllReady,
         emitPlayerLeftGame: emitLeaveGame
     }
 }
