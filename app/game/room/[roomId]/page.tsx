@@ -15,6 +15,9 @@ import {toast} from "sonner";
 import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 import {ArrowLeftCircle} from "lucide-react";
 
+const greenStyle = "bg-emerald-500/80 hover:bg-green-800/80"
+const redStyle = "bg-red-400/80 hover:bg-red-800/80"
+
 const WaitingRoom = () => {
     const {roomId} = useParams<{roomId: string}>();
     const { username } = useUserStore();
@@ -61,7 +64,7 @@ const WaitingRoom = () => {
                 {/* Rooms Panel */}
                 <div className="flex gap-4 w-full h-[75dvh]">
                     <div className="flex flex-col gap-10 w-full">
-                        <div className="flex gap-2 text-left">
+                        <div className="flex gap-10 text-left">
                             <ArrowLeftCircle className="h-10 w-10 cursor-pointer" onClick={handleBack}/>
                             <h1 className="text-4xl font-extrabold">Sala {roomId} - {getRoomById(roomId).name}</h1>
                         </div>
@@ -74,9 +77,9 @@ const WaitingRoom = () => {
                         <ChatPanel roomId={roomId}/>
                     </div>
                 </div>
-                <div className="flex gap-4 justify-around">
-                    <Button className={`${!ready? "bg-emerald-600" : "bg-red-700"}`} onClick={handleReady}>{!ready ? "Listo!" : "Noo, banca"}</Button>
-                    {amIAdmin() && <Button className={`${canStartGame()? "bg-emerald-600" : "bg-red-700"}`} onClick={handleStart}>Start</Button>}
+                <div className="flex gap-4 justify-center">
+                    <Button className={`${!ready? `${greenStyle}` : `${redStyle}`}`} onClick={handleReady}>{!ready ? "Listo!" : "Noo, banca"}</Button>
+                    {amIAdmin() && <Button className={`${canStartGame()? `${greenStyle}` : `${redStyle}`}`} onClick={handleStart}>Start</Button>}
                 </div>
             </main>
 
