@@ -56,9 +56,11 @@ export function useGameSync() {
         updateVotes(votes)
     }
 
-    const handleGameAborted = (game: GameDto) => {
+    const handleGameAborted = ({game, roundResult} : {game: GameDto, roundResult: RoundResult}) => {
         console.log(`Game aborted: ${game}`)
-        redirectToLobby()
+        updateGame(game)
+        setRoundResult(roundResult)
+        setShowResults(true)
     }
 
     const handlePlayerLeft = ({playerName, game} : {playerName: string, game: GameDto}) => {

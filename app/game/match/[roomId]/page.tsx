@@ -16,7 +16,6 @@ import {RoundResultDialog} from "@/components/RoundResultDialog";
 import YouAreDeadCard from "@/components/youAreDeadCard";
 import {Button} from "@/components/ui/button";
 import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
-import { Badge } from "@/components/ui/badge"
 import { Skull } from "lucide-react"
 import {Card, CardContent} from "@/components/ui/card";
 import { HardHat } from "lucide-react"
@@ -68,7 +67,7 @@ const Game = () => {
     }, [])
 
     return (
-        <main className="flex flex-col bg-background gap-10 w-full m-10">
+        <main className="flex flex-col bg-background gap-10 w-full m-10 items-center">
             <div className="flex gap-4 w-full">
                 <LoadingOverlay
                     show={!allReady}
@@ -88,8 +87,8 @@ const Game = () => {
                             {amIImpostor() ? (
                                 <Card className="mt-4 border-destructive/50 bg-destructive/10">
                                     <CardContent className="flex m-auto items-center gap-3 py-4">
-                                        <Skull className="h-6 w-6 text-destructive" />
-                                        <span className="text-base font-semibold text-destructive">
+                                        <Skull className="h-12 w-12 text-destructive" />
+                                        <span className="text-xl font-semibold text-destructive">
                                             IMPOSTOR
                                           </span>
                                     </CardContent>
@@ -98,7 +97,7 @@ const Game = () => {
                                 <Card className="mt-4 border-green-500/40 bg-green-500/10">
                                     <CardContent className="flex items-center m-auto gap-4 py-5">
                                         <HardHat className="h-12 w-12 text-green-600" />
-                                        <span className="text-lg font-semibold text-green-700">
+                                        <span className="text-xl font-semibold text-green-700">
                                             {game.secretWord}
                                         </span>
                                     </CardContent>
@@ -156,7 +155,7 @@ const Game = () => {
                 </div>
 
             </div>
-            <Button className="max-w-40 m-auto text-center" onClick={handleLeaveGame}>Salir</Button>
+            <Button className="cursor-pointer h-14 px-10 font-bold text-xl bg-red-400/80 hover:bg-red-700/80 w-1/3" onClick={handleLeaveGame}>Salir</Button>
         </main>
     )
 }

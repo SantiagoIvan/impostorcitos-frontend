@@ -38,7 +38,7 @@ export function AppSidebar() {
     const handleCreateGame = () => {
         setOpenCreateDialog(true)
     }
-    const sidebarItemProps = "h-14 px-4 text-base font-medium gap-3"
+    const sidebarItemProps = "h-14 px-4 text-base font-medium gap-3 cursor-pointer"
     const handleJoinRoom = () => {
         setOpenJoinDialog(true)
     }

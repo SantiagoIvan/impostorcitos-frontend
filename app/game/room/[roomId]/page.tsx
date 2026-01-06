@@ -78,8 +78,8 @@ const WaitingRoom = () => {
                     </div>
                 </div>
                 <div className="flex gap-4 justify-center">
-                    <Button className={`${!ready? `${greenStyle}` : `${redStyle}`}`} onClick={handleReady}>{!ready ? "Listo!" : "Noo, banca"}</Button>
-                    {amIAdmin() && <Button className={`${canStartGame()? `${greenStyle}` : `${redStyle}`}`} onClick={handleStart}>Start</Button>}
+                    <Button className={`h-14 w-20px px-10 font-bold text-xl cursor-pointer ${!ready? `${greenStyle}` : `${redStyle}`}`} onClick={handleReady}>{!ready ? "Listo!" : "Noo, banca"}</Button>
+                    {amIAdmin() && <Button className={`h-14 w-20px px-10 font-bold text-xl cursor-pointer ${canStartGame()? `${greenStyle}` : `${redStyle}`}`} onClick={handleStart}>Start</Button>}
                 </div>
             </main>
 

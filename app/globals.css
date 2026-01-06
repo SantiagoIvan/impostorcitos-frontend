@@ -119,9 +119,7 @@
     @apply bg-background text-foreground;
   }
 }
-button{
-  cursor: pointer;
-}
+
 .floating-button {
   cursor: pointer;
   padding: 0;
