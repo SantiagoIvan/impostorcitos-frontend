@@ -42,7 +42,7 @@ export default function VotesTable({ votes, className = "" }: Props) {
                 {/* Si todavia nadie voto */}
                 {votedPlayers.length === 0 && (
                     <tr>
-                        <td colSpan={1} className="px-4 py-6 text-center text-sm text-gray-500">
+                        <td colSpan={1} className="px-4 py-6 text-center text-sm text-foreground">
                             Esperando votaciones...
                         </td>
                     </tr>

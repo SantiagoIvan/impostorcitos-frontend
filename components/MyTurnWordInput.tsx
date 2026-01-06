@@ -68,7 +68,7 @@ export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps
                         <CardContent className="flex flex-col gap-4">
                             <Input
                                 value={word}
-                                onChange={(e) => setWord(e.target.value)}
+                                onChange={(e) => setWord(e.target.value.substring(0, 15).toLowerCase())}
                                 onKeyDown={handleKeyDown}
                                 placeholder="Ingresá tu palabra..."
                                 disabled={sending || wordSent}
