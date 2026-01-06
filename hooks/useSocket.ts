@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSocket } from "@/app/services/socket.service";
+import {useRouter} from "next/navigation";
+import {useUserStore} from "@/app/store/userStore";
 
 export const useSocket = () => {
     /*
@@ -10,6 +12,13 @@ export const useSocket = () => {
      */
     const [socket] = useState(() => getSocket());
     const [connected, setConnected] = useState(socket.connected);
+    const router = useRouter()
+    const {clear} = useUserStore()
+
+    const onabortSession = () => {
+        clear()
+        router.replace("/");
+    }
 
     useEffect(() => {
         if (!socket.connected) socket.connect();
@@ -19,6 +28,7 @@ export const useSocket = () => {
 
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
+        socket.on("abort_session", onabortSession);
 
         return () => {
             socket.off("connect", onConnect);

@@ -13,7 +13,7 @@ import {useWaitingRoomSocket} from "@/hooks/useWaitingRoomSocket";
 import {defaultRoom, PlayerDto} from "@/lib";
 import {toast} from "sonner";
 import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
-import {ArrowLeftCircle} from "lucide-react";
+import {ArrowLeft} from "lucide-react";
 
 const greenStyle = "bg-emerald-500/80 hover:bg-green-800/80"
 const redStyle = "bg-red-400/80 hover:bg-red-800/80"
@@ -64,9 +64,9 @@ const WaitingRoom = () => {
                 {/* Rooms Panel */}
                 <div className="flex gap-4 w-full h-[75dvh]">
                     <div className="flex flex-col gap-10 w-full">
-                        <div className="flex gap-10 text-left">
-                            <ArrowLeftCircle className="h-10 w-10 cursor-pointer" onClick={handleBack}/>
-                            <h1 className="text-4xl font-extrabold">Sala {roomId} - {getRoomById(roomId).name}</h1>
+                        <div className="flex gap-10 text-left border-b-4 pb-4">
+                            <ArrowLeft className="h-20 w-20 cursor-pointer" onClick={handleBack}/>
+                            <h1 className="text-2xl my-auto font-extrabold">Sala {roomId} - {getRoomById(roomId).name}</h1>
                         </div>
                         <div className="flex w-full flex-col lg:flex">
                             <PlayersList room={getRoomById(roomId)} waitingRoomFlag={true}/>

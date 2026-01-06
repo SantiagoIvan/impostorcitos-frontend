@@ -93,7 +93,7 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
                             <Input
                                 {...register("name")}
                                 onChange={(e) => {
-                                    setValue("name", e.target.value.substring(0, 30).toLowerCase())
+                                    setValue("name", e.target.value.substring(0, 15).toLowerCase())
                                 }}
                             />
                             {errors.name && (

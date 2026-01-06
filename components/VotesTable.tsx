@@ -2,6 +2,7 @@
 
 import React, {useEffect} from "react";
 import {buildVotesTable, VoteDto} from "@/lib";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 
 interface Props {
     votes: VoteDto[];
@@ -21,34 +22,34 @@ export default function VotesTable({ votes, className = "" }: Props) {
     }, [votes, votedPlayers, matrix]);
     return (
         <div className={`overflow-auto rounded-md border text-background ${className}`}>
-            <table className="min-w-full table-fixed">
-                <thead className="bg-foreground">
-                <tr>
-                    <th className="sticky left-0 z-10 px-4 py-2 text-left">Jugador</th>
-                    <th className="px-4 py-2 text-center">Votos recibidos</th>
-                </tr>
-                </thead>
+            <Table className="min-w-full table-fixed">
+                <TableHeader className="bg-foreground ">
+                <TableRow>
+                    <TableHead className="sticky left-0 z-10 px-4 py-2 text-left text-background font-bold">Jugador</TableHead>
+                    <TableHead className="px-4 py-2 text-center text-background font-bold">Votos recibidos</TableHead>
+                </TableRow>
+                </TableHeader>
 
-                <tbody>
+                <TableBody>
                 {Object.keys(matrix).map((votedPlayer: string, id: number) => (
-                    <tr key={id}>
-                        <td className="sticky left-0 z-0 text-foreground px-4 py-2 font-medium">{votedPlayer}</td>
-                        <td className="px-4 py-2 text-center text-foreground">
+                    <TableRow key={id}>
+                        <TableCell className="sticky left-0 z-0 text-foreground px-4 py-2 font-medium">{votedPlayer}</TableCell>
+                        <TableCell className="px-4 py-2 text-center text-foreground">
                             <span className="inline-block rounded px-2 py-1 bg-foreground-muted">{matrix[votedPlayer]}</span>
-                        </td>
-                    </tr>
+                        </TableCell>
+                    </TableRow>
                 ))}
 
                 {/* Si todavia nadie voto */}
                 {votedPlayers.length === 0 && (
-                    <tr>
-                        <td colSpan={1} className="px-4 py-6 text-center text-sm text-foreground">
+                    <TableRow>
+                        <TableCell colSpan={1} className="px-4 py-6 text-center text-sm text-foreground">
                             Esperando votaciones...
-                        </td>
-                    </tr>
+                        </TableCell>
+                    </TableRow>
                 )}
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
         </div>
     );
 }

@@ -45,6 +45,7 @@ export default function JoinRoomModal(
                         <DialogTitle>Ingrese ID de partida</DialogTitle>
                     </DialogHeader>
                     <Input
+                        autoFocus={true}
                         placeholder="Ej: ABC123"
                         value={roomId}
                         onChange={(e) => setRoomId(e.target.value.substring(0, 15).toLowerCase())}

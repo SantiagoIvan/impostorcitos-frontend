@@ -43,8 +43,6 @@ export function AppSidebar() {
         setOpenJoinDialog(true)
     }
 
-
-
     return (
         <>
             <Sidebar>
