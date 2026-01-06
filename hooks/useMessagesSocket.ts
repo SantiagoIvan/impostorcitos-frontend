@@ -14,7 +14,6 @@ export function useMessagesSocket(roomId?: string) {
     }
     useEffect(() => {
         if (!socket) return;
-
         // Escuchar nuevos mensajes creados
         socket.on(MessageEvents.CREATED, handleMessageCreated);
 

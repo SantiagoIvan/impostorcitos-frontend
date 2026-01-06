@@ -31,7 +31,7 @@ const Game = () => {
 
     const getPlayerTurn = (): Turn => game.currentTurn
 
-    const handleOnRounResultDialogClose = () => {
+    const handleOnRoundResultDialogClose = () => {
         setShowResults(false);
         setAllReady(false);
         if(roundResult?.winner) redirectToLobby()
@@ -142,7 +142,7 @@ const Game = () => {
                         {game.currentPhase === GamePhase.ROUND_RESULT && (
                             <RoundResultDialog
                                 open={showResults}
-                                onClose={handleOnRounResultDialogClose}
+                                onClose={handleOnRoundResultDialogClose}
                                 result={roundResult}
                             />
 
