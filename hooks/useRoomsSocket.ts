@@ -23,7 +23,6 @@ export function useRoomsSocket() {
         updateRoom(room);
     }
     const handleUserLeft = (room: RoomDto) => {
-        console.log(`User left room: ${room.id}`)
         updateRoom(room);
     }
 

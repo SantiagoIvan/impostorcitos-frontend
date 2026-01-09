@@ -14,9 +14,11 @@ import {useRoomsStore} from "@/app/store/roomsStore";
 import {useState} from "react";
 import CreateRoomModal from "@/components/CreateRoomModal";
 import JoinRoomModal from "@/components/JoinRoomModal";
+import {disconnectSocket} from "@/app/services/socket.service";
+import {AuthService} from "@/app/services/auth.service";
 
 export function AppSidebar() {
-    const {username, logout} = useUserStore()
+    const {username, clear} = useUserStore()
     const {setRooms} = useRoomsStore()
     const router = useRouter()
     const pathname = usePathname()
@@ -24,9 +26,11 @@ export function AppSidebar() {
     const [openJoinDialog, setOpenJoinDialog] = useState(false)
 
     const isLobby = () => pathname === "/game/lobby"
-    const handleLogOut = () => {
+    const handleLogOut = async () => {
         try{
-            logout()
+            await AuthService.logout(username)
+            clear()
+            disconnectSocket()
         }catch (e){
             console.log(e)
         }finally {

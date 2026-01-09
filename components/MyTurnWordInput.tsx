@@ -75,7 +75,7 @@ export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps
                             />
                         </CardContent>
                         <CardFooter>
-                            <Button className={`w-full ${ "bg-muted-foreground"}`} onClick={handleSubmit} disabled={sending || wordSent}>
+                            <Button className={`w-full bg-foreground`} onClick={handleSubmit} disabled={sending || wordSent}>
                                 {sending ? "Enviando..." : "Jugar"}
                             </Button>
                         </CardFooter>

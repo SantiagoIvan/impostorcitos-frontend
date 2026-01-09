@@ -16,9 +16,6 @@ export default function VotesTable({ votes, className = "" }: Props) {
     const { votedPlayers, matrix } = buildVotesTable(votes);
 
     useEffect(() => {
-        console.log("matrix", matrix)
-        console.log("voted players", votedPlayers)
-        console.log("votes", votes)
     }, [votes, votedPlayers, matrix]);
     return (
         <div className={`overflow-auto rounded-md border text-background ${className}`}>

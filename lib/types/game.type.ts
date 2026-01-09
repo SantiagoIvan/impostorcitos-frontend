@@ -14,4 +14,5 @@ export interface GameDto {
     orderToPlay: string[]
     currentPhase: GamePhase,
     currentRound: number
+    aborted?: boolean
 }

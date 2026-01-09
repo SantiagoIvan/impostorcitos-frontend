@@ -23,7 +23,6 @@ export const getSocket = () => {
 
 export const disconnectSocket = () => {
     if(socket){
-        console.log("disconnecting socket")
         socket.close();
         socket = null;
     }

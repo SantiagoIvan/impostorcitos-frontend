@@ -15,4 +15,5 @@ export const defaultGame = {
     orderToPlay: [],
     currentPhase: GamePhase.PLAY,
     currentRound: 0
+
 }

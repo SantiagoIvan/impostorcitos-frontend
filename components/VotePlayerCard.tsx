@@ -38,7 +38,7 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
     const {username} = useUserStore()
     const { game } = useGameStore();
 
-    const eligiblePlayers = players.filter((p) => p.name !== username);
+    const eligiblePlayers = players.filter((p) => p.name !== username && p.isConnected);
 
     const selectedPlayer = eligiblePlayers.find((p) => p.name === selectedPlayerId);
 

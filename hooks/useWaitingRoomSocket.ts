@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {GameDto, RoomDto, RoomEvents} from "@/lib";
+import {GameDto, RoomDto, RoomEvents, UpdateTopicDto} from "@/lib";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {RoomService} from "@/app/services/room.service"
 import {useRouter} from "next/navigation";
@@ -27,6 +27,9 @@ export function useWaitingRoomSocket(roomId: string) {
     const handleAbortRoom = () => {
         redirectToLobby()
     }
+    const handleUpdatedTopic = (room: RoomDto) => {
+        updateRoom(room);
+    }
 
     const emitUserReady = (username: string) => {
         socket.emit(RoomEvents.READY, RoomService.createJoinRoomDto(roomId, username));
@@ -34,11 +37,20 @@ export function useWaitingRoomSocket(roomId: string) {
     const emitStartGame = (roomId: string) => {
         socket.emit(RoomEvents.START_GAME, roomId);
     }
+    const emitUpdateTopic = (topic: string, randomFlag: boolean) => {
+        const msg: UpdateTopicDto = {
+            roomId: roomId,
+            newTopic: topic,
+            randomFlag: randomFlag
+        }
+        socket.emit(RoomEvents.UPDATE_TOPIC, msg);
+    }
 
     useEffect(() => {
         socket.on(RoomEvents.USER_READY, handleUserReady)
         socket.on(RoomEvents.REDIRECT_TO_GAME, handleGameStarting)
         socket.on(RoomEvents.ABORT_ROOM, handleAbortRoom)
+        socket.on(RoomEvents.UPDATED_TOPIC, handleUpdatedTopic)
 
         return () => {
             socket.off(RoomEvents.USER_READY, handleUserReady);
@@ -46,5 +58,5 @@ export function useWaitingRoomSocket(roomId: string) {
         };
     }, [socket, roomId]);
 
-    return {emitUserReady, emitStartGame}
+    return {emitUserReady, emitStartGame, emitUpdateTopic}
 }

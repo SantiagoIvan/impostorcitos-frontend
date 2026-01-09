@@ -22,13 +22,14 @@ import {
     SelectItem,
 } from "@/components/ui/select";
 
-import { createRoomSchema, CreateRoomDto, RoomType } from "@/lib";
+import {createRoomSchema, CreateRoomDto, RoomType, topics} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {RoomService} from "@/app/services/room.service";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {useState} from "react";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
+import {Checkbox} from "@/components/ui/checkbox";
 
 interface Props {
     open: boolean;
@@ -51,11 +52,13 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
         defaultValues: {
             admin: "",
             name: "",
+            topic: topics[0],
+            randomTopic: false,
             privacy: RoomType.PUBLIC,
-            discussionTime: 20,
-            voteTime: 11,
-            moveTime: 11,
-            maxPlayers: 10,
+            discussionTime: 30,
+            voteTime: 20,
+            moveTime: 20,
+            maxPlayers: 5,
             password: "",
         },
     });
@@ -83,7 +86,7 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Crear Room</DialogTitle>
+                        <DialogTitle>Crear partida</DialogTitle>
                     </DialogHeader>
 
                     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
@@ -152,7 +155,7 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
 
                         {/* GAME TIME */}
                         <div className="item-form">
-                            <Label>Tiempo de juego (seg)</Label>
+                            <Label>Tiempo para jugar palabra (seg)</Label>
                             <Input type="number" {...register("moveTime", { valueAsNumber: true })} />
                             {errors.moveTime && (
                                 <p className="text-red-600 text-sm">{errors.moveTime.message}</p>
@@ -167,6 +170,48 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
                                 <p className="text-red-600 text-sm">{errors.maxPlayers.message}</p>
                             )}
                         </div>
+
+                        {/* TOPIC + RANDOM */}
+                        <div className="flex flex-col gap-4 item-form">
+                            {/* TOPIC */}
+                            <Label>Tópico</Label>
+                            <div className="flex flex-row gap-4">
+                                <div className="flex flex-col gap-2">
+                                    <Select
+                                        value={watch("topic")}
+                                        onValueChange={(value) => setValue("topic", value)}
+                                        disabled={watch("randomTopic")}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Seleccionar tópico" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {topics.map((topic) => (
+                                                <SelectItem key={topic} value={topic}>
+                                                    {topic}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+
+                                </div>
+
+                                {/* RANDOM */}
+                                <div className="flex items-center gap-2 pb-1 ">
+                                    <Checkbox
+                                        checked={watch("randomTopic")}
+                                        onCheckedChange={(checked) =>
+                                            setValue("randomTopic", Boolean(checked))
+                                        }
+                                    />
+                                    <Label className="cursor-pointer">Random</Label>
+                                </div>
+                            </div>
+                            {errors.topic && (
+                                <p className="text-red-600 text-sm">{errors.topic.message}</p>
+                            )}
+                        </div>
+
 
                         <DialogFooter>
                             <Button type="submit">Crear</Button>

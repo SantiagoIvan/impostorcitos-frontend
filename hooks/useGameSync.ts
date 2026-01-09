@@ -3,7 +3,6 @@ import {useSocket} from "@/hooks/useSocket";
 import {GameDto, GameEvents, RoundResult, VoteDto} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {useGameStore} from "@/app/store/gameStore";
-import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 
 
 // En este hook puedo agregar otro tipo de eventos propios de un room, como por ejemplo algun audio como cuando
@@ -12,7 +11,6 @@ export function useGameSync() {
     const {socket} = useSocket();
     const { username } = useUserStore()
     const { game, setGame, updateVotes } = useGameStore()
-    const { redirectToLobby } = useRedirectToLobby()
     const [roundResult, setRoundResult] = useState<RoundResult>();
     const [showResults, setShowResults] = useState<boolean>(true);
     const [allReady, setAllReady] = useState<boolean>(false);
@@ -35,6 +33,9 @@ export function useGameSync() {
     const emitLeaveGame = () => {
         socket.emit(GameEvents.LEAVE_GAME, {username, gameId: game.id})
     }
+    const emitRestartGame = (newTopic: string, randomFlag: boolean) => {
+        socket.emit(GameEvents.RESTART, {gameId: game.id, newTopic, randomFlag: randomFlag})
+    }
 
     const handleRoundResult = ({game, roundResult} : {game: GameDto, roundResult: RoundResult}) => {
         updateGame(game)
@@ -43,7 +44,6 @@ export function useGameSync() {
     }
 
     const handleStartRound = (game: GameDto) => {
-        console.log(`Round started:`, game)
         updateGame(game)
         setAllReady(true)
     }
@@ -57,16 +57,17 @@ export function useGameSync() {
     }
 
     const handleGameAborted = ({game, roundResult} : {game: GameDto, roundResult: RoundResult}) => {
-        console.log(`Game aborted: ${game}`)
+        setAllReady(true) // negrada para sacar el overlay de loading
         updateGame(game)
         setRoundResult(roundResult)
         setShowResults(true)
     }
 
     const handlePlayerLeft = ({playerName, game} : {playerName: string, game: GameDto}) => {
-        console.log(`Player ${playerName} left the game`)
+        // Eventualmente puedo mostrar un alerta con "playerBane has left the game"
         updateGame(game)
     }
+
 
     useEffect(() => {
         socket.on(GameEvents.START_ROUND, handleStartRound)
@@ -106,6 +107,7 @@ export function useGameSync() {
         setShowResults,
         allReady,
         setAllReady,
+        emitRestartGame,
         emitPlayerLeftGame: emitLeaveGame
     }
 }

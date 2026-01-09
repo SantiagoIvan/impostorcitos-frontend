@@ -1,5 +1,5 @@
 import { z } from "zod";
-import {RoomType} from "@/lib";
+import {RoomType, topics} from "@/lib";
 
 export const createRoomSchema = z.object({
     admin: z.string(),
@@ -10,6 +10,8 @@ export const createRoomSchema = z.object({
     voteTime: z.number().min(10, "Debe ser mayor a 10 segundos"),
     moveTime: z.number().min(10, "Debe ser mayor a 10 segundos"),
     maxPlayers: z.number().min(3, "Debe permitir al menos 3 jugadores"),
+    topic: z.enum(topics).optional(),
+    randomTopic: z.boolean(),
 }).refine(
     (data) =>
         data.privacy === RoomType.PUBLIC || (data.privacy === RoomType.PRIVATE && data.password?.length),
@@ -17,4 +19,13 @@ export const createRoomSchema = z.object({
         message: "La password es obligatoria para rooms privados",
         path: ["password"],
     }
-);
+)
+.superRefine((data, ctx) => {
+    if (!data.randomTopic && !data.topic) {
+        ctx.addIssue({
+            path: ["topic"],
+            message: "Debe seleccionar una categoría o activar Random",
+            code: "custom", // ← forma actual recomendada
+        })
+    }
+})

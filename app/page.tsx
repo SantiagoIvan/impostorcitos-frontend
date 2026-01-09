@@ -9,6 +9,7 @@ import {useRouter} from "next/navigation";
 import { toast } from "sonner"
 import {useEffect} from "react";
 import {AuthService} from "@/app/services/auth.service";
+import CafecitoBtn from "@/components/CafecitoBtn";
 
 export default function WelcomeScreen() {
     const {username, setUsername, clear, setUser} = useUserStore();
@@ -43,7 +44,7 @@ export default function WelcomeScreen() {
     }, []);
 
   return (
-    <div className="flex flex-col justify-center m-auto items-center h-screen">
+    <div className="flex flex-col gap-10 justify-center m-auto items-center h-screen">
         <h1 className="text-7xl">Impostorcitos</h1>
         <div className="mt-10 flex flex-col">
             <Label htmlFor="Impostorcitos">Ingrese un nombre</Label>
@@ -61,6 +62,7 @@ export default function WelcomeScreen() {
                 <ArrowRightIcon />
             </Button>
         </div>
+        <CafecitoBtn />
     </div>
   );
 }

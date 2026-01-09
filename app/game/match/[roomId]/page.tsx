@@ -19,12 +19,14 @@ import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 import { Skull } from "lucide-react"
 import {Card, CardContent} from "@/components/ui/card";
 import { HardHat } from "lucide-react"
+import UpdateTopicModal from "@/components/UpdateTopicModal";
 
 const Game = () => {
     const { game, clearGameStore } = useGameStore()
     const { redirectToLobby} = useRedirectToLobby()
     const { username } = useUserStore()
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
+    const [showSelectTopicModal, setShowSelectTopicModal] = useState<boolean>(false);
 
 
     const getAlivePlayers = (): PlayerDto[] => game.room.players.filter((player: PlayerDto) => player.isAlive)
@@ -34,18 +36,31 @@ const Game = () => {
     const handleOnRoundResultDialogClose = () => {
         setShowResults(false);
         setAllReady(false);
-        if(roundResult?.winner) redirectToLobby()
-        else emitNextRound();
+        if(roundResult?.winner) {
+            emitPlayerLeftGame();
+            redirectToLobby()
+        } else emitNextRound();
     }
 
     const amIAlive = () : boolean => getAlivePlayers().some((player: PlayerDto) => player.name === username)
     const amIImpostor = () => game.impostor
+    const amIAdmin = () => username === game.room.admin
 
     const handleLeaveGame = () => {
         clearGameStore()
         emitPlayerLeftGame()
         redirectToLobby()
     }
+
+    const handlePlayAgain = () => {
+        setShowResults(false);
+        if(amIAdmin()){
+            setShowSelectTopicModal(true)
+        } else {
+            setAllReady(false);
+        }
+    }
+
     // escuchar cambios de fase para cambiar UI
     const {
         emitPlayerReady,
@@ -58,8 +73,13 @@ const Game = () => {
         setShowResults,
         showResults,
         roundResult,
-        emitPlayerLeftGame
+        emitPlayerLeftGame,
+        emitRestartGame
     } = useGameSync();
+
+    const handleRestart = (newTopic: string, randomFlag: boolean) => {
+        emitRestartGame(newTopic, randomFlag)
+    }
 
     useEffect(() => {
         if(game.id === defaultGame.id) redirectToLobby()
@@ -140,11 +160,21 @@ const Game = () => {
 
                         {/* Combobox para seleccionar jugador para eliminar */}
                         {game.currentPhase === GamePhase.ROUND_RESULT && (
-                            <RoundResultDialog
-                                open={showResults}
-                                onClose={handleOnRoundResultDialogClose}
-                                result={roundResult}
-                            />
+                            <>
+                                <RoundResultDialog
+                                    open={showResults}
+                                    onClose={handleOnRoundResultDialogClose}
+                                    result={roundResult}
+                                    amIAdmin={amIAdmin()}
+                                    onPlayAgain={handlePlayAgain}
+                                    game={game}
+                                />
+                                <UpdateTopicModal
+                                    open={showSelectTopicModal}
+                                    setOpen={setShowSelectTopicModal}
+                                    onSubmit={handleRestart}
+                                />
+                            </>
 
                         )}
 

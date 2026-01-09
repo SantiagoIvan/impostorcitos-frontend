@@ -11,5 +11,7 @@ export const defaultRoom = {
     voteTime: 0,
     moveTime: 0,
     maxPlayers: 0,
-    players: []
+    players: [],
+    randomTopic: false,
+    topic: "",
 }
