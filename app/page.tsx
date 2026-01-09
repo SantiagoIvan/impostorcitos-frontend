@@ -23,7 +23,7 @@ export default function WelcomeScreen() {
             }
             // pegarle al back
             const res = await AuthService.login(username);
-
+            console.log(res);
             setUser(res.data.user)
             router.push("/game/lobby");
 
