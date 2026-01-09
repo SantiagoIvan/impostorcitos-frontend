@@ -1,4 +1,4 @@
-import {defaultRoom, RoomDto} from "@/lib";
+import {defaultRoom, RoomDto, RoomType} from "@/lib";
 import {Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Description} from "@radix-ui/react-dialog";
 import PlayersList from "@/components/PlayersList";
@@ -7,25 +7,39 @@ import {useUserStore} from "@/app/store/userStore";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {useState} from "react";
 import LoadingOverlay from "@/components/LoadingOverlay";
+import {Input} from "@/components/ui/input";
+import {RoomService} from "@/app/services/room.service";
+import {useRouter} from "next/navigation";
+import {Label} from "@radix-ui/react-menu";
+import {toast} from "sonner";
 
 export default function ConfirmationRoomModal(
     {room, open, setSelectedRoom, setSelectedRoomModalOpen}:
     {room: RoomDto, open: boolean, setSelectedRoom: (room: RoomDto) => void,setSelectedRoomModalOpen: (open: boolean) => void}
 ) {
-    const {joinRoom} = useRoomsSocket()
     const { username } = useUserStore()
     const [loading, setLoading] = useState(false);
+    const [password, setPassword] = useState("");
+    const router = useRouter()
 
     const handleRoomConfirmed = async () => {
         try {
             setLoading(true)
-            setSelectedRoom(defaultRoom) // cosa de volver al estado inicial
-            joinRoom({username, roomId: room.id })
+            await RoomService.joinRoom({roomId: room.id, username, password })
+            router.push(`/game/room/${room.id}`)
         }catch (e){
             console.error(e)
+            toast.error("Error al ingresar a la partida")
         }finally {
+            setSelectedRoom(defaultRoom) // cosa de volver al estado inicial
             setSelectedRoomModalOpen(false)
+            setPassword("")
             setLoading(false)
+        }
+    }
+    const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            handleRoomConfirmed();
         }
     }
 
@@ -47,6 +61,19 @@ export default function ConfirmationRoomModal(
                     </Description>
                     {room.players.length === 0 && (
                         <p className="text-sm text-muted-foreground">No hay jugadores aún.</p>
+                    )}
+
+                    {room.privacy === RoomType.PRIVATE && (
+                        <>
+                            <Label>Ingrese Password</Label>
+                            <Input
+                                autoFocus={true}
+                                placeholder="Ej: ABC123"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value.substring(0, 15).toLowerCase())}
+                                onKeyDown={handleEnter}
+                            />
+                        </>
                     )}
 
                     <PlayersList room={room}/>

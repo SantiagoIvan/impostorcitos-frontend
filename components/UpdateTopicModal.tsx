@@ -68,12 +68,13 @@ export default function UpdateTopicModal(
                             {/* RANDOM */}
                             <div className="flex items-center gap-2 pb-1 ">
                                 <Checkbox
+                                    className="cursor-pointer"
                                     checked={randomFlag}
                                     onCheckedChange={(checked) =>
                                         setRandomFlag(Boolean(checked))
                                     }
                                 />
-                                <Label className="cursor-pointer">Random</Label>
+                                <Label >Random</Label>
                             </div>
                         </div>
                     </div>

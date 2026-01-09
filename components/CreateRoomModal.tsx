@@ -30,6 +30,7 @@ import {useState} from "react";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {Checkbox} from "@/components/ui/checkbox";
+import {useRouter} from "next/navigation";
 
 interface Props {
     open: boolean;
@@ -39,8 +40,8 @@ interface Props {
 export default function CreateRoomModal({ open, onOpenChange }: Props) {
     const { username } = useUserStore()
     const {addRoom} = useRoomsStore()
-    const {joinRoom} = useRoomsSocket()
     const [loading, setLoading] = useState(false);
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -71,7 +72,8 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
             data = RoomService.setAdminRoom(username, data);
             const newRoom = await RoomService.createRoom(data)
             addRoom(newRoom)
-            joinRoom({roomId: newRoom.id, username})
+            await RoomService.joinRoom({roomId: newRoom.id, username, password: data.password})
+            router.push(`/game/room/${newRoom.id}`)
         }catch (e){
             console.error(e)
         }finally {

@@ -1,22 +1,24 @@
 "use client"
 
 import {useEffect, useRef, useState} from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Search, Circle } from "lucide-react"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
+import {Input} from "@/components/ui/input"
+import {Badge} from "@/components/ui/badge"
+import {ScrollArea} from "@/components/ui/scroll-area"
+import {Circle, Search} from "lucide-react"
 import {useRoomsStore} from "@/app/store/roomsStore"
 import {defaultRoom, RoomDto, RoomType} from "@/lib"
 import {useRoomsSocket} from "@/hooks/useRoomsSocket"
 import ConfirmationRoomModal from "@/components/ConfirmationRoomModal"
-import { toast } from "sonner"
+import {toast} from "sonner"
+import {RoomService} from "@/app/services/room.service";
 
 
 export function RoomsPanel() {
     useRoomsSocket();
     const [searchQuery, setSearchQuery] = useState("")
     const rooms = useRoomsStore(state => state.rooms)
+    const {setRooms} = useRoomsStore()
     const [selectedRoom, setSelectedRoom] = useState<RoomDto>(() => defaultRoom)
     const [selectedRoomModalOpen, setSelectedRoomModalOpen] = useState<boolean>(false)
     const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -61,11 +63,20 @@ export function RoomsPanel() {
         setSelectedRoom(room)
         setSelectedRoomModalOpen(true)
     }
+    const loadRooms = async () => {
+        try{
+            const updatedRooms = await RoomService.getRooms()
+            setRooms(updatedRooms)
+        }catch(err){
+            console.log(err)
+        }
+    }
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({
             behavior: "smooth",
         });
+        loadRooms()
     }, [rooms]);
 
     return (
