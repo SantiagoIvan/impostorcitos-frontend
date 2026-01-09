@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useState, ReactNode } from "react";
 
 type ChatPanelContextType = {
     isOpen: boolean;
@@ -9,7 +9,7 @@ type ChatPanelContextType = {
     toggle: () => void;
 };
 
-const ChatPanelContext = createContext<ChatPanelContextType | undefined>(
+export const ChatPanelContext = createContext<ChatPanelContextType | undefined>(
     undefined
 );
 
@@ -24,5 +24,5 @@ export function ChatPanelProvider({ children }: { children: ReactNode }) {
         <ChatPanelContext.Provider value={{ isOpen, open, close, toggle }}>
             {children}
         </ChatPanelContext.Provider>
-);
+    );
 }

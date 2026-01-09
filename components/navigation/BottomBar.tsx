@@ -1,55 +1,45 @@
 "use client";
 
-import { LogOut, PlusCircle, LogIn } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import {useState} from "react";
+import CreateRoomModal from "@/components/CreateRoomModal";
+import JoinRoomModal from "@/components/JoinRoomModal";
+import {getNavigationItems} from "@/components/navigation/navigation.config";
+import {cn} from "@/lib";
+import {useNavigationActions} from "@/hooks/useNavigationActions";
 
 export function BottomBar() {
-    const pathname = usePathname();
-    const router = useRouter();
+    const pathname = usePathname()
+    const {actions, openJoinDialog, openCreateDialog, setOpenJoinDialog, setOpenCreateDialog} = useNavigationActions()
 
-    const isLobby = pathname === "/game/lobby";
-
-    const handleLogout = () => {
-        // lógica de logout (ej: clear token, call API, etc)
-        router.push("/login");
-    };
+    const items = getNavigationItems(pathname).filter((item) =>
+        item.visible(pathname)
+    );
 
     return (
-        <nav className="h-16 border-t bg-background px-4">
-            <div className="flex h-full items-center justify-around">
-
-                {isLobby && (
-                    <>
+        <>
+            <nav className="h-16 border-t bg-background px-4">
+                <div className="flex h-16 items-center justify-around bg-background px-2">
+                    {items.map(({ id, label, icon: Icon }) => (
                         <Button
+                            key={id}
                             variant="ghost"
-                            className="flex h-full flex-col items-center justify-center gap-1 text-xs"
-                            onClick={() => router.push("/lobby/create")}
+                            size="sm"
+                            onClick={actions[id]}
+                            className={cn(
+                                "flex h-full flex-col items-center justify-center gap-1 rounded-none text-xs",
+                                id === "logout" && "text-destructive"
+                            )}
                         >
-                            <PlusCircle className="h-5 w-5" />
-                            Crear
+                            <Icon className="h-5 w-5" />
+                            <span className="leading-none">{label}</span>
                         </Button>
-
-                        <Button
-                            variant="ghost"
-                            className="flex h-full flex-col items-center justify-center gap-1 text-xs"
-                            onClick={() => router.push("/lobby/join")}
-                        >
-                            <LogIn className="h-5 w-5" />
-                            Unirse
-                        </Button>
-                    </>
-                )}
-
-                <Button
-                    variant="ghost"
-                    className="flex h-full flex-col items-center justify-center gap-1 text-xs text-destructive"
-                    onClick={handleLogout}
-                >
-                    <LogOut className="h-5 w-5" />
-                    Salir
-                </Button>
-            </div>
-        </nav>
+                    ))}
+                </div>
+            </nav>
+            {openCreateDialog && <CreateRoomModal open={openCreateDialog} onOpenChange={setOpenCreateDialog} />}
+            {openJoinDialog && <JoinRoomModal open={openJoinDialog} setOpen={setOpenJoinDialog} />}
+        </>
     );
 }
