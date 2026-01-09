@@ -11,7 +11,7 @@ export const getSocket = () => {
         console.log("ENV", ENV)
 
         socket = io(ENV.WS_URL!, {
-            transports: ["websocket"],
+            //transports: ["websocket"],
             autoConnect: false,
             auth: {
                 username: user.state.username,
