@@ -8,7 +8,6 @@ export const getSocket = () => {
         //{"state":{"id":"X","username":"YYYYYY"},"version":0}
         const user = userJsonString ? JSON.parse(userJsonString) : { state: {id: "", username: ""}};
 
-        console.log("ENV", ENV)
 
         socket = io(ENV.WS_URL!, {
             //transports: ["websocket"],
