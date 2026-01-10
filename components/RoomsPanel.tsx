@@ -71,17 +71,7 @@ export function RoomsPanel() {
         });
     }, [rooms]);
 
-    useEffect(() => {
-        const loadRooms = async () => {
-            try{
-                const updatedRooms = await RoomService.getRooms()
-                setRooms(updatedRooms)
-            }catch(err){
-                console.log(err)
-            }
-        }
-        loadRooms()
-    }, []);
+
 
     return (
         <>
