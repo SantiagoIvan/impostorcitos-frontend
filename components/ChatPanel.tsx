@@ -50,6 +50,8 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
 
     useEffect(() => {
         clearMessages()
+        console.log("cleaning messages")
+        console.log(roomId, gameId)
         const MESSAGE_TTL = parseInt(process.env.NEXT_PUBLIC_MESSAGE_TTL || "10000");
         const INTERVAL = parseInt(process.env.NEXT_PUBLIC_CLEANUP_JOB_INTERVAL || "10000");
 
@@ -65,7 +67,7 @@ export function ChatPanel({roomId, gameId}: {roomId?: string, gameId?: string}) 
             <CardHeader className="border-b">
                 <div className="flex items-center gap-3">
                     <Avatar>
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" />
+                        {/*<AvatarImage src="/placeholder.svg?height=40&width=40"/> Para cuando tenga perfiles*/}
                         <AvatarFallback className="bg-primary text-primary-foreground">Me</AvatarFallback>
                     </Avatar>
                     <div>

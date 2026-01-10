@@ -6,8 +6,8 @@ const required = (value: string | undefined, name: string): string => {
 };
 
 export const ENV = {
-    API_URL: "https://impostorcitos-backend.onrender.com/api",
-    WS_URL: "https://impostorcitos-backend.onrender.com",
+    API_URL: "http://localhost:4000/api",
+    WS_URL: "http://localhost:4000",
     MIN_PLAYERS_QTY: 3,
     MAX_MESSAGE_LENGTH: 50,
     CLEANUP_JOB_INTERVAL: 20000,

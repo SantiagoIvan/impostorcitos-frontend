@@ -3,7 +3,7 @@
 import {ChatPanel} from "@/components/ChatPanel";
 import { Button } from "@/components/ui/button";
 import {useEffect, useState} from "react";
-import {useParams} from "next/navigation";
+import {useParams, usePathname} from "next/navigation";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {useUserStore} from "@/app/store/userStore";
 import PlayersList from "@/components/PlayersList";

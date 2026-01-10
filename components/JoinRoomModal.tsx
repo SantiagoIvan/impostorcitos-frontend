@@ -18,7 +18,7 @@ export default function JoinRoomModal(
     const handleJoinRoomSubmit = async () => {
         try {
             setLoading(true)
-            joinRoom({username, roomId })
+            joinRoom({username, roomId }) // cambiar por el joinRoom y agregar input de contrasenia
         }catch (e){
             console.error(e)
         }finally {

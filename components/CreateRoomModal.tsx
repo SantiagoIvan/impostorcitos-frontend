@@ -71,8 +71,8 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
             setLoading(true)
             data = RoomService.setAdminRoom(username, data);
             const newRoom = await RoomService.createRoom(data)
-            addRoom(newRoom)
             await RoomService.joinRoom({roomId: newRoom.id, username, password: data.password})
+            addRoom(newRoom)
             router.push(`/game/room/${newRoom.id}`)
         }catch (e){
             console.error(e)

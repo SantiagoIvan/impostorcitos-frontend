@@ -8,14 +8,21 @@ import JoinRoomModal from "@/components/JoinRoomModal";
 import {getNavigationItems} from "@/components/navigation/navigation.config";
 import {cn} from "@/lib";
 import {useNavigationActions} from "@/hooks/useNavigationActions";
+import {Sheet, SheetContent, SheetHeader, SheetTitle} from "@/components/ui/sheet";
+import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
+import {ChatPanel} from "@/components/ChatPanel";
+import {useGameStore} from "@/app/store/gameStore";
 
 export function BottomBar() {
     const pathname = usePathname()
-    const {actions, openJoinDialog, openCreateDialog, setOpenJoinDialog, setOpenCreateDialog} = useNavigationActions()
+    const {game} = useGameStore()
+    const {actions, openJoinDialog, openCreateDialog, setOpenJoinDialog, setOpenCreateDialog, isOpen, close} = useNavigationActions()
 
     const items = getNavigationItems(pathname).filter((item) =>
         item.visible(pathname)
     );
+    const getRoomId = () =>
+        pathname.split("/").some((p) => p.startsWith("room")) ? pathname.split("/").pop() : ""
 
     return (
         <>
@@ -38,8 +45,19 @@ export function BottomBar() {
                     ))}
                 </div>
             </nav>
-            {openCreateDialog && <CreateRoomModal open={openCreateDialog} onOpenChange={setOpenCreateDialog} />}
-            {openJoinDialog && <JoinRoomModal open={openJoinDialog} setOpen={setOpenJoinDialog} />}
+            <CreateRoomModal open={openCreateDialog} onOpenChange={setOpenCreateDialog} />
+            <JoinRoomModal open={openJoinDialog} setOpen={setOpenJoinDialog} />
+            {/*<Sheet open={isOpen} onOpenChange={close}>
+                <SheetContent side="bottom" className="h-[85vh] mx-16">
+                    <SheetHeader>
+                        <SheetTitle>
+                            <VisuallyHidden>Chat</VisuallyHidden>
+                        </SheetTitle>
+                    </SheetHeader>
+
+                    <ChatPanel roomId={getRoomId()} gameId={game.id}/>
+                </SheetContent>
+            </Sheet>*/}
         </>
     );
 }

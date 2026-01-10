@@ -14,6 +14,7 @@ export function useNavigationActions() {
     const { toggle: toggleChat } = useChatPanel();
     const [openJoinDialog, setOpenJoinDialog] = useState(false);
     const [openCreateDialog, setOpenCreateDialog] = useState(false);
+    const {isOpen, close} = useChatPanel()
     const { username, clear } = useUserStore()
     const { setRooms } = useRoomsStore()
 
@@ -49,5 +50,7 @@ export function useNavigationActions() {
         openCreateDialog,
         setOpenCreateDialog,
         setOpenJoinDialog,
+        isOpen,
+        close
     };
 }
