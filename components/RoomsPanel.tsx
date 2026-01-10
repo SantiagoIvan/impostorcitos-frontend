@@ -63,21 +63,25 @@ export function RoomsPanel() {
         setSelectedRoom(room)
         setSelectedRoomModalOpen(true)
     }
-    const loadRooms = async () => {
-        try{
-            const updatedRooms = await RoomService.getRooms()
-            setRooms(updatedRooms)
-        }catch(err){
-            console.log(err)
-        }
-    }
+
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({
             behavior: "smooth",
         });
-        loadRooms()
     }, [rooms]);
+
+    useEffect(() => {
+        const loadRooms = async () => {
+            try{
+                const updatedRooms = await RoomService.getRooms()
+                setRooms(updatedRooms)
+            }catch(err){
+                console.log(err)
+            }
+        }
+        loadRooms()
+    }, []);
 
     return (
         <>
