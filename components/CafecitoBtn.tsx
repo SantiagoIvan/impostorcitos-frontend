@@ -16,7 +16,7 @@ export default function CafecitoBtn() {
             asChild
             >
             <a
-            href="https://cafecito.app/TU_USUARIO"
+            href="https://cafecito.app/nucadelchiquitapia"
             target="_blank"
             rel="noopener noreferrer"
                 >
