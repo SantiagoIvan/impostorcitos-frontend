@@ -10,7 +10,7 @@ export const getSocket = () => {
 
 
         socket = io(ENV.WS_URL!, {
-            //transports: ["websocket"],
+            transports: ["websocket"],
             autoConnect: false,
             auth: {
                 username: user.state.username,
