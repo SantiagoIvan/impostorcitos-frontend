@@ -72,7 +72,6 @@ const WaitingRoom = () => {
 
     useEffect(() => {
         if(!currentRoom) redirectToLobby()
-        console.log("Current room from use effect: ", currentRoom)
     }, []);
 
     return (

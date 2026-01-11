@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
 import {GameDto, JoinRoomDto, RoomDto, RoomEvents, UpdateTopicDto} from "@/lib";
 import {useRoomsStore} from "@/app/store/roomsStore";
-import {RoomService} from "@/app/services/room.service"
 import {useRouter} from "next/navigation";
 import {useGameStore} from "@/app/store/gameStore";
 import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
@@ -12,13 +11,13 @@ import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 // mandas 11 por el chat de Age of Empires, o votar para echar a alguno que esta afk o nose.
 export function useWaitingRoomSocket(roomId: string) {
     const {socket} = useSocket();
-    const {updateRoom} = useRoomsStore()
+    const {setCurrentRoom} = useRoomsStore()
     const {setGame} = useGameStore()
     const router = useRouter()
     const {redirectToLobby} = useRedirectToLobby()
 
     const handleUserReady = (room: RoomDto) => {
-        updateRoom(room);
+        setCurrentRoom(room);
     }
     const handleGameStarting = (newGame : GameDto) => {
         setGame(newGame)
@@ -28,14 +27,13 @@ export function useWaitingRoomSocket(roomId: string) {
         redirectToLobby()
     }
     const handleUpdatedTopic = (room: RoomDto) => {
-        updateRoom(room);
+        setCurrentRoom(room);
     }
     const handleNewPlayerJoined = (room: RoomDto) => {
-        console.log("new player joined")
-        updateRoom(room);
+        setCurrentRoom(room);
     }
     const handleUserLeft = (room: RoomDto) => {
-        updateRoom(room);
+        setCurrentRoom(room);
     }
 
     const emitUserReady = (username: string) => {
@@ -57,7 +55,6 @@ export function useWaitingRoomSocket(roomId: string) {
     }
 
     useEffect(() => {
-        console.log("socket ", socket.connected)
         socket.on(RoomEvents.USER_READY, handleUserReady)
         socket.on(RoomEvents.USER_LEFT, handleUserLeft);
         socket.on(RoomEvents.REDIRECT_TO_GAME, handleGameStarting)
