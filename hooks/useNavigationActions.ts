@@ -41,11 +41,17 @@ export function useNavigationActions() {
             setRooms([])
         }
     }
+
+    const handleDonate = () => {
+        window.open("https://cafecito.app/nucadelchiquitapia", "_blank")
+    }
+
     const actions: Record<NavActionId, () => void> = {
         create: handleCreateGameClick,
         join: handleJoinRoomClick,
         chat: toggleChat,
         logout: handleLogOut,
+        donate: handleDonate
     };
 
     return {

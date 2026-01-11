@@ -4,6 +4,7 @@ import {useState} from "react";
 import CreateRoomModal from "@/components/CreateRoomModal";
 import JoinRoomModal from "@/components/JoinRoomModal";
 import {Button} from "@/components/ui/button";
+import CafecitoBtn from "@/components/CafecitoBtn";
 
 const Lobby = () => {
     const [openCreateDialog, setOpenCreateDialog] = useState(false)
@@ -36,22 +37,11 @@ const Lobby = () => {
                     >
                         Unirse
                     </Button>
+                    <CafecitoBtn classname="mt-10"/>
                 </div>
             </div>
             <CreateRoomModal open={openCreateDialog} onOpenChange={setOpenCreateDialog} />
             <JoinRoomModal open={openJoinDialog} setOpen={setOpenJoinDialog} />
-            {/* Rooms Panel
-            <div className="flex gap-4 w-full h-[85dvh]">
-                <div className="flex w-full flex-col lg:flex lg:w-1/2">
-                    <RoomsPanel />
-                </div>
-            */}
-            {/* Chat Panel
-                <div className="flex w-full flex-col lg:w-1/2 ">
-                    <ChatPanel />
-                </div>
-            </div>
-            */}
         </>
     )
 }

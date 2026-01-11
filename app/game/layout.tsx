@@ -17,7 +17,7 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
                     <div className="hidden md:block">
                         <SidebarTrigger />
                     </div>
-                    <main className="flex-1 px-20 pb-16 md:pb-10 md:mx-auto">
+                    <main className="flex-1 pb-16 md:pb-10 md:mx-auto">
                         {children}
                     </main>
                     {/* Bottom bar solo mobile */}

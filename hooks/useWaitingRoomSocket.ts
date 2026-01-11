@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {GameDto, RoomDto, RoomEvents, UpdateTopicDto} from "@/lib";
+import {GameDto, JoinRoomDto, RoomDto, RoomEvents, UpdateTopicDto} from "@/lib";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {RoomService} from "@/app/services/room.service"
 import {useRouter} from "next/navigation";
@@ -30,12 +30,22 @@ export function useWaitingRoomSocket(roomId: string) {
     const handleUpdatedTopic = (room: RoomDto) => {
         updateRoom(room);
     }
+    const handleNewPlayerJoined = (room: RoomDto) => {
+        console.log("new player joined")
+        updateRoom(room);
+    }
+    const handleUserLeft = (room: RoomDto) => {
+        updateRoom(room);
+    }
 
     const emitUserReady = (username: string) => {
-        socket.emit(RoomEvents.READY, RoomService.createJoinRoomDto(roomId, username));
+        socket.emit(RoomEvents.READY, {roomId, username});
     }
     const emitStartGame = (roomId: string) => {
         socket.emit(RoomEvents.START_GAME, roomId);
+    }
+    const emitLeaveEvent = (outcomingPlayer: JoinRoomDto) => {
+        socket.emit(RoomEvents.LEAVE, outcomingPlayer);
     }
     const emitUpdateTopic = (topic: string, randomFlag: boolean) => {
         const msg: UpdateTopicDto = {
@@ -47,10 +57,13 @@ export function useWaitingRoomSocket(roomId: string) {
     }
 
     useEffect(() => {
+        console.log("socket ", socket.connected)
         socket.on(RoomEvents.USER_READY, handleUserReady)
+        socket.on(RoomEvents.USER_LEFT, handleUserLeft);
         socket.on(RoomEvents.REDIRECT_TO_GAME, handleGameStarting)
         socket.on(RoomEvents.ABORT_ROOM, handleAbortRoom)
         socket.on(RoomEvents.UPDATED_TOPIC, handleUpdatedTopic)
+        socket.on(RoomEvents.JOINED, handleNewPlayerJoined);
 
         return () => {
             socket.off(RoomEvents.USER_READY, handleUserReady);
@@ -58,5 +71,5 @@ export function useWaitingRoomSocket(roomId: string) {
         };
     }, [socket, roomId]);
 
-    return {emitUserReady, emitStartGame, emitUpdateTopic}
+    return {emitUserReady, emitStartGame, emitUpdateTopic, emitLeaveEvent}
 }

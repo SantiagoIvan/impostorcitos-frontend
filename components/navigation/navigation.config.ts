@@ -1,6 +1,6 @@
-import { LogOut, PlusCircle, LogIn, MessageCircle  } from "lucide-react";
+import { LogOut, PlusCircle, LogIn, MessageCircle, CoffeeIcon  } from "lucide-react";
 
-export type NavActionId = "create" | "join" | "chat" | "logout";
+export type NavActionId = "create" | "join" | "chat" | "logout" | "donate";
 
 export type NavItem = {
     id: NavActionId;
@@ -30,6 +30,12 @@ export const getNavigationItems = (
         icon: LogIn,
         visible: () => pathname === "/game/lobby",
     },*/
+    {
+        id: "donate",
+        label: "Ayudame :3 ☕ ",
+        icon: CoffeeIcon,
+        visible: () => pathname.startsWith("/game"),
+    },
     {
         id: "logout",
         label: "Salir",

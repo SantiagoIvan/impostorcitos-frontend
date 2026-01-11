@@ -37,7 +37,7 @@ interface Props {
 
 export default function CreateRoomModal({ open, onOpenChange }: Props) {
     const { username } = useUserStore()
-    const {addRoom} = useRoomsStore()
+    const {setCurrentRoom} = useRoomsStore()
     const {startLoading, stopLoading} = useLoading()
     const router = useRouter()
     const {
@@ -69,9 +69,9 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
             startLoading()
             data = RoomService.setAdminRoom(username, data);
             const newRoom = await RoomService.createRoom(data)
-            await RoomService.joinRoom({roomId: newRoom.id, username, password: data.password})
-            addRoom(newRoom)
-            router.push(`/game/room/${newRoom.id}`)
+            const updatedRoom = await RoomService.joinRoom({roomId: newRoom.id, username, password: data.password})
+            setCurrentRoom(updatedRoom)
+            router.push(`/game/room/${updatedRoom.id}`)
         }catch (e){
             console.error(e)
         }finally {

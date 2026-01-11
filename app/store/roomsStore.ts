@@ -8,8 +8,9 @@ interface RoomStore {
     addRoom: (room: RoomDto) => void;
     getRoomById: (id?: ParamValue) => RoomDto;
     updateRoom: (room: RoomDto) => void;
-    currentRoom?: RoomDto;
-    setCurrentRoom: (room?: RoomDto) => void;
+    currentRoom: RoomDto;
+    setCurrentRoom: (room: RoomDto) => void;
+    clearCurrentRoom: () => void;
 }
 
 export const useRoomsStore = create<RoomStore>((set, get) => ({
@@ -40,6 +41,7 @@ export const useRoomsStore = create<RoomStore>((set, get) => ({
                 }
             }
         ),
-    setCurrentRoom: (room?: RoomDto) => set({currentRoom: room})
-
+    currentRoom: defaultRoom,
+    setCurrentRoom: (room: RoomDto) => set({currentRoom: room}),
+    clearCurrentRoom: () => set({currentRoom: defaultRoom}),
 }));
