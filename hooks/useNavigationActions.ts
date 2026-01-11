@@ -12,12 +12,10 @@ import {useLoading} from "@/context/LoadingContext";
 
 export function useNavigationActions() {
     const router = useRouter();
-    const { toggle: toggleChat } = useChatPanel();
     const [openJoinDialog, setOpenJoinDialog] = useState(false);
     const [openCreateDialog, setOpenCreateDialog] = useState(false);
-    const {isOpen, close} = useChatPanel()
     const { username, clear } = useUserStore()
-    const { setRooms } = useRoomsStore()
+    const { setRooms, clearCurrentRoom } = useRoomsStore()
     const {startLoading, stopLoading} = useLoading()
 
 
@@ -39,6 +37,7 @@ export function useNavigationActions() {
             stopLoading()
             router.push("/")
             setRooms([])
+            clearCurrentRoom()
         }
     }
 
@@ -49,7 +48,6 @@ export function useNavigationActions() {
     const actions: Record<NavActionId, () => void> = {
         create: handleCreateGameClick,
         join: handleJoinRoomClick,
-        chat: toggleChat,
         logout: handleLogOut,
         donate: handleDonate
     };
@@ -60,7 +58,5 @@ export function useNavigationActions() {
         openCreateDialog,
         setOpenCreateDialog,
         setOpenJoinDialog,
-        isOpen,
-        close
     };
 }

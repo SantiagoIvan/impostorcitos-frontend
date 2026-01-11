@@ -1,6 +1,6 @@
 import { LogOut, PlusCircle, LogIn, MessageCircle, CoffeeIcon  } from "lucide-react";
 
-export type NavActionId = "create" | "join" | "chat" | "logout" | "donate";
+export type NavActionId = "create" | "join" | "logout" | "donate";
 
 export type NavItem = {
     id: NavActionId;

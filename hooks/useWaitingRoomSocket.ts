@@ -17,6 +17,7 @@ export function useWaitingRoomSocket(roomId: string) {
     const {redirectToLobby} = useRedirectToLobby()
 
     const handleUserReady = (room: RoomDto) => {
+        console.log("User ready: ", room)
         setCurrentRoom(room);
     }
     const handleGameStarting = (newGame : GameDto) => {
@@ -27,12 +28,15 @@ export function useWaitingRoomSocket(roomId: string) {
         redirectToLobby()
     }
     const handleUpdatedTopic = (room: RoomDto) => {
+        console.log("Updated topic: ", room)
         setCurrentRoom(room);
     }
     const handleNewPlayerJoined = (room: RoomDto) => {
+        console.log("New player joined: ", room)
         setCurrentRoom(room);
     }
     const handleUserLeft = (room: RoomDto) => {
+        console.log("User left room: ", room)
         setCurrentRoom(room);
     }
 
@@ -43,6 +47,7 @@ export function useWaitingRoomSocket(roomId: string) {
         socket.emit(RoomEvents.START_GAME, roomId);
     }
     const emitLeaveEvent = (outcomingPlayer: JoinRoomDto) => {
+        console.log("Emitting leave event: ", outcomingPlayer)
         socket.emit(RoomEvents.LEAVE, outcomingPlayer);
     }
     const emitUpdateTopic = (topic: string, randomFlag: boolean) => {
@@ -55,6 +60,10 @@ export function useWaitingRoomSocket(roomId: string) {
     }
 
     useEffect(() => {
+        if (!socket) {
+            console.error("Socket not connected yet")
+            return;
+        }
         socket.on(RoomEvents.USER_READY, handleUserReady)
         socket.on(RoomEvents.USER_LEFT, handleUserLeft);
         socket.on(RoomEvents.REDIRECT_TO_GAME, handleGameStarting)

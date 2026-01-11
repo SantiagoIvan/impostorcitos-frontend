@@ -1,14 +1,16 @@
 "use client"
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import CreateRoomModal from "@/components/CreateRoomModal";
 import JoinRoomModal from "@/components/JoinRoomModal";
 import {Button} from "@/components/ui/button";
 import CafecitoBtn from "@/components/CafecitoBtn";
+import {useSocket} from "@/hooks/useSocket";
 
 const Lobby = () => {
     const [openCreateDialog, setOpenCreateDialog] = useState(false)
     const [openJoinDialog, setOpenJoinDialog] = useState(false)
+    const socket = useSocket()
 
     const handleJoinRoom = () => {
         setOpenJoinDialog(true)
@@ -16,6 +18,10 @@ const Lobby = () => {
     const handleCreateGame = () => {
         setOpenCreateDialog(true)
     }
+
+    useEffect(() => {
+        console.log("socket", socket)
+    }, []);
 
     return (
         <>

@@ -20,6 +20,7 @@ import { Skull } from "lucide-react"
 import {Card, CardContent} from "@/components/ui/card";
 import { HardHat } from "lucide-react"
 import UpdateTopicModal from "@/components/UpdateTopicModal";
+import {useLoading} from "@/context/LoadingContext";
 
 const Game = () => {
     const { game, clearGameStore } = useGameStore()
@@ -27,6 +28,7 @@ const Game = () => {
     const { username } = useUserStore()
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
     const [showSelectTopicModal, setShowSelectTopicModal] = useState<boolean>(false);
+    const {startLoading, stopLoading} = useLoading()
 
 
     const getAlivePlayers = (): PlayerDto[] => game.room.players.filter((player: PlayerDto) => player.isAlive)
@@ -89,10 +91,6 @@ const Game = () => {
     return (
         <main className="flex flex-col bg-background gap-10 w-full m-10 items-center">
             <div className="flex gap-4 w-full">
-                <LoadingOverlay
-                    show={!allReady}
-                    message="Esperando a los jugadores"
-                />
                 <div className="flex w-full flex-col lg:flex lg:w-1/2 gap-5">
                     <GameInfoOverlay
                         show={showGameInfo}
@@ -178,10 +176,6 @@ const Game = () => {
 
                         )}
 
-                </div>
-                {/* Chat Panel */}
-                <div className="flex w-full flex-col lg:w-1/2">
-                    <ChatPanel roomId={game.room.id} gameId={game.id}/>
                 </div>
 
             </div>

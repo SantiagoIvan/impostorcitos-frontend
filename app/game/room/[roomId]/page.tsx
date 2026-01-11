@@ -12,7 +12,7 @@ import {toast} from "sonner";
 import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 import {ArrowLeft, PenIcon} from "lucide-react";
 import UpdateTopicModal from "@/components/UpdateTopicModal";
-import {PlayerDto} from "@/lib";
+import {defaultRoom, PlayerDto} from "@/lib";
 
 const greenStyle = "bg-emerald-500/80 hover:bg-green-800/80"
 const redStyle = "bg-red-400/80 hover:bg-red-800/80"
@@ -71,7 +71,7 @@ const WaitingRoom = () => {
     }
 
     useEffect(() => {
-        if(!currentRoom) redirectToLobby()
+        if(currentRoom.id === defaultRoom.id) redirectToLobby()
     }, []);
 
     return (
