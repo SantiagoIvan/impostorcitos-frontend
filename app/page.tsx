@@ -43,25 +43,33 @@ export default function WelcomeScreen() {
     }, []);
 
   return (
-    <div className="flex flex-col gap-10 justify-center m-auto items-center h-screen">
-        <h1 className="text-7xl">Impostorcitos</h1>
+    <div className="flex min-h-screen flex-col justify-center items-center px-4 gap-8 sm:gap-10">
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-center">
+            Impostorcitos
+        </h1>
+
         <div className="mt-10 flex flex-col">
-            <Label htmlFor="Impostorcitos">Ingrese un nombre</Label>
+            <Label
+                htmlFor="name"
+                className="text-sm sm:text-base"
+            >
+                Ingrese un nombre
+            </Label>
             <Input
                 className="mt-4"
                 id="name"
                 value={username}
                 onChange={(e) => {
-                    setUsername(e.target.value.substring(0, 15).toLowerCase())
+                    setUsername(e.target.value.substring(0, 15))
                 }}
                 onKeyDown={handleEnter}
             />
-            <Button className="mt-10" onClick={handleLogin}>
-                Al lobby pete
-                <ArrowRightIcon />
+            <Button className="mt-6 sm:mt-8 flex items-center justify-center gap-2" onClick={handleLogin}>
+                Al lobby
+                <ArrowRightIcon className="h-4 w-4"/>
             </Button>
         </div>
-        <CafecitoBtn />
+        <CafecitoBtn classname="mt-6 sm:mt-10"/>
     </div>
   );
 }

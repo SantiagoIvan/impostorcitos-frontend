@@ -6,8 +6,8 @@ const required = (value: string | undefined, name: string): string => {
 };
 
 export const ENV = {
-    API_URL: "https://api.impostorcitos.com/api",//process.env.NEXT_PUBLIC_BACKEND_API,
-    WS_URL: "https://api.impostorcitos.com", //process.env.NEXT_PUBLIC_BACKEND_WS,
+    API_URL: "http://localhost:4000/api",//process.env.NEXT_PUBLIC_BACKEND_API,
+    WS_URL: "http://localhost:4000", //process.env.NEXT_PUBLIC_BACKEND_WS,
     MIN_PLAYERS_QTY: process.env.NEXT_PUBLIC_MIN_PLAYERS_QTY,
     MAX_MESSAGE_LENGTH: process.env.MAX_MESSAGE_LENGTH,
     CLEANUP_JOB_INTERVAL: process.env.CLEANUP_JOB_INTERVAL,

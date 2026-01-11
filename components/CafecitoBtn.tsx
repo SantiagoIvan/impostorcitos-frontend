@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button"
 
-export default function CafecitoBtn() {
+export default function CafecitoBtn({classname}: {classname?: string}) {
     return (
         <Button
             variant="outline"
-            className="
+            className={`
                 px-6 py-3
                 text-base
                 border-2
@@ -12,7 +12,8 @@ export default function CafecitoBtn() {
               bg-[#efebe9]
               hover:bg-[#e0d6d1]
                 transition-colors
-            "
+                ${classname}
+            `}
             asChild
             >
             <a
