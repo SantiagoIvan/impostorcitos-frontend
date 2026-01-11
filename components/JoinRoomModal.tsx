@@ -1,15 +1,14 @@
 import {Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {useUserStore} from "@/app/store/userStore";
-import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {useState} from "react";
-import LoadingOverlay from "@/components/LoadingOverlay";
 import {Input} from "@/components/ui/input";
 import {toast} from "sonner";
 import {RoomService} from "@/app/services/room.service";
 import {Label} from "@/components/ui/label";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {useRouter} from "next/navigation";
+import {useLoading} from "@/context/LoadingContext";
 
 export default function JoinRoomModal(
     {open, setOpen}:
@@ -18,13 +17,13 @@ export default function JoinRoomModal(
     const {setCurrentRoom} = useRoomsStore()
     const { username } = useUserStore()
     const router = useRouter()
-    const [loading, setLoading] = useState(false);
+    const {startLoading, stopLoading} = useLoading()
     const [roomId, setRoomId] = useState("");
     const [password, setPassword] = useState("");
 
     const handleJoinRoomSubmit = async () => {
         try {
-            setLoading(true)
+            startLoading()
             const res = await RoomService.joinRoom({roomId, username, password})
             setCurrentRoom(res)
             router.push(`/game/room/${res.id}`)
@@ -33,13 +32,13 @@ export default function JoinRoomModal(
             toast.error(`Error: ${e.response.data.message}`)
         }finally {
             setOpen(false)
-            setLoading(false)
+            stopLoading()
         }
     }
 
-    const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleEnter = async (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
-            handleJoinRoomSubmit();
+            await handleJoinRoomSubmit();
         }
     }
     const handleModalClose = () => {
@@ -48,7 +47,6 @@ export default function JoinRoomModal(
 
     return (
         <>
-            {loading && <LoadingOverlay show={loading} />}
             <Dialog open={open} onOpenChange={handleModalClose}>
                 <DialogContent
                     className="
@@ -84,7 +82,6 @@ export default function JoinRoomModal(
                         Ingrese password (opcional)
                     </Label>
                     <Input
-                        autoFocus
                         placeholder="Ej: pass123"
                         value={password}
                         className="mt-2"

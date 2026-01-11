@@ -8,7 +8,7 @@ import {AuthService} from "@/app/services/auth.service";
 import {disconnectSocket} from "@/app/services/socket.service";
 import {useUserStore} from "@/app/store/userStore";
 import {useRoomsStore} from "@/app/store/roomsStore";
-import {useLoading} from "@/hooks/useLoading";
+import {useLoading} from "@/context/LoadingContext";
 
 export function useNavigationActions() {
     const router = useRouter();

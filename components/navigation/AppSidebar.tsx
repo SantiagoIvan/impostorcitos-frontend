@@ -8,35 +8,18 @@ import {
     SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import {useUserStore} from "@/app/store/userStore";
-import {LogOut} from "lucide-react";
-import { useRouter} from "next/navigation";
-import {useRoomsStore} from "@/app/store/roomsStore";
-import {disconnectSocket} from "@/app/services/socket.service";
-import {AuthService} from "@/app/services/auth.service";
-import {useLoading} from "@/hooks/useLoading";
+import {usePathname} from "next/navigation";
+
+import {getNavigationItems} from "@/components/navigation/navigation.config";
+import {useNavigationActions} from "@/hooks/useNavigationActions";
 
 export function AppSidebar() {
-    const {username, clear} = useUserStore()
-    const {setRooms} = useRoomsStore()
-    const router = useRouter()
-    const {loading, startLoading, stopLoading} = useLoading()
-
-
-    const handleLogOut = async () => {
-        try{
-            startLoading()
-            await AuthService.logout(username)
-            clear()
-            disconnectSocket()
-        }catch (e){
-            console.log(e)
-        }finally {
-            stopLoading()
-            router.push("/")
-            setRooms([])
-        }
-    }
-
+    const {username} = useUserStore()
+    const pathname = usePathname()
+    const items = getNavigationItems(pathname).filter((item) =>
+        item.visible(pathname)
+    );
+    const {actions} = useNavigationActions()
 
     const sidebarItemProps = "h-14 px-4 text-base font-medium gap-3 cursor-pointer"
 
@@ -48,12 +31,14 @@ export function AppSidebar() {
                     <SidebarGroup>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                <SidebarMenuItem >
-                                    <SidebarMenuButton className={sidebarItemProps} onClick={handleLogOut}>
-                                        <LogOut />
-                                        <span>Logout</span>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
+                                {items.map(({ id, label, icon: Icon }) => (
+                                    <SidebarMenuItem key={id} >
+                                        <SidebarMenuButton className={`${sidebarItemProps} ${id === "logout" && "text-destructive"}`} onClick={actions[id]}>
+                                            <Icon className="h-5 w-5" />
+                                            <span className="leading-none">{label}</span>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                ))}
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>

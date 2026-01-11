@@ -4,27 +4,26 @@ import {Description} from "@radix-ui/react-dialog";
 import PlayersList from "@/components/PlayersList";
 import {Button} from "@/components/ui/button";
 import {useUserStore} from "@/app/store/userStore";
-import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {useState} from "react";
-import LoadingOverlay from "@/components/LoadingOverlay";
 import {Input} from "@/components/ui/input";
 import {RoomService} from "@/app/services/room.service";
 import {useRouter} from "next/navigation";
 import {Label} from "@radix-ui/react-menu";
 import {toast} from "sonner";
+import {useLoading} from "@/context/LoadingContext";
 
 export default function ConfirmationRoomModal(
     {room, open, setSelectedRoom, setSelectedRoomModalOpen}:
     {room: RoomDto, open: boolean, setSelectedRoom: (room: RoomDto) => void,setSelectedRoomModalOpen: (open: boolean) => void}
 ) {
     const { username } = useUserStore()
-    const [loading, setLoading] = useState(false);
+    const {startLoading, stopLoading} = useLoading()
     const [password, setPassword] = useState("");
     const router = useRouter()
 
     const handleRoomConfirmed = async () => {
         try {
-            setLoading(true)
+            startLoading()
             await RoomService.joinRoom({roomId: room.id, username, password })
             router.push(`/game/room/${room.id}`)
         }catch (e){
@@ -34,7 +33,7 @@ export default function ConfirmationRoomModal(
             setSelectedRoom(defaultRoom) // cosa de volver al estado inicial
             setSelectedRoomModalOpen(false)
             setPassword("")
-            setLoading(false)
+            stopLoading()
         }
     }
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -50,7 +49,6 @@ export default function ConfirmationRoomModal(
 
     return (
         <>
-            {loading && <LoadingOverlay show={loading} />}
             <Dialog open={open} onOpenChange={handleModalClose}>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>

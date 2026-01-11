@@ -26,11 +26,9 @@ import {createRoomSchema, CreateRoomDto, RoomType, topics} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {RoomService} from "@/app/services/room.service";
 import {useRoomsStore} from "@/app/store/roomsStore";
-import {useState} from "react";
-import LoadingOverlay from "@/components/LoadingOverlay";
-import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {Checkbox} from "@/components/ui/checkbox";
 import {useRouter} from "next/navigation";
+import {useLoading} from "@/context/LoadingContext";
 
 interface Props {
     open: boolean;
@@ -40,7 +38,7 @@ interface Props {
 export default function CreateRoomModal({ open, onOpenChange }: Props) {
     const { username } = useUserStore()
     const {addRoom} = useRoomsStore()
-    const [loading, setLoading] = useState(false);
+    const {startLoading, stopLoading} = useLoading()
     const router = useRouter()
     const {
         register,
@@ -68,7 +66,7 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
 
     const onSubmit = async (data: CreateRoomDto) => {
         try{
-            setLoading(true)
+            startLoading()
             data = RoomService.setAdminRoom(username, data);
             const newRoom = await RoomService.createRoom(data)
             await RoomService.joinRoom({roomId: newRoom.id, username, password: data.password})
@@ -78,13 +76,12 @@ export default function CreateRoomModal({ open, onOpenChange }: Props) {
             console.error(e)
         }finally {
             onOpenChange(false);
-            setLoading(false);
+            stopLoading();
         }
     };
 
     return (
         <>
-            {loading && <LoadingOverlay show={loading} />}
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent
                     className="

@@ -12,7 +12,7 @@ export type NavItem = {
 export const getNavigationItems = (
     pathname: string,
 ): NavItem[] => [
-    {
+    /*{
         id: "chat",
         label: "Chat",
         icon: MessageCircle,
@@ -29,7 +29,7 @@ export const getNavigationItems = (
         label: "Unirse",
         icon: LogIn,
         visible: () => pathname === "/game/lobby",
-    },
+    },*/
     {
         id: "logout",
         label: "Salir",

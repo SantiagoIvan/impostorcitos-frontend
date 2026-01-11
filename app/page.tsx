@@ -7,16 +7,15 @@ import {Label} from "@/components/ui/label";
 import {useUserStore} from "@/app/store/userStore";
 import {useRouter} from "next/navigation";
 import { toast } from "sonner"
-import {useEffect} from "react";
+import { useEffect} from "react";
 import {AuthService} from "@/app/services/auth.service";
 import CafecitoBtn from "@/components/CafecitoBtn";
-import {useLoading} from "@/hooks/useLoading";
-import LoadingOverlay from "@/components/LoadingOverlay";
+import {useLoading} from "@/context/LoadingContext";
 
 export default function WelcomeScreen() {
     const {username, setUsername, clear, setUser} = useUserStore();
     const router = useRouter();
-    const {loading, startLoading, stopLoading} = useLoading();
+    const {startLoading, stopLoading} = useLoading()
 
     const handleLogin = async () => {
         try{
@@ -31,11 +30,12 @@ export default function WelcomeScreen() {
             router.push("/game/lobby");
 
         }catch(err){
-            stopLoading()
             console.log(err)
             // @ts-expect-error-para que no joda por el tipo del error
             toast.error(err.response.data.message);
             setUsername("");
+        }finally {
+            stopLoading()
         }
     }
     const handleEnter = async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -49,7 +49,6 @@ export default function WelcomeScreen() {
 
   return (
     <div className="flex min-h-screen flex-col justify-center items-center px-4 gap-8 sm:gap-10">
-        {loading && <LoadingOverlay show={loading} />}
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-center">
             Impostorcitos
         </h1>

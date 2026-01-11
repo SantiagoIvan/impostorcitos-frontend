@@ -1,19 +1,22 @@
+"use client"
 // components/LoadingOverlay.tsx
 import { Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import {useLoading} from "@/context/LoadingContext";
 
 interface LoadingOverlayProps {
-    show: boolean;
     message?: string;
 }
 
 export default function LoadingOverlay({
-                                           show,
                                            message = "Cargando..."
                                        }: LoadingOverlayProps) {
+    const {loading} = useLoading()
+
+    if(!loading) return null
     return (
         <AnimatePresence>
-            {show && (
+            {loading && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}

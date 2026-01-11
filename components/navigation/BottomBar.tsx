@@ -2,27 +2,20 @@
 
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import {useState} from "react";
 import CreateRoomModal from "@/components/CreateRoomModal";
 import JoinRoomModal from "@/components/JoinRoomModal";
 import {getNavigationItems} from "@/components/navigation/navigation.config";
 import {cn} from "@/lib";
 import {useNavigationActions} from "@/hooks/useNavigationActions";
-import {Sheet, SheetContent, SheetHeader, SheetTitle} from "@/components/ui/sheet";
-import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
-import {ChatPanel} from "@/components/ChatPanel";
-import {useGameStore} from "@/app/store/gameStore";
 
 export function BottomBar() {
     const pathname = usePathname()
-    const {game} = useGameStore()
-    const {actions, openJoinDialog, openCreateDialog, setOpenJoinDialog, setOpenCreateDialog, isOpen, close} = useNavigationActions()
+    const {actions, openJoinDialog, openCreateDialog, setOpenJoinDialog, setOpenCreateDialog} = useNavigationActions()
 
     const items = getNavigationItems(pathname).filter((item) =>
         item.visible(pathname)
     );
-    const getRoomId = () =>
-        pathname.split("/").some((p) => p.startsWith("room")) ? pathname.split("/").pop() : ""
+
 
     return (
         <>

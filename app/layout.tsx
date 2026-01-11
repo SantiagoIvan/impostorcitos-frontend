@@ -4,6 +4,8 @@ import "./globals.css";
 import {ThemeProvider} from "@/components/ui/ThemeProvider"
 import {ModeToggle} from "@/components/ModeToggle";
 import {Toaster} from "@/components/ui/sonner";
+import {LoadingProvider} from "@/context/LoadingContext";
+import LoadingOverlay from "@/components/LoadingOverlay";
 
 
 const geistSans = Geist({
@@ -27,24 +29,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
+      <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+      >
+          <LoadingProvider>
+              {/* Overlay global (nunca se desmonta) */}
+              <LoadingOverlay />
 
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-        >
-            <div className="floating-button">
-                <ModeToggle />
-            </div>
-            {children}
-        </ThemeProvider>
-        <Toaster />
+              <div className="floating-button">
+                  <ModeToggle />
+              </div>
+
+              {children}
+          </LoadingProvider>
+      </ThemeProvider>
+
+      <Toaster />
       </body>
-    </html>
+      </html>
   );
 }
