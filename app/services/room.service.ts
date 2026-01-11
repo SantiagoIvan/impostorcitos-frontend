@@ -16,7 +16,6 @@ export const RoomService = {
     },
     joinRoom: async (joinRoomDto: JoinRoomDto) => {
         const response = await api.post("/room/join", joinRoomDto);
-        console.log(response.data)
         return response.data;
     }
 }

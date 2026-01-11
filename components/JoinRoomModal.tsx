@@ -5,22 +5,32 @@ import {useRoomsSocket} from "@/hooks/useRoomsSocket";
 import {useState} from "react";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import {Input} from "@/components/ui/input";
+import {toast} from "sonner";
+import {RoomService} from "@/app/services/room.service";
+import {Label} from "@/components/ui/label";
+import {useRoomsStore} from "@/app/store/roomsStore";
+import {useRouter} from "next/navigation";
 
 export default function JoinRoomModal(
     {open, setOpen}:
     {open: boolean,setOpen: (open: boolean) => void}
 ) {
-    const {joinRoom} = useRoomsSocket()
+    const {setCurrentRoom} = useRoomsStore()
     const { username } = useUserStore()
+    const router = useRouter()
     const [loading, setLoading] = useState(false);
     const [roomId, setRoomId] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleJoinRoomSubmit = async () => {
         try {
             setLoading(true)
-            joinRoom({username, roomId }) // cambiar por el joinRoom y agregar input de contrasenia
-        }catch (e){
+            const res = await RoomService.joinRoom({roomId, username, password})
+            setCurrentRoom(res)
+            router.push(`/game/room/${res.id}`)
+        }catch (e: any){
             console.error(e)
+            toast.error(`Error: ${e.response.data.message}`)
         }finally {
             setOpen(false)
             setLoading(false)
@@ -40,25 +50,80 @@ export default function JoinRoomModal(
         <>
             {loading && <LoadingOverlay show={loading} />}
             <Dialog open={open} onOpenChange={handleModalClose}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent
+                    className="
+            w-[95vw]
+            max-w-sm
+            sm:max-w-[425px]
+            px-4
+            sm:px-6
+        "
+                >
                     <DialogHeader>
-                        <DialogTitle>Ingrese ID de partida</DialogTitle>
+                        <DialogTitle className="text-lg sm:text-xl">
+                            Unirse a partida
+                        </DialogTitle>
                     </DialogHeader>
+
+                    <Label htmlFor="roomId" className="mt-2">
+                        Ingrese ID de partida
+                    </Label>
                     <Input
-                        autoFocus={true}
+                        autoFocus
                         placeholder="Ej: ABC123"
                         value={roomId}
-                        onChange={(e) => setRoomId(e.target.value.substring(0, 15).toLowerCase())}
+                        className="mt-2"
+                        onChange={(e) =>
+                            setRoomId(
+                                e.target.value.substring(0, 15).toLowerCase()
+                            )
+                        }
                         onKeyDown={handleEnter}
                     />
-                    <DialogFooter>
+                    <Label htmlFor="password" className="mt-2">
+                        Ingrese password (opcional)
+                    </Label>
+                    <Input
+                        autoFocus
+                        placeholder="Ej: pass123"
+                        value={password}
+                        className="mt-2"
+                        onChange={(e) =>
+                            setPassword(
+                                e.target.value.substring(0, 15).toLowerCase()
+                            )
+                        }
+                        onKeyDown={handleEnter}
+                    />
+
+                    <DialogFooter
+                        className="
+                flex
+                flex-col-reverse
+                gap-2
+                sm:flex-row
+                sm:justify-end
+            "
+                    >
                         <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
+                            <Button
+                                variant="outline"
+                                className="w-full sm:w-auto"
+                            >
+                                Cancelar
+                            </Button>
                         </DialogClose>
-                        <Button onClick={handleJoinRoomSubmit}>Ingresar</Button>
+
+                        <Button
+                            onClick={handleJoinRoomSubmit}
+                            className="w-full sm:w-auto"
+                        >
+                            Ingresar
+                        </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
         </>
     )
 }

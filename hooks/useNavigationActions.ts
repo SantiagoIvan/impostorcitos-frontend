@@ -8,6 +8,7 @@ import {AuthService} from "@/app/services/auth.service";
 import {disconnectSocket} from "@/app/services/socket.service";
 import {useUserStore} from "@/app/store/userStore";
 import {useRoomsStore} from "@/app/store/roomsStore";
+import {useLoading} from "@/hooks/useLoading";
 
 export function useNavigationActions() {
     const router = useRouter();
@@ -17,6 +18,7 @@ export function useNavigationActions() {
     const {isOpen, close} = useChatPanel()
     const { username, clear } = useUserStore()
     const { setRooms } = useRoomsStore()
+    const {startLoading, stopLoading} = useLoading()
 
 
     const handleJoinRoomClick = () => {
@@ -27,12 +29,14 @@ export function useNavigationActions() {
     }
     const handleLogOut = async () => {
         try{
+            startLoading()
             await AuthService.logout(username)
             clear()
             disconnectSocket()
         }catch (e){
             console.log(e)
         }finally {
+            stopLoading()
             router.push("/")
             setRooms([])
         }

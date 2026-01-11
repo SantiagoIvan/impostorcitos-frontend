@@ -1,8 +1,10 @@
+
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/navigation/AppSidebar"
 import {ProtectedLayout} from "@/components/ProtectedLayout";
 import {BottomBar} from "@/components/navigation/BottomBar";
 import {ChatPanelProvider} from "@/context/ChatPanelContext";
+import {useLoading} from "@/hooks/useLoading";
 
 export default function GameLayout({ children }: { children: React.ReactNode }) {
     return (

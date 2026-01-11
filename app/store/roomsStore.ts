@@ -8,6 +8,8 @@ interface RoomStore {
     addRoom: (room: RoomDto) => void;
     getRoomById: (id?: ParamValue) => RoomDto;
     updateRoom: (room: RoomDto) => void;
+    currentRoom?: RoomDto;
+    setCurrentRoom: (room?: RoomDto) => void;
 }
 
 export const useRoomsStore = create<RoomStore>((set, get) => ({
@@ -38,5 +40,6 @@ export const useRoomsStore = create<RoomStore>((set, get) => ({
                 }
             }
         ),
+    setCurrentRoom: (room?: RoomDto) => set({currentRoom: room})
 
 }));

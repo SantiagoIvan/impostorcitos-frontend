@@ -3,10 +3,13 @@
 import {useState} from "react";
 import CreateRoomModal from "@/components/CreateRoomModal";
 import JoinRoomModal from "@/components/JoinRoomModal";
+import {useLoading} from "@/hooks/useLoading";
+import LoadingOverlay from "@/components/LoadingOverlay";
 
 const Lobby = () => {
     const [openCreateDialog, setOpenCreateDialog] = useState(false)
     const [openJoinDialog, setOpenJoinDialog] = useState(false)
+    const {loading} = useLoading()
 
     const handleJoinRoom = () => {
         setOpenJoinDialog(true)
@@ -17,7 +20,7 @@ const Lobby = () => {
 
     return (
         <>
-
+            {loading && <LoadingOverlay show={loading} />}
             <CreateRoomModal open={openCreateDialog} onOpenChange={setOpenCreateDialog} />
             <JoinRoomModal open={openJoinDialog} setOpen={setOpenJoinDialog} />
             {/* Rooms Panel

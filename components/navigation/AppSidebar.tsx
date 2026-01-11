@@ -13,21 +13,25 @@ import { useRouter} from "next/navigation";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {disconnectSocket} from "@/app/services/socket.service";
 import {AuthService} from "@/app/services/auth.service";
+import {useLoading} from "@/hooks/useLoading";
 
 export function AppSidebar() {
     const {username, clear} = useUserStore()
     const {setRooms} = useRoomsStore()
     const router = useRouter()
+    const {loading, startLoading, stopLoading} = useLoading()
 
 
     const handleLogOut = async () => {
         try{
+            startLoading()
             await AuthService.logout(username)
             clear()
             disconnectSocket()
         }catch (e){
             console.log(e)
         }finally {
+            stopLoading()
             router.push("/")
             setRooms([])
         }
