@@ -38,50 +38,92 @@ export default function RoundsTable({ moves, className = "" }: Props) {
 
 
     return (
-        <div className={`overflow-auto rounded-md border text-background ${className}`}>
-            <Table className="min-w-full ">
+            <Table
+                className="
+                  relative
+                  w-full
+                  max-w-full
+                  overflow-x-auto
+                  overscroll-x-contain
+                  touch-pan-x
+                "
+            >
                 <TableHeader className="bg-foreground">
-                <TableRow>
-                    <TableHead className="sticky left-0 z-10 px-4 py-2 text-left text-background font-bold">Jugador</TableHead>
-                    {rounds.map((r) => (
-                        <TableHead key={r} className="px-4 py-2 text-center text-background font-bold">Ronda {r}</TableHead>
-                    ))}
-                </TableRow>
+                    <TableRow>
+                        <TableHead
+                            className="
+                                sticky left-0 z-20
+                                bg-foreground
+                                touch-none
+                                px-4 py-2
+                                text-left
+                                text-background
+                                font-bold
+                                whitespace-nowrap
+                            "
+                        >
+                            Jugador
+                        </TableHead>
+
+                        {rounds.map((r) => (
+                            <TableHead
+                                key={r}
+                                className="px-4 py-2 text-center text-background font-bold whitespace-nowrap"
+                            >
+                                Ronda {r}
+                            </TableHead>
+                        ))}
+                    </TableRow>
                 </TableHeader>
 
                 <TableBody>
-                {Object.keys(matrix).map((p) => (
-                    <TableRow
-                        key={p}
-                        className={`${markPlayerDeadOrAlive(p)}`}
-                    >
-                        <TableCell className="sticky left-0 z-0 text-foreground px-4 py-2 font-medium">{p}</TableCell>
+                    {Object.keys(matrix).map((p) => (
+                        <TableRow key={p} className={markPlayerDeadOrAlive(p)}>
+                            <TableCell
+                                className="
+                                  sticky left-0 z-10
+                                  text-background
+                                  font-semibold
+                                  bg-foreground
+                                  px-4 py-2
+                                  whitespace-nowrap
+                                "
+                            >
+                                {p}
+                            </TableCell>
 
-                        {Array.from({ length: roundsCount }).map((_, idx) => {
-                            const val = matrix[p]?.[idx] ?? null;
-                            return (
-                                <TableCell key={idx} className="px-4 py-2 text-center text-foreground">
-                                    {val ? (
-                                        <span className="inline-block rounded px-2 py-1 bg-foreground-muted">{val}</span>
-                                    ) : (
-                                        <span className="text-sm text-gray-400">—</span>
-                                    )}
-                                </TableCell>
-                            );
-                        })}
-                    </TableRow>
-                ))}
+                            {Array.from({ length: roundsCount }).map((_, idx) => {
+                                const val = matrix[p]?.[idx] ?? null;
 
-                {/* Si no hay jugadores */}
-                {players.length === 0 && (
-                    <tr>
-                        <td colSpan={roundsCount + 1} className="px-4 py-6 text-center text-sm text-gray-500">
-                            No hay datos aún
-                        </td>
-                    </tr>
-                )}
+                                return (
+                                    <TableCell
+                                        key={idx}
+                                        className="px-4 py-2 text-center text-foreground whitespace-nowrap"
+                                    >
+                                        {val ? (
+                                            <span className="inline-block rounded px-2 py-1 bg-foreground-muted">
+                                                {val}
+                                              </span>
+                                        ) : (
+                                            <span className="text-sm text-gray-400">—</span>
+                                        )}
+                                    </TableCell>
+                                );
+                            })}
+                        </TableRow>
+                    ))}
+
+                    {players.length === 0 && (
+                        <tr>
+                            <td
+                                colSpan={roundsCount + 1}
+                                className="px-4 py-6 text-center text-sm text-gray-500"
+                            >
+                                No hay datos aún
+                            </td>
+                        </tr>
+                    )}
                 </TableBody>
             </Table>
-        </div>
     );
 }

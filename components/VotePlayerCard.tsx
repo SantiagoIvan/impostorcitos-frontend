@@ -51,67 +51,81 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
 
     return (
         <AnimatedFadeScaleComponent>
+            <div className="flex flex-col items-center gap-4 sm:gap-5 md:gap-6 px-4">
+                <h1 className="text-3xl sm:text-2xl md:text-3xl font-semibold text-center">
+                    Votación
+                </h1>
 
-            <h1 className="text-2xl font-semibold text-center mb-3">Votacion</h1>
-            <VotesTable votes={getVotesFromCurrentRound()}/>
-            <TimerDisplay
-                startedAt={game.currentTurn.startedAt}
-                duration={game.currentTurn.duration}
-                onTimeOut={() => handleVote()}
-            />
-            <Card className="w-full max-w-sm mx-auto shadow-lg">
-                <CardHeader>
-                    <CardTitle className="text-lg text-center">Quien se va, papu?</CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-4">
-                    {/* Command + Combobox Selector */}
-                    <Popover open={open} onOpenChange={setOpen}>
-                        <PopoverTrigger asChild>
-                            <Button
-                                variant="outline"
-                                role="combobox"
-                                className="w-full justify-between"
-                                disabled={sent}
-                            >
-                                {selectedPlayer ? selectedPlayer.name : "Elegí un jugador..."}
-                                <ChevronsUpDown className="opacity-50" size={14} />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                            <Command>
-                                <CommandInput placeholder="Buscar jugador..." />
-                                <CommandList>
-                                    <CommandEmpty>No se encontró jugador</CommandEmpty>
-                                    <CommandGroup>
-                                        {eligiblePlayers.map((player) => (
-                                            <CommandItem
-                                                key={player.name}
-                                                value={player.name}
-                                                onSelect={() => {
-                                                    setSelectedPlayerId(player.name);
-                                                    setOpen(false);
-                                                }}
-                                            >
-                                                {player.name}
-                                            </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                </CommandList>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
-                </CardContent>
-                <CardFooter>
-                    <Button
-                        className="w-full"
-                        variant="destructive"
-                        disabled={!selectedPlayerId || sent}
-                        onClick={handleVote}
-                    >
-                        {sent ? "Voto enviado" : "Votar"}
-                    </Button>
-                </CardFooter>
-            </Card>
+                <VotesTable votes={getVotesFromCurrentRound()} />
+
+                <TimerDisplay
+                    startedAt={game.currentTurn.startedAt}
+                    duration={game.currentTurn.duration}
+                    onTimeOut={() => handleVote()}
+                />
+
+                <Card className="w-full max-w-sm sm:max-w-md mx-auto shadow-lg">
+                    <CardHeader className="py-4 sm:py-5">
+                        <CardTitle className="text-xl sm:text-lg md:text-xl text-center">
+                            ¿Quién se va, papu?
+                        </CardTitle>
+                    </CardHeader>
+
+                    <CardContent className="flex flex-col gap-4 sm:gap-5">
+                        <Popover open={open} onOpenChange={setOpen}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    className="w-full justify-between py-3 sm:py-2 text-base sm:text-sm"
+                                    disabled={sent}
+                                >
+                                    {selectedPlayer ? selectedPlayer.name : "Elegí un jugador..."}
+                                    <ChevronsUpDown className="opacity-50" size={14} />
+                                </Button>
+                            </PopoverTrigger>
+
+                            <PopoverContent className="w-full p-0">
+                                <Command>
+                                    <CommandInput
+                                        placeholder="Buscar jugador..."
+                                        className="text-base sm:text-sm"
+                                    />
+                                    <CommandList>
+                                        <CommandEmpty>No se encontró jugador</CommandEmpty>
+                                        <CommandGroup>
+                                            {eligiblePlayers.map((player) => (
+                                                <CommandItem
+                                                    key={player.name}
+                                                    value={player.name}
+                                                    onSelect={() => {
+                                                        setSelectedPlayerId(player.name);
+                                                        setOpen(false);
+                                                    }}
+                                                >
+                                                    {player.name}
+                                                </CommandItem>
+                                            ))}
+                                        </CommandGroup>
+                                    </CommandList>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
+                    </CardContent>
+
+                    <CardFooter>
+                        <Button
+                            className="w-full py-3 sm:py-2 text-base sm:text-sm"
+                            variant="destructive"
+                            disabled={!selectedPlayerId || sent}
+                            onClick={handleVote}
+                        >
+                            {sent ? "Voto enviado" : "Votar"}
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div>
         </AnimatedFadeScaleComponent>
+
     );
 }

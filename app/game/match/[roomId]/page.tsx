@@ -21,6 +21,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import { HardHat } from "lucide-react"
 import UpdateTopicModal from "@/components/UpdateTopicModal";
 import {useLoading} from "@/context/LoadingContext";
+import CrewOrImpostorCard from "@/components/CrewOrImpostorCard";
 
 const Game = () => {
     const { game, clearGameStore } = useGameStore()
@@ -89,98 +90,106 @@ const Game = () => {
     }, [])
 
     return (
-        <main className="flex flex-col bg-background gap-10 w-full m-10 items-center">
-            <div className="flex gap-4 w-full">
-                <div className="flex w-full flex-col lg:flex lg:w-1/2 gap-5">
-                    <GameInfoOverlay
-                        show={showGameInfo}
-                        secretWord={game.secretWord}
-                        impostor={amIImpostor}
-                        topic={game.topic}
-                        onClose={() => setShowGameInfo(false)}
-                    />
-                    <div className="text-center text-foreground space-y-4 p- border-b-4 pb-4">
-                        <h3 className="text-4xl font-extrabold">{`Topico: ${game.topic}`}</h3>
-                        <h3 className={`text-2xl`}>
-                            {amIImpostor() ? (
-                                <Card className="mt-4 border-destructive/50 bg-destructive/10">
-                                    <CardContent className="flex m-auto items-center gap-3 py-4">
-                                        <Skull className="h-12 w-12 text-destructive" />
-                                        <span className="text-xl font-semibold text-destructive">
-                                            IMPOSTOR
-                                          </span>
-                                    </CardContent>
-                                </Card>
-                            ) : (
-                                <Card className="mt-4 border-green-500/40 bg-green-500/10">
-                                    <CardContent className="flex items-center m-auto gap-4 py-5">
-                                        <HardHat className="h-12 w-12 text-green-600" />
-                                        <span className="text-xl font-semibold text-green-700">
-                                            {game.secretWord}
-                                        </span>
-                                    </CardContent>
-                                </Card>
-                            )
-                            }
-                        </h3>
-                    </div>
+        <>
+            <div className="w-full max-w-[80vw] mx-auto px-4 sm:px-6">
+                <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center min-w-0">
+                {/* TITULO Y ROL EN EL JUEGO */}
+                    <div className="flex w-full flex-col gap-6 lg:w-1/2">
+                        <GameInfoOverlay
+                            show={showGameInfo}
+                            secretWord={game.secretWord}
+                            impostor={amIImpostor}
+                            topic={game.topic}
+                            onClose={() => setShowGameInfo(false)}
+                        />
 
-                    {/* Tabla con palabras de cada jugador en cada ronda*/}
-                    {game.moves.length > 0 && (<RoundsTable moves={game.moves} />)}
+                        {/* HEADER DEL JUEGO */}
+                        <div className="text-center text-foreground space-y-3 border-b pb-4">
+                            <h3 className="text-3xl sm:text-2xl md:text-3xl font-extrabold">
+                                Tópico: {game.topic}
+                            </h3>
 
+                            <div className="text-xl sm:text-lg md:text-xl">
+                                <CrewOrImpostorCard
+                                    amIImpostor={amIImpostor}
+                                    secretWord={game.secretWord}
+                                />
+                            </div>
+                        </div>
 
-                    {/* Si estas muerto, se muestra la carata de muerto nomas y los resultados al final de cada ronda*/}
-                    {!amIAlive() ? <YouAreDeadCard /> : (
-                    <>
-                        {game.currentPhase === GamePhase.PLAY && (
-                            <MyTurnWordInput
-                                playerTurn={getPlayerTurn()}
-                                onSubmit={emitSubmitWord}
-                            />
+                        {/* TABLA DE RONDAS */}
+                        {game.moves.length > 0 && (
+                            <RoundsTable moves={game.moves} />
                         )}
 
-                        {/* Combobox para seleccionar jugador para eliminar */}
-                        {game.currentPhase === GamePhase.DISCUSSION && (
-                            <DiscussionCard
-                                onSubmit={emitDiscussionTimeEnded}
-                            />
-                        )}
-
-                        {/* Combobox para seleccionar jugador para eliminar */}
-                        {game.currentPhase === GamePhase.VOTE && (
-                            <VotePlayerCard
-                                players={getAlivePlayers()}
-                                onVote={emitSubmitVote}
-                            />
-                        )}
-                    </>
-                    )}
-
-                        {/* Combobox para seleccionar jugador para eliminar */}
-                        {game.currentPhase === GamePhase.ROUND_RESULT && (
+                        {/* CONTENIDO SEGÚN ESTADO */}
+                        {!amIAlive() ? (
+                            <YouAreDeadCard />
+                        ) : (
                             <>
-                                <RoundResultDialog
-                                    open={showResults}
-                                    onClose={handleOnRoundResultDialogClose}
-                                    result={roundResult}
-                                    amIAdmin={amIAdmin()}
-                                    onPlayAgain={handlePlayAgain}
-                                    game={game}
-                                />
-                                <UpdateTopicModal
-                                    open={showSelectTopicModal}
-                                    setOpen={setShowSelectTopicModal}
-                                    onSubmit={handleRestart}
-                                />
+                                {game.currentPhase === GamePhase.PLAY && (
+                                    <MyTurnWordInput
+                                        playerTurn={getPlayerTurn()}
+                                        onSubmit={emitSubmitWord}
+                                    />
+                                )}
+
+                                {game.currentPhase === GamePhase.DISCUSSION && (
+                                    <DiscussionCard
+                                        onSubmit={emitDiscussionTimeEnded}
+                                    />
+                                )}
+
+                                {game.currentPhase === GamePhase.VOTE && (
+                                    <VotePlayerCard
+                                        players={getAlivePlayers()}
+                                        onVote={emitSubmitVote}
+                                    />
+                                )}
                             </>
-
                         )}
-
+                    </div>
                 </div>
-
             </div>
-            <Button className="cursor-pointer h-14 px-10 font-bold text-xl bg-red-400/80 hover:bg-red-700/80 w-1/3" onClick={handleLeaveGame}>Salir</Button>
-        </main>
+
+            {/* RESULTADOS DE RONDA */}
+            {game.currentPhase === GamePhase.ROUND_RESULT && (
+                <>
+                    <RoundResultDialog
+                        open={showResults}
+                        onClose={handleOnRoundResultDialogClose}
+                        result={roundResult}
+                        amIAdmin={amIAdmin()}
+                        onPlayAgain={handlePlayAgain}
+                        game={game}
+                    />
+                    <UpdateTopicModal
+                        open={showSelectTopicModal}
+                        setOpen={setShowSelectTopicModal}
+                        onSubmit={handleRestart}
+                    />
+                </>
+            )}
+
+            {/* SALIR */}
+            <div className="mt-6 flex justify-center px-4">
+                <Button
+                    className="
+                        w-full sm:w-auto
+                        h-14
+                        px-10
+                        text-lg sm:text-xl
+                        font-bold
+                        bg-red-400/80
+                        hover:bg-red-700/80
+                      "
+                    onClick={handleLeaveGame}
+                >
+                    Salir
+                </Button>
+            </div>
+        </>
+
     )
 }
 

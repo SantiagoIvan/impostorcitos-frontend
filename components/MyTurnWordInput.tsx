@@ -47,35 +47,51 @@ export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps
 
 
     return (
-        <div className="flex flex-col gap-3 items-center justify-center">
-            <h1 className="text-2xl font-semibold text-center">Juga una palabra</h1>
-            {
-                wordSent &&
-                (<h1 className="text-xl font-semibold text-center">Palabra enviada</h1>)}
+        <div className="flex flex-col items-center justify-center gap-4 sm:gap-5 md:gap-6 px-4">
+            <h1 className="text-3xl sm:text-2xl md:text-3xl font-semibold text-center">
+                Jugá una palabra
+            </h1>
+
+            {wordSent && (
+                <h2 className="text-xl sm:text-lg md:text-xl font-semibold text-center text-muted-foreground">
+                    Palabra enviada
+                </h2>
+            )}
+
             <TimerDisplay
                 startedAt={playerTurn.startedAt}
                 duration={playerTurn.duration}
                 onTimeOut={handleTimeOut}
             />
+
             {isMyTurn() ? (
                 <AnimatedFadeScaleComponent>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-center text-xl">
+                    <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg">
+                        <CardHeader className="py-4 sm:py-5">
+                            <CardTitle className="text-center text-2xl sm:text-xl md:text-2xl">
                                 Es tu turno
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="flex flex-col gap-4">
+
+                        <CardContent className="flex flex-col gap-4 sm:gap-5">
                             <Input
                                 value={word}
-                                onChange={(e) => setWord(e.target.value.substring(0, 15).toLowerCase())}
+                                onChange={(e) =>
+                                    setWord(e.target.value.substring(0, 15).toLowerCase())
+                                }
                                 onKeyDown={handleKeyDown}
                                 placeholder="Ingresá tu palabra..."
                                 disabled={sending || wordSent}
+                                className="text-base sm:text-sm md:text-base"
                             />
                         </CardContent>
+
                         <CardFooter>
-                            <Button className={`w-full bg-foreground`} onClick={handleSubmit} disabled={sending || wordSent}>
+                            <Button
+                                className="w-full bg-foreground py-2 sm:py-3"
+                                onClick={handleSubmit}
+                                disabled={sending || wordSent}
+                            >
                                 {sending ? "Enviando..." : "Jugar"}
                             </Button>
                         </CardFooter>
@@ -83,13 +99,16 @@ export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps
                 </AnimatedFadeScaleComponent>
             ) : (
                 <AnimatedFadeScaleComponent>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-center text-xl">Turno de {playerTurn.player}</CardTitle>
+                    <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg">
+                        <CardHeader className="py-4 sm:py-5">
+                            <CardTitle className="text-center text-2xl sm:text-xl md:text-2xl">
+                                Turno de {playerTurn.player}
+                            </CardTitle>
                         </CardHeader>
                     </Card>
                 </AnimatedFadeScaleComponent>
             )}
         </div>
+
     );
 }
