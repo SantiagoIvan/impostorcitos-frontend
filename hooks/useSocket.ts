@@ -22,7 +22,7 @@ export const useSocket = () => {
 
     useEffect(() => {
         if (!socket.connected) socket.connect();
-        console.log("Socket connected: ", socket.auth, socket.connected);
+        console.log("Socket connected: ", socket.connected);
 
         const onConnect = () => setConnected(true);
         const onDisconnect = () => setConnected(false);

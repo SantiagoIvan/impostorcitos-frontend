@@ -27,7 +27,6 @@ const Game = () => {
     const { game, clearGameStore } = useGameStore()
     const { redirectToLobby} = useRedirectToLobby()
     const { username } = useUserStore()
-    const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
     const [showSelectTopicModal, setShowSelectTopicModal] = useState<boolean>(false);
     const {startLoading, stopLoading} = useLoading()
 
@@ -61,6 +60,7 @@ const Game = () => {
             setShowSelectTopicModal(true)
         } else {
             setAllReady(false);
+            startLoading();
         }
     }
 
@@ -77,7 +77,9 @@ const Game = () => {
         showResults,
         roundResult,
         emitPlayerLeftGame,
-        emitRestartGame
+        emitRestartGame,
+        showGameInfo,
+        setShowGameInfo,
     } = useGameSync();
 
     const handleRestart = (newTopic: string, randomFlag: boolean) => {

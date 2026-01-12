@@ -1,6 +1,6 @@
 "use client";
 
-import { useState} from "react";
+import {useEffect, useState} from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,9 +38,9 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
     const {username} = useUserStore()
     const { game } = useGameStore();
 
-    const eligiblePlayers = players.filter((p) => p.name !== username && p.isConnected);
+    const eligiblePlayers = () => players.filter((p) => p.name !== username && p.isConnected);
 
-    const selectedPlayer = eligiblePlayers.find((p) => p.name === selectedPlayerId);
+    const selectedPlayer = () => eligiblePlayers().find((p) => p.name === selectedPlayerId);
 
     const handleVote = () => {
         setSent(true);
@@ -49,6 +49,10 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
 
     const getVotesFromCurrentRound = () => game.votes.filter((vote: VoteDto) => vote.roundId === game.currentRound)
 
+    useEffect(() => {
+        console.log("[VotePlayerCard] players: ", players);
+        console.log("[VotePlayerCard] eligible players:", eligiblePlayers());
+    }, [])
     return (
         <AnimatedFadeScaleComponent>
             <div className="flex flex-col items-center gap-4 sm:gap-5 md:gap-6 px-4">
@@ -94,7 +98,7 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
                                     <CommandList>
                                         <CommandEmpty>No se encontró jugador</CommandEmpty>
                                         <CommandGroup>
-                                            {eligiblePlayers.map((player) => (
+                                            {eligiblePlayers().map((player) => (
                                                 <CommandItem
                                                     key={player.name}
                                                     value={player.name}

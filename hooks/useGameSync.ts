@@ -3,6 +3,7 @@ import {useSocket} from "@/hooks/useSocket";
 import {GameDto, GameEvents, RoundResult, VoteDto} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {useGameStore} from "@/app/store/gameStore";
+import {useLoading} from "@/context/LoadingContext";
 
 
 // En este hook puedo agregar otro tipo de eventos propios de un room, como por ejemplo algun audio como cuando
@@ -14,6 +15,8 @@ export function useGameSync() {
     const [roundResult, setRoundResult] = useState<RoundResult>();
     const [showResults, setShowResults] = useState<boolean>(true);
     const [allReady, setAllReady] = useState<boolean>(false);
+    const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
+    const {stopLoading} = useLoading()
 
     const emitPlayerReady = () => {
         socket.emit(GameEvents.PLAYER_READY, {username, gameId: game.id});
@@ -44,15 +47,23 @@ export function useGameSync() {
     }
 
     const handleStartRound = (game: GameDto) => {
+        console.log("[GAME_SYNC] Start Round", game)
         updateGame(game)
         setAllReady(true)
+        if(game.currentRound === 1){
+            console.log("first round")
+            setShowGameInfo(true)
+        }
+        stopLoading()
     }
 
     const updateGame = (game: GameDto) => {
+        console.log("[GAME_SYNC] updating game to: ", game)
         setGame(game)
     }
 
     const handleVoteSubmitted = (votes: VoteDto[]) => {
+        console.log("[GAME_SYNC] New vote submitted", votes)
         updateVotes(votes)
     }
 
@@ -64,7 +75,8 @@ export function useGameSync() {
     }
 
     const handlePlayerLeft = ({playerName, game} : {playerName: string, game: GameDto}) => {
-        // Eventualmente puedo mostrar un alerta con "playerBane has left the game"
+        // Eventualmente puedo mostrar un alerta con "playerBane has left the game" asi que el ombre me sirve
+        console.log("[GAME_SYNC] Player left", playerName)
         updateGame(game)
     }
 
@@ -108,6 +120,8 @@ export function useGameSync() {
         allReady,
         setAllReady,
         emitRestartGame,
-        emitPlayerLeftGame: emitLeaveGame
+        emitPlayerLeftGame: emitLeaveGame,
+        showGameInfo,
+        setShowGameInfo,
     }
 }
