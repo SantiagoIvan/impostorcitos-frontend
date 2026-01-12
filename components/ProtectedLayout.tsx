@@ -3,6 +3,8 @@
 import {useEffect, useState} from "react";
 import { useUserStore } from "@/app/store/userStore";
 import { useRouter } from "next/navigation";
+import BugReportButton from "@/components/BugReportBtn";
+import BugReportModal from "@/components/BugReportModal";
 
 
 export function ProtectedLayout({ children }: {
@@ -12,6 +14,7 @@ export function ProtectedLayout({ children }: {
     const router = useRouter();
 
     const [mounted, setMounted] = useState(false);
+    const [bugReportModal, setBugReportModal] = useState<boolean>(false);
 
     // 🔑 clave: esperar montaje en cliente
     useEffect(() => {
@@ -25,5 +28,11 @@ export function ProtectedLayout({ children }: {
     }, [mounted, router, username]);
 
     if(!username) return null;
-    return <>{children}</>;
+    return (
+        <>
+            {children}
+            <BugReportButton onClick={() => setBugReportModal(true)} />
+            <BugReportModal open={bugReportModal} onOpenChange={setBugReportModal} />
+        </>
+    )
 }
