@@ -16,7 +16,7 @@ export function useGameSync() {
     const [showResults, setShowResults] = useState<boolean>(true);
     const [allReady, setAllReady] = useState<boolean>(false);
     const [showGameInfo, setShowGameInfo] = useState<boolean>(true);
-    const {stopLoading} = useLoading()
+    const {stopLoading, startLoading} = useLoading()
 
     const emitPlayerReady = () => {
         socket.emit(GameEvents.PLAYER_READY, {username, gameId: game.id});
@@ -32,6 +32,7 @@ export function useGameSync() {
     }
     const emitNextRound = () => {
         socket.emit(GameEvents.NEXT_ROUND, {username, gameId: game.id})
+        startLoading() // al empezar la ronda, hago el stop, en el handle start round
     }
     const emitLeaveGame = () => {
         socket.emit(GameEvents.LEAVE_GAME, {username, gameId: game.id})

@@ -29,7 +29,7 @@ export function TimerDisplay({ startedAt, onTimeOut, duration }: TimerDisplayPro
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.25 }}
-                className="mb-3 text-center font-semibold text-lg"
+                className="mb-3 text-center font-semibold text-lg text-foreground"
             >
                 {seconds > 0 ? (
                     <motion.span
