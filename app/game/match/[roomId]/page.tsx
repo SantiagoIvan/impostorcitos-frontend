@@ -169,6 +169,7 @@ const Game = () => {
                         open={showSelectTopicModal}
                         setOpen={setShowSelectTopicModal}
                         onSubmit={handleRestart}
+                        onClose={handleLeaveGame}
                     />
                 </>
             )}

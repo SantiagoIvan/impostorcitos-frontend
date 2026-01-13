@@ -1,7 +1,6 @@
 import {Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {useState} from "react";
-import LoadingOverlay from "@/components/LoadingOverlay";
 import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {topics} from "@/lib";
@@ -9,8 +8,8 @@ import {Checkbox} from "@/components/ui/checkbox";
 import {useLoading} from "@/context/LoadingContext";
 
 export default function UpdateTopicModal(
-    {open, setOpen, onSubmit}:
-    {open: boolean,setOpen: (open: boolean) => void, onSubmit: (topic: string, randomFlag: boolean) => void}
+    {open, setOpen, onSubmit, onClose}:
+    {open: boolean,setOpen: (open: boolean) => void, onSubmit: (topic: string, randomFlag: boolean) => void, onClose?: () => void}
 ) {
     const {startLoading,stopLoading} = useLoading()
     const [newTopic, setNewTopic] = useState(topics[0] as string);
@@ -30,6 +29,7 @@ export default function UpdateTopicModal(
 
     const handleModalClose = () => {
         setOpen(false)
+        if(onClose) onClose()
     }
 
     return (

@@ -68,7 +68,7 @@ export function useGameSync() {
     }
 
     const handleGameAborted = ({game, roundResult} : {game: GameDto, roundResult: RoundResult}) => {
-        setAllReady(true) // negrada para sacar el overlay de loading
+        stopLoading()
         updateGame(game)
         setRoundResult(roundResult)
         setShowResults(true)
