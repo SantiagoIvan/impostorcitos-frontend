@@ -3,10 +3,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/navigation/AppSidebar"
 import {ProtectedLayout} from "@/components/ProtectedLayout";
 import {BottomBar} from "@/components/navigation/BottomBar";
-import {ENV} from "@/app/config/env";
 
 export default function GameLayout({ children }: { children: React.ReactNode }) {
-    console.log(ENV)
     return (
         <ProtectedLayout>
             <SidebarProvider>

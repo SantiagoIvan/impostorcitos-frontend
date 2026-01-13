@@ -6,6 +6,7 @@ import JoinRoomModal from "@/components/JoinRoomModal";
 import {Button} from "@/components/ui/button";
 import CafecitoBtn from "@/components/CafecitoBtn";
 import {useSocket} from "@/hooks/useSocket";
+import {ENV} from "@/app/config/env";
 
 const Lobby = () => {
     const [openCreateDialog, setOpenCreateDialog] = useState(false)
@@ -21,6 +22,7 @@ const Lobby = () => {
 
     useEffect(() => {
         console.log("socket", socket)
+        console.log(ENV)
     }, []);
 
     return (
