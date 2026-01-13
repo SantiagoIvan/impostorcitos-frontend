@@ -18,9 +18,9 @@ WS_URL: "http://localhost:4000",
 export const ENV = {
     API_URL: "https://api.impostorcitos.com/api",
     WS_URL: "https://api.impostorcitos.com",
-    MIN_PLAYERS_QTY: process.env.NEXT_PUBLIC_MIN_PLAYERS_QTY,
-    MAX_MESSAGE_LENGTH: process.env.MAX_MESSAGE_LENGTH,
-    CLEANUP_JOB_INTERVAL: process.env.CLEANUP_JOB_INTERVAL,
-    MESSAGE_TTL: process.env.MESSAGE_TTL,
+    MIN_PLAYERS_QTY: process.env.NEXT_PUBLIC_MIN_PLAYERS_QTY || 3,
+    MAX_MESSAGE_LENGTH: process.env.NEXT_PUBLIC_MAX_MESSAGE_LENGTH || 80,
+    CLEANUP_JOB_INTERVAL: process.env.NEXT_PUBLIC_CLEANUP_JOB_INTERVAL || 300000,
+    MESSAGE_TTL: process.env.NEXT_PUBLIC_MESSAGE_TTL || 300000,
 } as const;
 
