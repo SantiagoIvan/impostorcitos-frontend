@@ -1,7 +1,7 @@
 import { RoomType} from "@/lib";
 
 export const defaultRoom = {
-    id: "0",
+    id: "",
     admin: "",
     name: "",
     password: "",
