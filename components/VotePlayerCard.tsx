@@ -25,6 +25,7 @@ import {TimerDisplay} from "@/components/TimerDisplay";
 import {useGameStore} from "@/app/store/gameStore";
 import AnimatedFadeScaleComponent from "@/components/AnimatedFadeScaleComponent";
 import VotesTable from "@/components/VotesTable";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 interface VotePlayerCardProps {
     players: PlayerDto[];
@@ -76,45 +77,23 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
                     </CardHeader>
 
                     <CardContent className="flex flex-col gap-4 sm:gap-5">
-                        <Popover open={open} onOpenChange={setOpen}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    className="w-full justify-between py-3 sm:py-2 text-base sm:text-sm"
-                                    disabled={sent}
-                                >
-                                    {selectedPlayer ? selectedPlayer.name : "Elegí un jugador..."}
-                                    <ChevronsUpDown className="opacity-50" size={14} />
-                                </Button>
-                            </PopoverTrigger>
+                        <Select
+                            value={selectedPlayer?.name}
+                            onValueChange={(value) => setSelectedPlayerId(value)}
+                            disabled={sent}
+                        >
+                            <SelectTrigger className="w-full py-3 sm:py-2 text-base sm:text-sm">
+                                <SelectValue placeholder="Elegí un jugador..." />
+                            </SelectTrigger>
 
-                            <PopoverContent className="w-full p-0">
-                                <Command>
-                                    <CommandInput
-                                        placeholder="Buscar jugador..."
-                                        className="text-base sm:text-sm"
-                                    />
-                                    <CommandList>
-                                        <CommandEmpty>No se encontró jugador</CommandEmpty>
-                                        <CommandGroup>
-                                            {eligiblePlayers().map((player) => (
-                                                <CommandItem
-                                                    key={player.name}
-                                                    value={player.name}
-                                                    onSelect={() => {
-                                                        setSelectedPlayerId(player.name);
-                                                        setOpen(false);
-                                                    }}
-                                                >
-                                                    {player.name}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
+                            <SelectContent>
+                                {eligiblePlayers().map((player) => (
+                                    <SelectItem key={player.name} value={player.name}>
+                                        {player.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </CardContent>
 
                     <CardFooter>
