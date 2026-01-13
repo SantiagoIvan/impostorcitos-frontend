@@ -33,19 +33,19 @@ interface VotePlayerCardProps {
 }
 
 export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
-    const [open, setOpen] = useState(false);
-    const [selectedPlayerId, setSelectedPlayerId] = useState<string>("");
+    const [selectedPlayerName, setSelectedPlayerName] = useState<string>("");
     const [sent, setSent] = useState(false);
     const {username} = useUserStore()
     const { game } = useGameStore();
 
     const eligiblePlayers = () => players.filter((p) => p.name !== username && p.isConnected);
 
-    const selectedPlayer = () => eligiblePlayers().find((p) => p.name === selectedPlayerId);
+    const selectedPlayer = () => eligiblePlayers().find((p) => p.name === selectedPlayerName);
 
     const handleVote = () => {
         setSent(true);
-        onVote(selectedPlayerId);
+        console.log("you vote for ", selectedPlayerName, selectedPlayer());
+        onVote(selectedPlayerName);
     };
 
     const getVotesFromCurrentRound = () => game.votes.filter((vote: VoteDto) => vote.roundId === game.currentRound)
@@ -53,6 +53,7 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
     useEffect(() => {
         console.log("[VotePlayerCard] players: ", players);
         console.log("[VotePlayerCard] eligible players:", eligiblePlayers());
+        console.log("[VotePlayerCard] selectedPlayer:", selectedPlayer);
     }, [])
     return (
         <AnimatedFadeScaleComponent>
@@ -78,8 +79,8 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
 
                     <CardContent className="flex flex-col gap-4 sm:gap-5">
                         <Select
-                            value={selectedPlayer?.name}
-                            onValueChange={(value) => setSelectedPlayerId(value)}
+                            value={selectedPlayer()?.name}
+                            onValueChange={(value) => setSelectedPlayerName(value)}
                             disabled={sent}
                         >
                             <SelectTrigger className="w-full py-3 sm:py-2 text-base sm:text-sm">
@@ -100,7 +101,7 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
                         <Button
                             className="w-full py-3 sm:py-2 text-base sm:text-sm"
                             variant="destructive"
-                            disabled={!selectedPlayerId || sent}
+                            disabled={!selectedPlayerName || sent}
                             onClick={handleVote}
                         >
                             {sent ? "Voto enviado" : "Votar"}
