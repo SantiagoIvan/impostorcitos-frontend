@@ -71,7 +71,11 @@ const WaitingRoom = () => {
     }
 
     useEffect(() => {
-        if(currentRoom.id === defaultRoom.id) redirectToLobby()
+        if(currentRoom.id === defaultRoom.id) {
+            console.log("Current room", currentRoom);
+            console.log("Redireccionando a lobby");
+            redirectToLobby()
+        }
     }, []);
 
     return (
