@@ -10,9 +10,9 @@ class AudioService {
     }
 
     loadSfx() {
-        this.sfx.click = new Howl({ src: ["/audio/sfx/click.mp3"] });
-        this.sfx.win = new Howl({ src: ["/audio/sfx/win.wmp3"] });
-        this.sfx.lose = new Howl({ src: ["/audio/sfx/lose.mp3"] });
+        this.sfx.click = new Howl({ src: ["/audio/sfx/click.mp3"], volume: 0.4 });
+        this.sfx.win = new Howl({ src: ["/audio/sfx/win.wmp3"], volume: 0.4 });
+        this.sfx.lose = new Howl({ src: ["/audio/sfx/lose.mp3"], volume: 0.4 });
     }
 
     playSfx(name: keyof typeof this.sfx) {

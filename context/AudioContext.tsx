@@ -19,6 +19,15 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         audioService.loadSfx();
+        const handleClick = () => {
+            audioService.playSfx("click");
+        };
+
+        document.addEventListener("click", handleClick);
+
+        return () => {
+            document.removeEventListener("click", handleClick);
+        };
     }, []);
 
     const toggleMute = () => {
