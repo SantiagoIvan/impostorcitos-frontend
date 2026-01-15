@@ -3,6 +3,9 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {AnimatePresence, motion} from "framer-motion";
 import {GameDto, PlayerDto, RoundResult, Team} from "@/lib";
+import {useEffect} from "react";
+import {useAudio} from "@/hooks/useAudio";
+import {useUserStore} from "@/app/store/userStore";
 
 interface Props {
     open: boolean;
@@ -14,15 +17,24 @@ interface Props {
 }
 
 export function RoundResultDialog({ open, onClose, result, onPlayAgain, game }: Props) {
-    if (!result) return null;
-
-    const impostorWon = () => result.winner?.team === Team.IMPOSTOR;
-    const crewWon = () => result.winner?.team === Team.CREW;
+    const {ctx: {playWinEffect, playLoseEffect}} = useAudio()
+    const impostorWon = () => result?.winner?.team === Team.IMPOSTOR;
+    const crewWon = () => result?.winner?.team === Team.CREW;
     const isAdminConnected = () => {
         const player = game.room.players.find((player:PlayerDto) => player.name === game.room.admin)
         return player?.isConnected
     }
 
+    useEffect(() => {
+        if(result?.winner?.team === Team.IMPOSTOR && game.impostor) {
+            playLoseEffect()
+        }
+        if(result?.winner?.team === Team.CREW && !game.impostor) {
+            playWinEffect()
+        }
+    }, [])
+
+    if (!result) return null;
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <AnimatePresence>

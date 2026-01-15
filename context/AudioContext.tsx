@@ -10,6 +10,8 @@ type AudioContextType = {
     playLobbyMusic: () => void;
     playGameMusic: () => void;
     stopMusic: () => void;
+    playWinEffect: () => void;
+    playLoseEffect: () => void;
 };
 
 export const AudioContext = createContext<AudioContextType | null>(null);
@@ -48,7 +50,9 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
                 playGameMusic: () =>
                     audioService.playMusic("/audio/music/suspense.mp3"),
                 stopMusic: () =>
-                    audioService.stopMusic()
+                    audioService.stopMusic(),
+                playWinEffect: () => audioService.playSfx("win"),
+                playLoseEffect: () => audioService.playSfx("lose"),
             }}
         >
             {children}
