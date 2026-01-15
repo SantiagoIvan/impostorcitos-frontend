@@ -11,11 +11,13 @@ import { useEffect} from "react";
 import {AuthService} from "@/app/services/auth.service";
 import CafecitoBtn from "@/components/CafecitoBtn";
 import {useLoading} from "@/context/LoadingContext";
+import {useAudio} from "@/hooks/useAudio";
 
 export default function WelcomeScreen() {
     const {username, setUsername, clear, setUser} = useUserStore();
     const router = useRouter();
     const {startLoading, stopLoading} = useLoading()
+    const {ctx: {playLobbyMusic}} = useAudio()
 
     const handleLogin = async () => {
         try{
@@ -28,7 +30,7 @@ export default function WelcomeScreen() {
             const res = await AuthService.login(username);
             setUser(res.data.user)
             router.push("/game/lobby");
-
+            playLobbyMusic();
         }catch(err){
             console.log(err)
             // @ts-expect-error-para que no joda por el tipo del error

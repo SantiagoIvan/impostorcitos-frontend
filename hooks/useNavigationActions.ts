@@ -45,7 +45,7 @@ export function useNavigationActions() {
     }
 
     const handleDonate = () => {
-        window.open("https://cafecito.app/nucadelchiquitapia", "_blank")
+        window.open("https://cafecito.app/santudev", "_blank")
     }
 
     const actions: Record<NavActionId, () => void> = {

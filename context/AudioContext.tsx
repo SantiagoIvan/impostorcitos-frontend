@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { audioService } from "@/app/services/AudioService";
+import {useAudio} from "@/hooks/useAudio";
 
 type AudioContextType = {
     muted: boolean;
@@ -18,7 +19,6 @@ export const AudioContext = createContext<AudioContextType | null>(null);
 
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const [muted, setMuted] = useState(false);
-
 
     useEffect(() => {
         audioService.loadSfx();

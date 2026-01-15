@@ -23,7 +23,6 @@ const Lobby = () => {
     }
 
     useEffect(() => {
-        ctx.playLobbyMusic()
         console.log(ENV)
     }, []);
 

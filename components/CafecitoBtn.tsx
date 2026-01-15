@@ -17,7 +17,7 @@ export default function CafecitoBtn({classname}: {classname?: string}) {
             asChild
             >
             <a
-            href="https://cafecito.app/nucadelchiquitapia"
+            href="https://cafecito.app/santudev"
             target="_blank"
             rel="noopener noreferrer"
                 >

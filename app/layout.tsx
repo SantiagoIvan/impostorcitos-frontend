@@ -6,6 +6,7 @@ import {ModeToggle} from "@/components/ModeToggle";
 import {Toaster} from "@/components/ui/sonner";
 import {LoadingProvider} from "@/context/LoadingContext";
 import LoadingOverlay from "@/components/LoadingOverlay";
+import {AudioProvider} from "@/context/AudioContext";
 
 
 const geistSans = Geist({
@@ -39,16 +40,18 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
       >
-          <LoadingProvider>
-              {/* Overlay global (nunca se desmonta) */}
-              <LoadingOverlay />
+          <AudioProvider>
+              <LoadingProvider>
+                  {/* Overlay global (nunca se desmonta) */}
+                  <LoadingOverlay />
 
-              <div className="floating-button">
-                  <ModeToggle />
-              </div>
+                  <div className="floating-button">
+                      <ModeToggle />
+                  </div>
 
-              {children}
-          </LoadingProvider>
+                  {children}
+              </LoadingProvider>
+          </AudioProvider>
       </ThemeProvider>
 
       <Toaster />
