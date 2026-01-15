@@ -9,6 +9,7 @@ import {disconnectSocket} from "@/app/services/socket.service";
 import {useUserStore} from "@/app/store/userStore";
 import {useRoomsStore} from "@/app/store/roomsStore";
 import {useLoading} from "@/context/LoadingContext";
+import {useAudio} from "@/hooks/useAudio";
 
 export function useNavigationActions() {
     const router = useRouter();
@@ -17,6 +18,7 @@ export function useNavigationActions() {
     const { username, clear } = useUserStore()
     const { setRooms, clearCurrentRoom } = useRoomsStore()
     const {startLoading, stopLoading} = useLoading()
+    const {ctx} = useAudio()
 
 
     const handleJoinRoomClick = () => {
@@ -38,6 +40,7 @@ export function useNavigationActions() {
             router.push("/")
             setRooms([])
             clearCurrentRoom()
+            ctx.stopMusic()
         }
     }
 
