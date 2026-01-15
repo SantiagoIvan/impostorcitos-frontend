@@ -29,7 +29,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 
 interface VotePlayerCardProps {
     players: PlayerDto[];
-    onVote: (targetId: string) => void;
+    onVote: (targetName: string) => void;
 }
 
 export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
@@ -44,8 +44,12 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
 
     const handleVote = () => {
         setSent(true);
-        console.log("you vote for ", selectedPlayerName, selectedPlayer());
-        onVote(selectedPlayerName);
+        if(sent){
+            onVote(selectedPlayerName);
+            console.log("you vote for ", selectedPlayerName, selectedPlayer());
+        }else{
+            onVote(selectedPlayerName);
+        }
     };
 
     const getVotesFromCurrentRound = () => game.votes.filter((vote: VoteDto) => vote.roundId === game.currentRound)

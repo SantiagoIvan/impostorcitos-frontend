@@ -82,9 +82,8 @@ export default function RoundsTable({ moves, className = "" }: Props) {
                             <TableCell
                                 className="
                                   sticky left-0 z-10
-                                  text-background
-                                  font-semibold
-                                  bg-foreground
+                                  text-foreground
+                                  font-bold
                                   px-4 py-2
                                   whitespace-nowrap
                                 "

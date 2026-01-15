@@ -7,6 +7,7 @@ import JoinRoomModal from "@/components/JoinRoomModal";
 import {getNavigationItems} from "@/components/navigation/navigation.config";
 import {cn} from "@/lib";
 import {useNavigationActions} from "@/hooks/useNavigationActions";
+import {MuteButton} from "@/components/MuteBtn";
 
 export function BottomBar() {
     const pathname = usePathname()
@@ -21,6 +22,7 @@ export function BottomBar() {
         <>
             <nav className="h-16 border-t bg-background px-4">
                 <div className="flex h-16 items-center justify-around bg-background px-2">
+                    <MuteButton />
                     {items.map(({ id, label, icon: Icon }) => (
                         <Button
                             key={id}

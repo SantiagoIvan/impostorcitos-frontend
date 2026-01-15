@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useSocket} from "@/hooks/useSocket";
-import {GameDto, GameEvents, RoundResult, VoteDto} from "@/lib";
+import {GameDto, GameEvents, RoundResult, sleep, VoteDto} from "@/lib";
 import {useUserStore} from "@/app/store/userStore";
 import {useGameStore} from "@/app/store/gameStore";
 import {useLoading} from "@/context/LoadingContext";
@@ -21,13 +21,15 @@ export function useGameSync() {
     const emitPlayerReady = () => {
         socket.emit(GameEvents.PLAYER_READY, {username, gameId: game.id});
     }
-    const emitSubmitWord = (word: string) => {
+    const emitSubmitWord = async (word: string) => {
+        await sleep(3000);
         socket.emit(GameEvents.SUBMIT_WORD, {username, gameId: game.id, word})
     }
     const emitDiscussionTimeEnded = () => {
         socket.emit(GameEvents.DISCUSSION_TURN_END, {username, gameId: game.id})
     }
-    const emitSubmitVote = (target: string) => {
+    const emitSubmitVote = async (target: string) => {
+        await sleep(3000);
         socket.emit(GameEvents.SUBMIT_VOTE, {username, gameId: game.id, targetPlayer: target})
     }
     const emitNextRound = () => {

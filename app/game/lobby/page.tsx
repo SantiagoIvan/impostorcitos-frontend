@@ -7,11 +7,13 @@ import {Button} from "@/components/ui/button";
 import CafecitoBtn from "@/components/CafecitoBtn";
 import {useSocket} from "@/hooks/useSocket";
 import {ENV} from "@/app/config/env";
+import {useAudio} from "@/hooks/useAudio";
 
 const Lobby = () => {
     const [openCreateDialog, setOpenCreateDialog] = useState(false)
     const [openJoinDialog, setOpenJoinDialog] = useState(false)
     const socket = useSocket()
+    const {ctx} = useAudio()
 
     const handleJoinRoom = () => {
         setOpenJoinDialog(true)
@@ -21,7 +23,7 @@ const Lobby = () => {
     }
 
     useEffect(() => {
-        console.log("socket", socket)
+        ctx.playLobbyMusic()
         console.log(ENV)
     }, []);
 

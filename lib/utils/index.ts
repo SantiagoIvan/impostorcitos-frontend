@@ -54,3 +54,7 @@ export function buildVotesTable(votes: VoteDto[]) {
 
   return { votedPlayers, matrix };
 }
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
