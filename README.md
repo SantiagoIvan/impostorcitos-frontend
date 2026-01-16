@@ -21,39 +21,45 @@ Al crear una sala se puede configurar:
 - Tiempo para escribir una palabra
 - Tiempo de discusion
 - Tiempo para votar a un jugador
+- Topico (alguno en especial o random)
 - En un futuro vamos a configurar cantidad de impostores.
 
 ### Ingreso a la sala
-En la sala se podra chatear con los diferentes jugadores que vayan ingresando. Cada jugador marcara la opcion "Ready" 
-para indicar que esta listo para dar comienzo al juego. Cuando todos los jugadores esten listos, el juego comenzara.
+Para ingresar a una sala, se clickea en el boton "Unirse", se ingresa el ID de la partida  y contrasenia (si era privada)
+y se ingresa al juego. 
+Cada jugador marcara la opcion "Ready" para poder dar inicio al juego. 
+Cuando todos los jugadores esten listos, el admin presionara "Start" y el juego comenzara .
 
 ### Comienzo del juego
-Hay diferentes topicos sobre los cuales elegir palabras. El juego eligira de forma random un topico y la mostrara en pantalla.
-Luego, a cada jugador, le indicara una palabra dentro de ese topico, exceptuando al impostor.
-Finalmente se da por comenzada la primera ronda del juego
+El juego mostrara en pantalla a cada jugador una palabra dentro del topico seleccionado, exceptuando al impostor, al cual
+solo le mostrara el topico como pista. Finalmente se da por comenzada la primera ronda del juego
 
 ### Rondas
-En cada ronda, cada jugador un tiempo para escribir una palabra, la cual podra ser leida por todos los jugadores 
+Cada ronda se desarrolla en 3 fases: JUGADA, DISCUSION, VOTACION.
+
+#### PRIMERA FASE: JUGADA
+Al momento de jugar, cada jugador dispone de un tiempo para escribir una palabra, la cual podra ser leida por todos los jugadores 
 durante esa ronda.
 - Si el jugador no escribe ninguna palabra, contara como una palabra vacia
 
-Al final, se abrira un espacio de discusion donde los jugadores podran debatir acerca de la eleccion de las palabras de
-cada jugador, y llegar a un acuerdo sobre quien sera el siguiente expulsado.
+#### PRIMERA FASE: DISCUSION
+Una vez que todos hayan jugado, comienza la segunda fasese abrira un espacio de discusion donde los jugadores podran debatir acerca de la eleccion de las palabras de
+cada jugador, y llegar a un acuerdo sobre quien sera el siguiente expulsado. En caso de terminar de discutir antes de que el tiempo
+llegue a 0, podran optar por finalizar esta fase
 
+#### PRIMERA FASE: VOTACION
 Finalmente, se abre un espacio para elegir a un candidato a ser eliminado.
 - En caso de haber empate, se reabre este espacio para volver a votar entre los mismos
 
 ### Condicion de victoria
 - Si se elimina al impostor, gana el resto de los jugadores
 - Si el impostor llega vivo hasta el final del juego, quedando solamente 2 jugadores, gana el impostor
+- Todos pueden presionar en "Volver a jugar", pero el admin es quien tiene el poder para elegir el topico
+de la siguiente partida y dar comienzo a la misma. Si el admin se va, se aborta la partida, se informa al usuario
+y son enviados al lobby. 
 
-## Flujo de pantallas
-https://lucid.app/lucidspark/c873ae61-9ac4-4b0b-81a1-0e739b7cdee3/edit?viewport_loc=-796%2C-493%2C4717%2C2258%2C0_0&invitationId=inv_ebabd4cf-31dc-43cd-9faa-3d4f6bf09528
 
-## Modelo de datos
-[Link al modelo de datos]
-
-## Getting started
+## Para correrlo en local
 
 First, run the development server:
 
