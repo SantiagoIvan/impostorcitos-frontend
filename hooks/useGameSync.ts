@@ -22,14 +22,12 @@ export function useGameSync() {
         socket.emit(GameEvents.PLAYER_READY, {username, gameId: game.id});
     }
     const emitSubmitWord = async (word: string) => {
-        await sleep(3000);
         socket.emit(GameEvents.SUBMIT_WORD, {username, gameId: game.id, word})
     }
     const emitDiscussionTimeEnded = () => {
         socket.emit(GameEvents.DISCUSSION_TURN_END, {username, gameId: game.id})
     }
     const emitSubmitVote = async (target: string) => {
-        await sleep(3000);
         socket.emit(GameEvents.SUBMIT_VOTE, {username, gameId: game.id, targetPlayer: target})
     }
     const emitNextRound = () => {
