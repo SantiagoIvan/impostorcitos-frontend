@@ -17,6 +17,8 @@ export function TimerDisplay({ startedAt, onTimeOut, duration }: TimerDisplayPro
         if (isFinished) {
             onTimeOut()
         }
+        console.log("startedAt endsAt duration seconds", startedAt, endTime);
+        console.log("duration seconds", duration, seconds);
 
     }, [seconds, isFinished]);
     const isCritical = seconds <= 10;
