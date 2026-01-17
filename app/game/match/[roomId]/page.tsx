@@ -2,7 +2,7 @@
 
 import {useUserStore} from "@/app/store/userStore";
 import {useGameSync} from "@/hooks/useGameSync";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {ChatPanel} from "@/components/ChatPanel";
 import {useGameStore} from "@/app/store/gameStore";
 import LoadingOverlay from "@/components/LoadingOverlay";
@@ -33,7 +33,7 @@ const Game = () => {
 
     const getAlivePlayers = (): PlayerDto[] => game.room.players.filter((player: PlayerDto) => player.isAlive)
 
-    const getPlayerTurn = (): Turn => game.currentTurn
+    const getPlayerTurn = useCallback((): Turn => game.currentTurn, [game.currentTurn]);
 
     const handleOnRoundResultDialogClose = () => {
         setShowResults(false);

@@ -23,7 +23,7 @@ export function DiscussionCard({onSubmit}: { onSubmit: () => void}) {
 
                 <TimerDisplay
                     startedAt={game.currentTurn.startedAt}
-                    duration={game.currentTurn.duration}
+                    endsAt={game.currentTurn.endsAt}
                     onTimeOut={handleSubmit}
                 />
 

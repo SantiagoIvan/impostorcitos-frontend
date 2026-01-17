@@ -60,7 +60,7 @@ export default function MyTurnWordInput({ playerTurn, onSubmit }: TurnInputProps
 
             <TimerDisplay
                 startedAt={playerTurn.startedAt}
-                duration={playerTurn.duration}
+                endsAt={playerTurn.endsAt}
                 onTimeOut={handleTimeOut}
             />
 

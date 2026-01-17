@@ -70,7 +70,7 @@ export function VotePlayerCard({ players, onVote }: VotePlayerCardProps) {
 
                 <TimerDisplay
                     startedAt={game.currentTurn.startedAt}
-                    duration={game.currentTurn.duration}
+                    endsAt={game.currentTurn.endsAt}
                     onTimeOut={() => handleVote()}
                 />
 

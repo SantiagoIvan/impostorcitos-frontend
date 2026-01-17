@@ -5,20 +5,21 @@ import {useTimer} from "@/hooks/useTimer";
 interface TimerDisplayProps {
     startedAt: number;
     onTimeOut: () => void;
-    duration: number;
+    endsAt: number;
 }
 
-export function TimerDisplay({ startedAt, onTimeOut, duration }: TimerDisplayProps) {
-    const endTime = startedAt + duration;
-    const { seconds, isFinished } = useTimer(endTime);
+export function TimerDisplay({ startedAt, onTimeOut, endsAt }: TimerDisplayProps) {
+    const duration = endsAt - startedAt;
+    const { seconds, isFinished } = useTimer(endsAt);
 
 
     useEffect(() => {
         if (isFinished) {
             onTimeOut()
         }
-        console.log("startedAt endsAt duration seconds", startedAt, endTime);
-        console.log("duration seconds", duration, seconds);
+        console.log(`startedAt: ${startedAt},  endsAt: ${endsAt}: Hay una diferencia de ${duration}`);
+        console.log(`Sin embargo, entre Now: ${Date.now()} y endsAt hay una diferencia de ${endsAt - Date.now()}. `);
+        console.log(`Seconds: ${seconds}`)
 
     }, [seconds, isFinished]);
     const isCritical = seconds <= 10;
