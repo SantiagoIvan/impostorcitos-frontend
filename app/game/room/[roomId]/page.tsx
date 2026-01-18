@@ -80,9 +80,10 @@ const WaitingRoom = () => {
                 const room = await RoomService.getRoomById(roomId);
                 setCurrentRoom(room)
             }catch (e) {
-                stopLoading();
                 console.log(e)
                 redirectToLobby()
+            }finally {
+                stopLoading();
             }
         }
 
