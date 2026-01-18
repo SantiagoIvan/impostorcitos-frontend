@@ -13,6 +13,8 @@ import {useRedirectToLobby} from "@/hooks/useRedirectToLobby";
 import {ArrowLeft, PenIcon} from "lucide-react";
 import UpdateTopicModal from "@/components/UpdateTopicModal";
 import {defaultRoom, PlayerDto} from "@/lib";
+import {RoomService} from "@/app/services/room.service";
+import {useLoading} from "@/context/LoadingContext";
 
 const greenStyle = "bg-emerald-500/80 hover:bg-green-800/80"
 const redStyle = "bg-red-400/80 hover:bg-red-800/80"
@@ -20,12 +22,13 @@ const redStyle = "bg-red-400/80 hover:bg-red-800/80"
 const WaitingRoom = () => {
     const {roomId} = useParams<{roomId: string}>();
     const { username } = useUserStore();
-    const { clearCurrentRoom, currentRoom } = useRoomsStore();
+    const { clearCurrentRoom, currentRoom, setCurrentRoom } = useRoomsStore();
     const [ready, setReady] = useState<boolean>(false); // para setear ready o not ready
     const { redirectToLobby } = useRedirectToLobby()
     const { emitUserReady, emitStartGame, emitUpdateTopic, emitLeaveEvent } = useWaitingRoomSocket(roomId)
     const MIN_PLAYERS_QUANTITY = process.env.NEXT_PUBLIC_MIN_PLAYERS_QTY as unknown as number;
     const [showEditTopicModal, setShowEditTopicModal] = useState<boolean>(false);
+    const {startLoading, stopLoading} = useLoading()
 
     const handleBack = () => {
         emitLeaveEvent({roomId, username});
@@ -39,15 +42,15 @@ const WaitingRoom = () => {
     }
 
     const getTopic = () => {
-        return currentRoom.randomTopic ? "Random": currentRoom.topic
+        return currentRoom?.randomTopic ? "Random": currentRoom?.topic
     }
-    const allReady = () => currentRoom.players.every((player: PlayerDto) => player.isReady)
+    const allReady = () => currentRoom?.players?.every((player: PlayerDto) => player.isReady)
 
-    const minPlayersRequired = () => currentRoom.players.length >= MIN_PLAYERS_QUANTITY
+    const minPlayersRequired = () => currentRoom?.players?.length >= MIN_PLAYERS_QUANTITY
 
     const canStartGame = () => allReady() && minPlayersRequired()
 
-    const amIAdmin = () => username === currentRoom.admin
+    const amIAdmin = () => username === currentRoom?.admin
 
     const handleStart = () => {
         if(!allReady()) {
@@ -71,11 +74,19 @@ const WaitingRoom = () => {
     }
 
     useEffect(() => {
-        if(currentRoom.id === defaultRoom.id) {
-            console.log("Current room", currentRoom);
-            console.log("Redireccionando a lobby");
-            redirectToLobby()
+        const loadRoom = async () => {
+            try{
+                startLoading();
+                const room = await RoomService.getRoomById(roomId);
+                setCurrentRoom(room)
+            }catch (e) {
+                stopLoading();
+                console.log(e)
+                redirectToLobby()
+            }
         }
+
+        loadRoom();
     }, []);
 
     return (
