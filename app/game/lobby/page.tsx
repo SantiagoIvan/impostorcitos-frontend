@@ -26,6 +26,7 @@ const Lobby = () => {
 
     useEffect(() => {
         console.log(ENV)
+        console.log("socket conectado:", socket.connected)
     }, []);
 
     return (

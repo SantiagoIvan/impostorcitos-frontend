@@ -22,6 +22,7 @@ import { HardHat } from "lucide-react"
 import UpdateTopicModal from "@/components/UpdateTopicModal";
 import {useLoading} from "@/context/LoadingContext";
 import CrewOrImpostorCard from "@/components/CrewOrImpostorCard";
+import {toast} from "sonner";
 
 const Game = () => {
     const { game, clearGameStore } = useGameStore()
@@ -61,6 +62,7 @@ const Game = () => {
         } else {
             setAllReady(false);
             startLoading();
+            toast.info("El admin dara inicio a la partida")
         }
     }
 
