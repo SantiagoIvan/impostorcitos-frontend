@@ -7,6 +7,7 @@ import {Toaster} from "@/components/ui/sonner";
 import {LoadingProvider} from "@/context/LoadingContext";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import {AudioProvider} from "@/context/AudioContext";
+import {AdsProvider} from "@/context/AdsProvider";
 
 
 const geistSans = Geist({
@@ -40,18 +41,20 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
       >
-          <AudioProvider>
-              <LoadingProvider>
-                  {/* Overlay global (nunca se desmonta) */}
-                  <LoadingOverlay />
+          <AdsProvider>
+              <AudioProvider>
+                  <LoadingProvider>
+                      {/* Overlay global (nunca se desmonta) */}
+                      <LoadingOverlay />
 
-                  <div className="floating-button">
-                      <ModeToggle />
-                  </div>
+                      <div className="floating-button">
+                          <ModeToggle />
+                      </div>
 
-                  {children}
-              </LoadingProvider>
-          </AudioProvider>
+                      {children}
+                  </LoadingProvider>
+              </AudioProvider>
+          </AdsProvider>
       </ThemeProvider>
 
       <Toaster />
