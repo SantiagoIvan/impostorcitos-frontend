@@ -177,7 +177,7 @@ const Game = () => {
             )}
 
             {/* SALIR */}
-            <div className="mt-6 flex justify-center px-4">
+            <div className="mt-6 flex justify-center px-4 mt-4">
                 <Button
                     className="
                         w-full sm:w-auto
