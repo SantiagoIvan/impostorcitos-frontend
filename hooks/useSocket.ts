@@ -13,7 +13,7 @@ export const useSocket = () => {
     const [socket] = useState(() => getSocket());
     const [connected, setConnected] = useState(socket.connected);
     const router = useRouter()
-    const {clear} = useUserStore()
+    const {clear, setServerOffset} = useUserStore()
 
     const onabortSession = () => {
         clear()
@@ -26,10 +26,18 @@ export const useSocket = () => {
 
         const onConnect = () => setConnected(true);
         const onDisconnect = () => setConnected(false);
+        const handleServerTime = ({serverNow}: {serverNow: number}) => {
+            console.log("ServerNow: ", serverNow);
+            const offset = serverNow - Date.now();
+            console.log("offset: ", offset);
+            setServerOffset(offset);
+
+        };
 
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
         socket.on("abort_session", onabortSession);
+        socket.on("SERVER_TIME", handleServerTime);
 
         return () => {
             socket.off("connect", onConnect);

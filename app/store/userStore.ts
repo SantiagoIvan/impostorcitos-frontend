@@ -7,6 +7,8 @@ type UserStore = {
     setUsername: (name: string) => void;
     setUser: ({id, username}: {id: string, username: string}) => void;
     clear: () => void;
+    serverOffset: number;
+    setServerOffset: (offset: number) => void;
 };
 
 export const useUserStore = create<UserStore>()(
@@ -17,6 +19,8 @@ export const useUserStore = create<UserStore>()(
             setUsername: (name) => set({ username: name }),
             clear: () => set({ id: "", username: "" }),
             setUser: ({id, username}:{id: string, username: string}) => set({id, username}),
+            serverOffset: 0,
+            setServerOffset: (offset: number) => set({ serverOffset: offset }),
         }),
         {
             name: "user-storage",

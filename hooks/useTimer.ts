@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
+import {useUserStore} from "@/app/store/userStore";
 
 export function useTimer(endTime: number) {
     const [timeLeftMs, setTimeLeftMs] = useState<number>(() =>
         Math.max(0, endTime - Date.now())
     );
+    const {serverOffset} = useUserStore()
+
 
     useEffect(() => {
         const update = () => {
-            const remaining = Math.max(0, endTime - Date.now());
+            const remaining = Math.max(0, endTime - (Date.now() + serverOffset));
             setTimeLeftMs(remaining);
         };
 
