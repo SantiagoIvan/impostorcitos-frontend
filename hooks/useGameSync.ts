@@ -48,23 +48,19 @@ export function useGameSync() {
     }
 
     const handleStartRound = (game: GameDto) => {
-        console.log("[GAME_SYNC] Start Round", game)
         updateGame(game)
         setAllReady(true)
         if(game.currentRound === 1){
-            console.log("first round")
             setShowGameInfo(true)
         }
         stopLoading()
     }
 
     const updateGame = (game: GameDto) => {
-        console.log("[GAME_SYNC] updating game to: ", game)
         setGame(game)
     }
 
     const handleVoteSubmitted = (votes: VoteDto[]) => {
-        console.log("[GAME_SYNC] New vote submitted", votes)
         updateVotes(votes)
     }
 

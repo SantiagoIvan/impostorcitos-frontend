@@ -41,6 +41,9 @@ class AudioService {
         this.music?.stop();
         this.music = null;
     }
+    resumeMusic() {
+        this.music?.play();
+    }
 
     setMuted(value: boolean) {
         this.muted = value;

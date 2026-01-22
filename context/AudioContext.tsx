@@ -25,11 +25,20 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         const handleClick = () => {
             audioService.playSfx("click");
         };
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                audioService.stopMusic()
+            } else {
+                audioService.resumeMusic()
+            }
+        };
 
+        document.addEventListener("visibilitychange", handleVisibilityChange);
         document.addEventListener("click", handleClick);
 
         return () => {
             document.removeEventListener("click", handleClick);
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
         };
     }, []);
 
