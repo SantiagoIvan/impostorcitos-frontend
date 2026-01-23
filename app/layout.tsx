@@ -23,10 +23,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
     title: "Impostorcitos",
     description: "Impostorcitos",
-    manifest: "/manifest.webmanifest",
-};
-export const viewport = {
-    themeColor: "#0B0B0F",
 };
 
 export default function RootLayout({
