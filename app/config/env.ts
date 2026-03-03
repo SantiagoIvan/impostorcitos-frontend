@@ -19,8 +19,8 @@ WS_URL: "https://impostorcitos-backend.onrender.com",
  */
 
 export const ENV = {
-    API_URL: "https://impostorcitos-backend.onrender.com/api",
-    WS_URL: "https://impostorcitos-backend.onrender.com",
+    API_URL: "https://api.impostorcitos.com/api",
+    WS_URL: "https://api.impostorcitos.com",
     MIN_PLAYERS_QTY: process.env.NEXT_PUBLIC_MIN_PLAYERS_QTY || 3,
     MAX_MESSAGE_LENGTH: process.env.NEXT_PUBLIC_MAX_MESSAGE_LENGTH || 80,
     CLEANUP_JOB_INTERVAL: process.env.NEXT_PUBLIC_CLEANUP_JOB_INTERVAL || 300000,
