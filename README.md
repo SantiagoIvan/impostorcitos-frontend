@@ -8,6 +8,14 @@ llegar a ser el impostor, y luego deberan votar para expulsar a alguno.
 
 El juego termina cuando se expulsa al impostor, o cuando quedan 2 jugadores, siendo 1 de ellos el impostor.
 
+
+## Antes de comenzar
+
+Si el dominio es de vercel y no esta puesto en produccion, el backend seguro esta en la misma situacion.
+Ingresa en el browser esto
+https://impostorcitos-backend.onrender.com/api/ping
+Con eso levantas el backend
+
 ## Dinamica del juego
 ### Login
 Bueno en realidad no hay login. Lo voy a agregar mas adelante eso.
